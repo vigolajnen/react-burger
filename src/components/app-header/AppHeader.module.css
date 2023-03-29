@@ -1,0 +1,43 @@
+.header {
+  padding: 16px 0;
+  font-family: 'JetBrains Mono';
+  background-color: #1C1C21;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  gap: 50px;
+}
+
+.logo {
+  margin: 0 auto;
+}
+
+.link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.linkText {
+  margin-left: 9px;
+}
+
+.linkSecondary {
+  composes: link;
+  color: #8585AD;
+}
+
+.linkRight {
+  composes: linkSecondary;
+  margin-right: 0;
+  margin-left: auto;
+}
