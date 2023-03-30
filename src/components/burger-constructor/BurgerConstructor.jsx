@@ -57,7 +57,7 @@ export default class BurgerConstructor extends React.Component {
 
         <div className='p-10'>
           <Button htmlType='button' type='primary' size='medium'>
-            Нажми на меня
+            Оформить заказ
           </Button>
         </div>
       </section>

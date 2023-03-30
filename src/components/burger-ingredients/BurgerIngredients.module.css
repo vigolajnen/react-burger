@@ -1,0 +1,16 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.link {
+  position: relative;
+  display: block;
+  text-decoration: none;
+}

@@ -1,9 +1,8 @@
 import React from 'react';
-import './App.css';
 
-import AppHeader from './components/app-header/AppHeader';
-import BurgerConstructor from './components/burger-constructor/BurgerConstructor';
-import BurgerIngredients from './components/burger-ingredients/BurgerIngredients';
+import AppHeader from '../app-header/AppHeader';
+import BurgerConstructor from '../burger-constructor/BurgerConstructor';
+import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 
 import appStyles from './App.module.css';
 
@@ -228,7 +227,7 @@ function App() {
   const newData = data.slice(1, -1);
 
   return (
-    <div className='App'>
+    <div className={appStyles.app}>
       <AppHeader className={appStyles.header} />
       <main className={appStyles.main}>
         <div className={appStyles.container}>

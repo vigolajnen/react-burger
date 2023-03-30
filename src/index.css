@@ -27,7 +27,10 @@
     url('./fonts/Jetbrainsmonobold.woff') format('woff');
 }
 
-body {
+body,
+html {
   margin: 0;
+  padding: 0;
   background-color: #131316;
+  scroll-behavior: smooth;
 }
