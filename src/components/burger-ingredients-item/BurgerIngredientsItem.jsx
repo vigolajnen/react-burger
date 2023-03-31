@@ -9,7 +9,7 @@ export default class BurgerIngredientsItem extends React.Component {
 
     const item = this.props.item;
 
-    return <a href="#" className={stylesItem.item}>
+    return <a href={item._id} className={stylesItem.item}>
       <Counter count={1} size="default" extraClass="m-1" />
       <img src={item.image} alt={item.name} />
       <div>{item.price}</div>

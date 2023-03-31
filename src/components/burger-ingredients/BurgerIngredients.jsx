@@ -7,6 +7,8 @@ import stylesIngredients from './BurgerIngredients.module.css';
 
 export default class BurgerIngredients extends React.Component {
   render() {
+    const tabs = document.querySelectorAll('a[href*="#"]');
+
     const bunIngredients = this.props.ingredients.filter(
       (item) => item.type === 'bun',
     );
@@ -18,18 +20,21 @@ export default class BurgerIngredients extends React.Component {
     );
 
     const handelTabClick = () => {
-      const tabs = document.querySelectorAll('a[href*="#"]');
 
-      for (let tab of tabs) {
-        tab.addEventListener('click', function (e) {
-          const blockID = tab.getAttribute('href').substr(1);
+      function tabActive(e) {
+        console.log(e.currentTarget);
 
-          document.getElementById(blockID).scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-            inline: 'start',
-          });
+        const blockID = e.currentTarget.getAttribute('href').substr(1);
+
+        document.getElementById(blockID).scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'start',
         });
+      }
+
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].addEventListener('click', tabActive, false);
       }
     };
 
@@ -43,7 +48,7 @@ export default class BurgerIngredients extends React.Component {
               value='Булки'
               active={current === 'Булки'}
               onClick={handelTabClick}
-              cards={bunIngredients}
+              // cards={bunIngredients}
             >
               Булки
             </Tab>
@@ -53,7 +58,7 @@ export default class BurgerIngredients extends React.Component {
               value='Соусы'
               active={current === 'Соусы'}
               onClick={handelTabClick}
-              cards={sauceIngredients}
+              // cards={sauceIngredients}
             >
               Соусы
             </Tab>
@@ -63,7 +68,7 @@ export default class BurgerIngredients extends React.Component {
               value='Начинки'
               active={current === 'Начинки'}
               onClick={handelTabClick}
-              cards={mainIngredients}
+              // cards={mainIngredients}
             >
               Начинки
             </Tab>
