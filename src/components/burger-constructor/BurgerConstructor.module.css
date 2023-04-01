@@ -1,0 +1,63 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.list > div:first-child,
+.list > div:last-child {
+  margin-left: 20px;
+}
+
+.inner {
+  height: 350px;
+  padding: 10px 0;
+  overflow: hidden;
+}
+
+.inner > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  overflow: auto;
+}
+
+.inner > div > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+} 
+
+.footer {
+  margin: 40px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px;
+}
+
+.footer button {
+  /* margin-left: auto; */
+  margin-left: 40px;
+  padding: 20px 40px;
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  box-shadow: 0px 0px 16px 8px rgba(51, 51, 255, 0.25),
+    0px 0px 8px 8px rgba(51, 51, 255, 0.25);
+}
+
+.price {
+  font-family: 'Iceland';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 36px;
+}
+
+.price span {
+  margin-right: 10px;
+}

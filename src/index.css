@@ -3,8 +3,7 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: local('Iceland'),
-    url('./fonts/Iceland.woff2') format('woff2'),
+  src: local('Iceland'), url('./fonts/Iceland.woff2') format('woff2'),
     url('./fonts/Iceland.woff') format('woff');
 }
 
@@ -32,5 +31,7 @@ html {
   margin: 0;
   padding: 0;
   background-color: #131316;
+  font-family: 'JetBrains Mono';
+  font-style: normal;
   scroll-behavior: smooth;
 }

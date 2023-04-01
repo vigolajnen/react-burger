@@ -222,21 +222,21 @@ function App() {
     },
   ];
 
-  const topElem = data[0];
-  const buttomElem = data[data.length - 1];
+  const topElement = data[0];
+  const buttomElement = data[data.length - 1];
   const newData = data.slice(1, -1);
 
   return (
     <div className={appStyles.app}>
       <AppHeader className={appStyles.header} />
       <main className={appStyles.main}>
-        <div className={appStyles.container}>
-          <h1 className='text text_type_main-large'>Соберите бургер</h1>
-          <div className={appStyles.grid}>
-            <BurgerIngredients ingredients={data} />
-            <BurgerConstructor firstElem={topElem} lastElem={buttomElem} listElem={newData} />
-          </div>
-        </div>
+        <h1 className={appStyles.title}>Соберите бургер</h1>
+        <BurgerIngredients ingredients={data} />
+        <BurgerConstructor
+          firstElement={topElement}
+          lastElement={buttomElement}
+          listElements={newData}
+        />
       </main>
     </div>
   );

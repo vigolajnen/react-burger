@@ -3,11 +3,14 @@ import {
   Button,
   ConstructorElement,
   DragIcon,
+  CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import stylesConstructor from './BurgerConstructor.module.css';
 
 export default class BurgerConstructor extends React.Component {
   render() {
-    const list = this.props.listElem;
+    const list = this.props.listElements;
     const scrollList = list.map((item) => (
       <div key={item._id}>
         <DragIcon type='primary' />
@@ -19,43 +22,33 @@ export default class BurgerConstructor extends React.Component {
       </div>
     ));
     return (
-      <section>
-        <div style={{ margin: '0 0 0 20px' }}>
+      <section className={stylesConstructor.wrapper}>
+        <section className={stylesConstructor.list}>
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={this.props.firstElem.name}
-            price={this.props.firstElem.price}
-            thumbnail={this.props.firstElem.image}
+            text={this.props.firstElement.name}
+            price={this.props.firstElement.price}
+            thumbnail={this.props.firstElement.image}
           />
-        </div>
 
-        <div style={{ height: '350px', overflow: 'hidden', padding: '10px 0' }}>
-          <div
-            className='custom-scroll'
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              height: '100%',
-              overflow: 'auto',
-            }}
-          >
-            {scrollList}
+          <div className={stylesConstructor.inner}>
+            <div className='custom-scroll'>{scrollList}</div>
           </div>
-        </div>
 
-        <div style={{ margin: '0 0 0 20px' }}>
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={this.props.lastElem.name}
-            price={this.props.lastElem.price}
-            thumbnail={this.props.firstElem.image}
+            text={this.props.lastElement.name}
+            price={this.props.lastElement.price}
+            thumbnail={this.props.firstElement.image}
           />
-        </div>
-
-        <div className='p-10'>
+        </section>
+        <div className={stylesConstructor.footer}>
+          <div className={stylesConstructor.price}>
+            <span>610</span>
+            <CurrencyIcon type='primary' />
+          </div>
           <Button htmlType='button' type='primary' size='medium'>
             Оформить заказ
           </Button>

@@ -22,9 +22,9 @@ export default class AppHeader extends React.Component {
             <span className={headerStyles.linkText}>Лента заказов</span>
           </a>
           <div className={headerStyles.logo}>
-          <Logo />
+            <Logo />
           </div>
-          
+
           <a href='#' className={headerStyles.linkRight}>
             <ProfileIcon type='secondary' />
             <span className={headerStyles.linkText}>Личный кабинет</span>

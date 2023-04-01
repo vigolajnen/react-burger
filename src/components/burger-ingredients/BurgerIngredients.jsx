@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import BurgerIngredientsItem from '../burger-ingredients-item/BurgerIngredientsItem';
+import IngredientDetails from '../ingredient-details/IngredientDetails';
 
 import stylesIngredients from './BurgerIngredients.module.css';
 
@@ -13,71 +13,76 @@ export default class BurgerIngredients extends React.Component {
   activeTab = (tab) => {
     this.setState({ current: tab });
 
-    let type = 'bun';
-    if (tab === 'Соусы') {
-      type = 'sauce';
-    } else if (tab === 'Начинки') {
-      type = 'main';
-    }
-
-    document.querySelector('[data-value="' + type + '"]').scrollIntoView({
+    document.querySelector('[data-title="' + tab + '"]').scrollIntoView({
       behavior: 'smooth',
       inline: 'start',
     });
   };
 
   render() {
+    const tabLabels = ['Булки', 'Соусы', 'Начинки'];
+
     const bunIngredients = this.props.ingredients.filter(
       (item) => item.type === 'bun',
-    );
-    const mainIngredients = this.props.ingredients.filter(
-      (item) => item.type === 'main',
     );
     const sauceIngredients = this.props.ingredients.filter(
       (item) => item.type === 'sauce',
     );
-
-    const arrSort = bunIngredients
-      .concat(sauceIngredients)
-      .concat(mainIngredients);
+    const mainIngredients = this.props.ingredients.filter(
+      (item) => item.type === 'main',
+    );
 
     return (
       <section>
         <div className={stylesIngredients.header}>
-          <Tab
-            value='Булки'
-            active={this.state.current === 'Булки'}
-            onClick={this.activeTab}
-          >
-            Булки
-          </Tab>
-          <Tab
-            value='Соусы'
-            active={this.state.current === 'Соусы'}
-            onClick={this.activeTab}
-          >
-            Соусы
-          </Tab>
-          <Tab
-            value='Начинки'
-            active={this.state.current === 'Начинки'}
-            onClick={this.activeTab}
-          >
-            Начинки
-          </Tab>
+          {tabLabels.map((item) => (
+            <Tab
+              value={item}
+              active={this.state.current === item}
+              onClick={this.activeTab}
+            >
+              {item}
+            </Tab>
+          ))}
         </div>
-        <div style={{ height: '450px', overflow: 'hidden', padding: '10px 0' }}>
-          <div
-            className='custom-scroll'
-            style={{
-              height: '100%',
-              overflow: 'auto',
-              padding: '0 10px',
-            }}
-          >
+        <div className={stylesIngredients.body}>
+          <div className='custom-scroll'>
             <div className={stylesIngredients.grid}>
-              {arrSort.map((item) => (
-                <BurgerIngredientsItem
+              <h3 className={stylesIngredients.title} data-title='Булки'>
+                Булки
+              </h3>
+              {bunIngredients.map((item) => (
+                <IngredientDetails
+                  key={item._id}
+                  item={item}
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                  type={item.type}
+                />
+              ))}
+            </div>
+            <div className={stylesIngredients.grid}>
+              <h3 className={stylesIngredients.title} data-title='Соусы'>
+                Соусы
+              </h3>
+              {sauceIngredients.map((item) => (
+                <IngredientDetails
+                  key={item._id}
+                  item={item}
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                  type={item.type}
+                />
+              ))}
+            </div>
+            <div className={stylesIngredients.grid}>
+              <h3 className={stylesIngredients.title} data-title='Начинки'>
+                Начинки
+              </h3>
+              {mainIngredients.map((item) => (
+                <IngredientDetails
                   key={item._id}
                   item={item}
                   text={item.name}
