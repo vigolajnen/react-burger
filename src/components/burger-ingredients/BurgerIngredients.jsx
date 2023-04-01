@@ -38,6 +38,7 @@ class BurgerIngredients extends React.Component {
         <div className={stylesIngredients.header}>
           {tabLabels.map((item) => (
             <Tab
+              key={item}
               value={item}
               active={this.state.current === item}
               onClick={this.activeTab}
@@ -101,7 +102,7 @@ class BurgerIngredients extends React.Component {
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.array,
+  ingredients: PropTypes.array.isRequired,
 };
 
 export default BurgerIngredients;

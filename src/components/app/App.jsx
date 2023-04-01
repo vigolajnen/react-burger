@@ -2,12 +2,10 @@ import React from 'react';
 import AppHeader from '../app-header/AppHeader';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
-
 import appStyles from './App.module.css';
+const data = require('../../utils/data.json');
 
 function App() {
-  let data = require('../../utils/data.json');
-
   const topElement = data[0];
   const buttomElement = data[data.length - 1];
   const newData = data.slice(1, -1);

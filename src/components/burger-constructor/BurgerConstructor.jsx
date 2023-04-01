@@ -28,7 +28,7 @@ class BurgerConstructor extends React.Component {
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={this.props.firstElement.name}
+            text={this.props.firstElement.name + ' (верх)'}
             price={this.props.firstElement.price}
             thumbnail={this.props.firstElement.image}
           />
@@ -40,7 +40,7 @@ class BurgerConstructor extends React.Component {
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={this.props.lastElement.name}
+            text={this.props.lastElement.name + ' (низ)'}
             price={this.props.lastElement.price}
             thumbnail={this.props.firstElement.image}
           />
@@ -60,9 +60,9 @@ class BurgerConstructor extends React.Component {
 }
 
 BurgerConstructor.propTypes = {
-  firstElement: PropTypes.object,
-  lastElement: PropTypes.object,
-  listElements: PropTypes.array,
+  firstElement: PropTypes.object.isRequired,
+  lastElement: PropTypes.object.isRequired,
+  listElements: PropTypes.array.isRequired,
 };
 
 export default BurgerConstructor;
