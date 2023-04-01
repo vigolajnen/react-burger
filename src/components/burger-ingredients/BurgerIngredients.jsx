@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 
 import stylesIngredients from './BurgerIngredients.module.css';
 
-export default class BurgerIngredients extends React.Component {
+class BurgerIngredients extends React.Component {
   state = {
     current: 'Булки',
   };
@@ -98,3 +99,9 @@ export default class BurgerIngredients extends React.Component {
     );
   }
 }
+
+BurgerIngredients.propTypes = {
+  ingredients: PropTypes.array,
+};
+
+export default BurgerIngredients;

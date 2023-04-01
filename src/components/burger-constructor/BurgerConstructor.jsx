@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Button,
   ConstructorElement,
@@ -8,7 +9,7 @@ import {
 
 import stylesConstructor from './BurgerConstructor.module.css';
 
-export default class BurgerConstructor extends React.Component {
+class BurgerConstructor extends React.Component {
   render() {
     const list = this.props.listElements;
     const scrollList = list.map((item) => (
@@ -57,3 +58,11 @@ export default class BurgerConstructor extends React.Component {
     );
   }
 }
+
+BurgerConstructor.propTypes = {
+  firstElement: PropTypes.object,
+  lastElement: PropTypes.object,
+  listElements: PropTypes.array,
+};
+
+export default BurgerConstructor;
