@@ -4,34 +4,56 @@ import {
   Counter,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../modal/Modal';
 
 import stylesItem from './IngredientDetails.module.css';
 
 class IngredientDetails extends React.Component {
   state = {
     count: 0,
+    open: false,
   };
+
+  setOpen = () => {
+    this.setState({ open: !this.state.open });
+  }
+
   render() {
     const item = this.props.item;
 
     return (
-      <a
-        href='#modalDetails'
-        className={stylesItem.item}
-        data-id={item._id}
-        data-value={item.type}
-      >
-        {this.state.count !== 0 && (
-          <Counter count={this.state.count} size='default' extraClass='m-1' />
-        )}
+      <>
+        <a
+          href='#modalDetails'
+          className={stylesItem.item}
+          data-id={item._id}
+          data-value={item.type}
+          onClick={this.setOpen}
+        >
+          {this.state.count !== 0 && (
+            <Counter count={this.state.count} size='default' extraClass='m-1' />
+          )}
 
-        <img className={stylesItem.pic} src={item.image} alt={item.name} />
-        <div className={stylesItem.price}>
-          <span>{item.price}</span>
-          <CurrencyIcon type='primary' />
-        </div>
-        <h3 className={stylesItem.title}>{item.name}</h3>
-      </a>
+          <img className={stylesItem.pic} src={item.image} alt={item.name} />
+          <div className={stylesItem.price}>
+            <span>{item.price}</span>
+            <CurrencyIcon type='primary' />
+          </div>
+          <h3 className={stylesItem.title}>{item.name}</h3>
+        </a>
+        <Modal
+          item={item}
+          isOpen={this.state.open}
+          onClose={this.setOpen}
+        >
+          <img className={stylesItem.pic} src={item.image} alt={item.name} />
+          <h3 className={stylesItem.title}>{item.name}</h3>
+          <div className={stylesItem.price}>
+            <span>{item.price}</span>
+            <CurrencyIcon type='primary' />
+          </div>
+        </Modal>
+      </>
     );
   }
 }
