@@ -7,10 +7,10 @@ import IngredientItem from '../ingredient-item/IngredientItem';
 import stylesIngredients from './BurgerIngredients.module.css';
 
 const BurgerIngredients = ({ ...props }) => {
-  const [current, setCurrent] = useState({ current: 'Булки' });
+  const [current, setCurrent] = useState('Булки');
 
   const activeTab = (tab) => {
-    setCurrent({ current: tab });
+    setCurrent(tab);
 
     document.querySelector('[data-title="' + tab + '"]').scrollIntoView({
       behavior: 'smooth',
