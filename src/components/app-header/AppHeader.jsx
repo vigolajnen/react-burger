@@ -33,6 +33,6 @@ function AppHeader() {
       </div>
     </header>
   );
-};
+}
 
 export default AppHeader;

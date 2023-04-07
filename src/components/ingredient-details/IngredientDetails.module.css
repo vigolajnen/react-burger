@@ -1,34 +1,58 @@
-.item {
-  position: relative;
-  padding: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Iceland', Arial, sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  text-decoration: none;
-  color: #f2f2f3;
-  text-align: center;
+.titleModal {
+  margin: 0;
+  margin-top: 20px;
+  margin-right: auto;
+  width: 100%;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
 }
 
 .title {
   margin: 0;
-  margin-top: 10px;
-  font-family: 'JetBrains Mono', Arial, sans-serif;
+  margin-bottom: 32px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.pic {
+  display: block;
+  margin: 0 auto;
+  max-width: 480px;
+  min-height: 240px;
+  height: auto;
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+
+  color: #8585ad;
 }
 
-.price {
+.list li {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+}
+
+.list li span:last-child {
+  font-family: 'Iceland';
+  font-style: normal;
+  font-weight: 400;
   font-size: 28px;
   line-height: 24px;
-}
-
-.price span {
-  margin-right: 10px;
 }
