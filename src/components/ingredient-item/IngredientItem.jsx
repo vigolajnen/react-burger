@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import ingredientType from '../../utils/types';
 import {
   Counter,
   CurrencyIcon,
@@ -10,12 +11,15 @@ import IngredientDetails from '../ingredient-details/IngredientDetails';
 import stylesItem from './IngredientItem.module.css';
 
 const IngredientItem = ({ item }) => {
-  const [count, setCount] = useState(0);
-  const [open, setOpen] = useState(false);
+  const count = 0;
+  const [open, setOpen] = useState();
 
-  const onChangeOpen = () => {
-    setOpen(!open);
-    setCount(count);
+  const handleOpenModal = () => {
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
   };
 
   return (
@@ -24,7 +28,7 @@ const IngredientItem = ({ item }) => {
         className={stylesItem.item}
         data-id={item._id}
         data-value={item.type}
-        onClick={onChangeOpen}
+        onClick={handleOpenModal}
       >
         {count !== 0 && (
           <Counter count={count} size='default' extraClass='m-1' />
@@ -37,21 +41,15 @@ const IngredientItem = ({ item }) => {
         </div>
         <h3 className={stylesItem.title}>{item.name}</h3>
       </div>
-      <Modal isOpen={open} onClose={onChangeOpen}>
-        <IngredientDetails item={item} />
-      </Modal>
+      {open && (
+        <Modal title='Детали ингредиента' onClose={handleCloseModal}>
+          <IngredientDetails item={item} />
+        </Modal>
+      )}
     </>
   );
 };
 
-IngredientItem.propTypes = {
-  item: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  }),
-};
+IngredientItem.propTypes = ingredientType;
 
 export default IngredientItem;

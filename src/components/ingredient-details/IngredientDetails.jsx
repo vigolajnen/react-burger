@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import ingredientType from '../../utils/types';
 import stylesContent from './IngredientDetails.module.css';
 
 function IngredientDetails({ item }) {
   return (
     <>
-      <h2 className={stylesContent.titleModal}>Детали ингредиента</h2>
       <img
         className={stylesContent.pic}
         src={item.image_large}
@@ -34,15 +34,6 @@ function IngredientDetails({ item }) {
   );
 }
 
-IngredientDetails.propTypes = {
-  item: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    calories: PropTypes.number.isRequired,
-    image_large: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-  }),
-};
+IngredientDetails.propTypes = ingredientType;
 
 export default IngredientDetails;

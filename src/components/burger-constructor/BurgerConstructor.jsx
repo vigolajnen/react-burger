@@ -6,17 +6,21 @@ import {
   DragIcon,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/Modal';
 
+import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
 
 import stylesConstructor from './BurgerConstructor.module.css';
 
 const BurgerConstructor = ({ ...props }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState();
 
-  const onChangeOpen = () => {
-    setOpen(!open);
+  const handleOpenModal = () => {
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
   };
 
   const list = props.listElements;
@@ -49,8 +53,8 @@ const BurgerConstructor = ({ ...props }) => {
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={props.lastElement.name + ' (низ)'}
-            price={props.lastElement.price}
+            text={props.firstElement.name + ' (низ)'}
+            price={props.firstElement.price}
             thumbnail={props.firstElement.image}
           />
         </section>
@@ -63,22 +67,23 @@ const BurgerConstructor = ({ ...props }) => {
             htmlType='button'
             type='primary'
             size='medium'
-            onClick={onChangeOpen}
+            onClick={handleOpenModal}
           >
             Оформить заказ
           </Button>
         </div>
       </section>
-      <Modal isOpen={open} onClose={onChangeOpen}>
-        <OrderDetails />
-      </Modal>
+      {open && (
+        <Modal onClose={handleCloseModal}>
+          <OrderDetails />
+        </Modal>
+      )}
     </>
   );
 };
 
 BurgerConstructor.propTypes = {
   firstElement: PropTypes.object.isRequired,
-  lastElement: PropTypes.object.isRequired,
   listElements: PropTypes.array.isRequired,
 };
 

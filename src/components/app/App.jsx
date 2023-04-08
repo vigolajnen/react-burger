@@ -16,8 +16,12 @@ function App() {
       setIsLoading(true);
       try {
         const response = await fetch(URL_DATA);
-        const json = await response.json();
-        setData(json.data);
+        if (response.ok) {
+          const json = await response.json();
+          setData(json.data);
+        } else {
+          return Promise.reject(`Ошибка ${response.status}`);
+        }
       } catch (error) {
         setHasError(true);
       } finally {
@@ -28,7 +32,7 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <div style={{ color: 'black' }}>Loading...</div>;
+    return <div>Loading...</div>;
   }
   if (hasError) {
     console.log('Произошла ошибка');
@@ -53,7 +57,7 @@ function App() {
       </div>
     );
   }
-  return <div style={{ color: 'black' }}>No data</div>;
+  return <div>No data</div>;
 }
 
 export default App;

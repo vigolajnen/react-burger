@@ -1,46 +1,53 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import ModalHeader from '../modal-header/ModalHeader';
+import ModalBody from '../modal-body/ModalBody';
+import ModalOverlay from '../modal-overlay/ModalOverlay';
 
 import stylesModal from './Modal.module.css';
 
-const Modal = ({ isOpen, onClose, children }) => {
-  const handleUserKeyPress = useCallback((event) => {
-    const { keyCode } = event;
-    keyCode === 27 ? console.log('esc') : console.log('no');
-  }, []);
+const modalRoot = document.getElementById('modals');
+
+const Modal = ({ onClose, children, title }) => {
+  const [open, setOpen] = useState();
+  
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
-    window.addEventListener('keydown', handleUserKeyPress);
-    return () => {
-      window.removeEventListener('keydown', handleUserKeyPress);
-    };
-  }, [handleUserKeyPress]);
+    const handleClickEscape = (e) => {
+      if (e.key === 'Escape') {
+        handleCloseModal();
+      } 
 
-  if (!isOpen) return null;
+
+    }
+
+    window.addEventListener('keydown', handleClickEscape);
+    return () => {
+      window.removeEventListener('keydown', handleClickEscape);
+    };
+  }, []);
+
   return ReactDOM.createPortal(
-    <div className={stylesModal.modal} onClick={onClose}>
-      <div className={stylesModal.content}>
-        <button
-          className={stylesModal.btnClose}
-          type='button'
-          onClick={onClose}
-        >
-          <CloseIcon type='primary' />
-        </button>
-        <div className={stylesModal.body} onClick={(e) => e.stopPropagation()}>
-          {children}
-        </div>
+    <>
+      <div className={stylesModal.modal}>
+        <ModalHeader onClose={onClose}>{title}</ModalHeader>
+        <ModalBody>{children}</ModalBody>
       </div>
-    </div>,
-    document.body,
+      <ModalOverlay open={open} onClick={onClose} onKeyDown={onClose} />
+    </>,
+    modalRoot,
   );
 };
 
 Modal.proptypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  title: PropTypes.string,
 };
 
 export default Modal;
