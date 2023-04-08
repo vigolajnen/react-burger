@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AppHeader from '../app-header/AppHeader';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
+
 import appStyles from './App.module.css';
 // const data = require('../../utils/data.json');
 const URL_DATA = 'https://norma.nomoreparties.space/api/ingredients';
@@ -10,6 +11,7 @@ function App() {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -54,6 +56,7 @@ function App() {
             listElements={newData}
           />
         </main>
+        
       </div>
     );
   }

@@ -3,10 +3,22 @@ import PropTypes from 'prop-types';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from '../ingredient-item/IngredientItem';
+import Modal from '../modal/Modal';
+import IngredientDetails from '../ingredient-details/IngredientDetails';
 
 import stylesIngredients from './BurgerIngredients.module.css';
 
 const BurgerIngredients = ({ ...props }) => {
+  const [openModal, setOpenModal] = useState();
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   const [current, setCurrent] = useState('Булки');
 
   const activeTab = (tab) => {
@@ -30,6 +42,21 @@ const BurgerIngredients = ({ ...props }) => {
     (item) => item.type === 'main',
   );
 
+  // массив обектов заголовок + список
+  const tabsIngredientsArr = [];
+  for (let i in tabLabels) {
+    const tabObj = {};
+    tabObj.title = tabLabels[i];
+    if (tabLabels[i] === 'Булки') {
+      tabObj.list = bunIngredients;
+    } else if (tabLabels[i] === 'Соусы') {
+      tabObj.list = sauceIngredients;
+    } else {
+      tabObj.list = mainIngredients;
+    }
+    tabsIngredientsArr.push(tabObj);
+  }
+
   return (
     <section>
       <div className={stylesIngredients.header}>
@@ -46,51 +73,36 @@ const BurgerIngredients = ({ ...props }) => {
       </div>
       <div className={stylesIngredients.body}>
         <div className='custom-scroll'>
-          <div className={stylesIngredients.grid}>
-            <h3 className={stylesIngredients.title} data-title='Булки'>
-              Булки
-            </h3>
-            {bunIngredients.map((item) => (
-              <IngredientItem
-                key={item._id}
-                item={item}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                type={item.type}
-              />
-            ))}
-          </div>
-          <div className={stylesIngredients.grid}>
-            <h3 className={stylesIngredients.title} data-title='Соусы'>
-              Соусы
-            </h3>
-            {sauceIngredients.map((item) => (
-              <IngredientItem
-                key={item._id}
-                item={item}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                type={item.type}
-              />
-            ))}
-          </div>
-          <div className={stylesIngredients.grid}>
-            <h3 className={stylesIngredients.title} data-title='Начинки'>
-              Начинки
-            </h3>
-            {mainIngredients.map((item) => (
-              <IngredientItem
-                key={item._id}
-                item={item}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                type={item.type}
-              />
-            ))}
-          </div>
+          {tabsIngredientsArr.map((wrapItem) => (
+            <div className={stylesIngredients.grid} key={wrapItem.title}>
+              <h3
+                className={stylesIngredients.title}
+                data-title={wrapItem.title}
+              >
+                {wrapItem.title}
+              </h3>
+              {wrapItem.list.map((item) => (
+                <div key={item._id}>
+                  <IngredientItem
+                    item={item}
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                    type={item.type}
+                    onClick={handleOpenModal}
+                  />
+                  {openModal && (
+                    <Modal
+                      title='Детали ингредиента'
+                      onClose={handleCloseModal}
+                    >
+                      <IngredientDetails item={item} />
+                    </Modal>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </section>

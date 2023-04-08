@@ -1,26 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 // import PropTypes from 'prop-types';
 import ingredientType from '../../utils/types';
 import {
   Counter,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/Modal';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
+
+
 
 import stylesItem from './IngredientItem.module.css';
 
-const IngredientItem = ({ item }) => {
+const IngredientItem = ({ item, handleOpenModal }) => {
   const count = 0;
-  const [open, setOpen] = useState();
-
-  const handleOpenModal = () => {
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
 
   return (
     <>
@@ -41,11 +32,11 @@ const IngredientItem = ({ item }) => {
         </div>
         <h3 className={stylesItem.title}>{item.name}</h3>
       </div>
-      {open && (
+      {/* {open && (
         <Modal title='Детали ингредиента' onClose={handleCloseModal}>
           <IngredientDetails item={item} />
         </Modal>
-      )}
+      )} */}
     </>
   );
 };
