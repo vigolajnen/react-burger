@@ -9,17 +9,18 @@ import IngredientDetails from '../ingredient-details/IngredientDetails';
 import stylesIngredients from './BurgerIngredients.module.css';
 
 const BurgerIngredients = ({ ...props }) => {
-  const [openModal, setOpenModal] = useState();
+  const [current, setCurrent] = useState('Булки');
+  const [open, setOpen] = useState();
+  const [item, setItem] = useState();
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
+  const handleOpenModal = (e) => {
+    setItem(e);
+    setOpen(true);
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false);
+    setOpen(false);
   };
-
-  const [current, setCurrent] = useState('Булки');
 
   const activeTab = (tab) => {
     setCurrent(tab);
@@ -58,54 +59,52 @@ const BurgerIngredients = ({ ...props }) => {
   }
 
   return (
-    <section>
-      <div className={stylesIngredients.header}>
-        {tabLabels.map((item) => (
-          <Tab
-            key={item}
-            value={item}
-            active={current === item}
-            onClick={activeTab}
-          >
-            {item}
-          </Tab>
-        ))}
-      </div>
-      <div className={stylesIngredients.body}>
-        <div className='custom-scroll'>
-          {tabsIngredientsArr.map((wrapItem) => (
-            <div className={stylesIngredients.grid} key={wrapItem.title}>
-              <h3
-                className={stylesIngredients.title}
-                data-title={wrapItem.title}
-              >
-                {wrapItem.title}
-              </h3>
-              {wrapItem.list.map((item) => (
-                <div key={item._id}>
+    <>
+      <section>
+        <div className={stylesIngredients.header}>
+          {tabLabels.map((item) => (
+            <Tab
+              key={item}
+              value={item}
+              active={current === item}
+              onClick={activeTab}
+            >
+              {item}
+            </Tab>
+          ))}
+        </div>
+        <div className={stylesIngredients.body}>
+          <div className='custom-scroll'>
+            {tabsIngredientsArr.map((wrapItem) => (
+              <div className={stylesIngredients.grid} key={wrapItem.title}>
+                <h3
+                  className={stylesIngredients.title}
+                  data-title={wrapItem.title}
+                >
+                  {wrapItem.title}
+                </h3>
+                {wrapItem.list.map((item) => (
                   <IngredientItem
+                    key={item._id}
                     item={item}
                     text={item.name}
                     price={item.price}
                     thumbnail={item.image}
                     type={item.type}
-                    onClick={handleOpenModal}
+                    handleClick={() => handleOpenModal(item)}
                   />
-                  {openModal && (
-                    <Modal
-                      title='Детали ингредиента'
-                      onClose={handleCloseModal}
-                    >
-                      <IngredientDetails item={item} />
-                    </Modal>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      {open && (
+        <Modal title='Детали ингредиента' onClose={handleCloseModal}>
+          <IngredientDetails item={item} />
+        </Modal>
+      )}
+    </>
   );
 };
 

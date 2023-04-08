@@ -1,9 +1,9 @@
 import React from 'react';
 import stylesOverlay from './ModalOverlay.module.css';
 
-const ModalOverlay = () => {
+const ModalOverlay = ({handleClick}) => {
   return (
-    <div className={stylesOverlay.overlay}></div>
+    <div className={stylesOverlay.overlay} onClick={handleClick}></div>
   )
 }
 

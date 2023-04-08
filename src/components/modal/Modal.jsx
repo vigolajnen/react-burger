@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
@@ -11,20 +11,12 @@ import stylesModal from './Modal.module.css';
 const modalRoot = document.getElementById('modals');
 
 const Modal = ({ onClose, children, title }) => {
-  const [open, setOpen] = useState();
-  
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
   useEffect(() => {
     const handleClickEscape = (e) => {
       if (e.key === 'Escape') {
-        handleCloseModal();
-      } 
-
-
-    }
+        onClose();
+      }
+    };
 
     window.addEventListener('keydown', handleClickEscape);
     return () => {
@@ -38,7 +30,7 @@ const Modal = ({ onClose, children, title }) => {
         <ModalHeader onClose={onClose}>{title}</ModalHeader>
         <ModalBody>{children}</ModalBody>
       </div>
-      <ModalOverlay open={open} onClick={onClose} onKeyDown={onClose} />
+      <ModalOverlay handleClick={onClose} />
     </>,
     modalRoot,
   );
