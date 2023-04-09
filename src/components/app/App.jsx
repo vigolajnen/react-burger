@@ -11,7 +11,6 @@ function App() {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  
 
   useEffect(() => {
     async function fetchData() {
@@ -40,9 +39,8 @@ function App() {
     console.log('Произошла ошибка');
   }
   if (data) {
-    const topElement = data[0];
-    const buttomElement = data[data.length - 1];
-    const newData = data.slice(1, -1);
+    const bun = data.find((item) => item.name.includes('булка'));
+    const newData = data.filter((item) => !item.name.includes('булка'));
 
     return (
       <div className={appStyles.app}>
@@ -50,13 +48,8 @@ function App() {
         <main className={appStyles.main}>
           <h1 className={appStyles.title}>Соберите бургер</h1>
           <BurgerIngredients ingredients={data} />
-          <BurgerConstructor
-            firstElement={topElement}
-            lastElement={buttomElement}
-            listElements={newData}
-          />
+          <BurgerConstructor bun={bun} listElements={newData} />
         </main>
-        
       </div>
     );
   }

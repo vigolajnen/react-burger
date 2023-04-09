@@ -41,9 +41,9 @@ const BurgerConstructor = ({ ...props }) => {
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={props.firstElement.name + ' (верх)'}
-            price={props.firstElement.price}
-            thumbnail={props.firstElement.image}
+            text={props.bun.name + ' (верх)'}
+            price={props.bun.price}
+            thumbnail={props.bun.image}
           />
 
           <div className={stylesConstructor.inner}>
@@ -53,9 +53,9 @@ const BurgerConstructor = ({ ...props }) => {
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={props.firstElement.name + ' (низ)'}
-            price={props.firstElement.price}
-            thumbnail={props.firstElement.image}
+            text={props.bun.name + ' (низ)'}
+            price={props.bun.price}
+            thumbnail={props.bun.image}
           />
         </section>
         <div className={stylesConstructor.footer}>
@@ -83,7 +83,7 @@ const BurgerConstructor = ({ ...props }) => {
 };
 
 BurgerConstructor.propTypes = {
-  firstElement: PropTypes.object.isRequired,
+  bun: PropTypes.object.isRequired,
   listElements: PropTypes.array.isRequired,
 };
 
