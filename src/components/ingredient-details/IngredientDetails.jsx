@@ -34,6 +34,8 @@ function IngredientDetails({ item }) {
   );
 }
 
-IngredientDetails.propTypes = ingredientType;
+IngredientDetails.propTypes = {
+  item: ingredientType,
+};
 
 export default IngredientDetails;

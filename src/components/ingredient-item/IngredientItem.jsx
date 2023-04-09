@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import ingredientType from '../../utils/types';
 import {
   Counter,
@@ -30,6 +30,9 @@ const IngredientItem = ({ item, handleClick }) => {
   );
 };
 
-IngredientItem.propTypes = ingredientType;
+IngredientItem.propTypes = {
+  item: ingredientType,
+  handleClick: PropTypes.func.isRequired,
+};
 
 export default IngredientItem;
