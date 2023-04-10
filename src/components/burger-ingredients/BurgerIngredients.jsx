@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import IngredientItem from '../ingredient-item/IngredientItem';
+import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 
 import stylesIngredients from './BurgerIngredients.module.css';
 
-class BurgerIngredients extends React.Component {
-  state = {
-    current: 'Булки',
+const BurgerIngredients = ({ ...props }) => {
+  const [current, setCurrent] = useState('Булки');
+  const [open, setOpen] = useState();
+  const [item, setItem] = useState();
+
+  const handleOpenModal = (e) => {
+    setItem(e);
+    setOpen(true);
   };
 
-  activeTab = (tab) => {
-    this.setState({ current: tab });
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
+  const activeTab = (tab) => {
+    setCurrent(tab);
 
     document.querySelector('[data-title="' + tab + '"]').scrollIntoView({
       behavior: 'smooth',
@@ -20,28 +31,43 @@ class BurgerIngredients extends React.Component {
     });
   };
 
-  render() {
-    const tabLabels = ['Булки', 'Соусы', 'Начинки'];
+  const tabLabels = ['Булки', 'Соусы', 'Начинки'];
 
-    const bunIngredients = this.props.ingredients.filter(
-      (item) => item.type === 'bun',
-    );
-    const sauceIngredients = this.props.ingredients.filter(
-      (item) => item.type === 'sauce',
-    );
-    const mainIngredients = this.props.ingredients.filter(
-      (item) => item.type === 'main',
-    );
+  const bunIngredients = props.ingredients.filter(
+    (item) => item.type === 'bun',
+  );
+  const sauceIngredients = props.ingredients.filter(
+    (item) => item.type === 'sauce',
+  );
+  const mainIngredients = props.ingredients.filter(
+    (item) => item.type === 'main',
+  );
 
-    return (
+  // массив обектов заголовок + список
+  const tabsIngredientsArr = [];
+  for (let i in tabLabels) {
+    const tabObj = {};
+    tabObj.title = tabLabels[i];
+    if (tabLabels[i] === 'Булки') {
+      tabObj.list = bunIngredients;
+    } else if (tabLabels[i] === 'Соусы') {
+      tabObj.list = sauceIngredients;
+    } else {
+      tabObj.list = mainIngredients;
+    }
+    tabsIngredientsArr.push(tabObj);
+  }
+
+  return (
+    <>
       <section>
         <div className={stylesIngredients.header}>
           {tabLabels.map((item) => (
             <Tab
               key={item}
               value={item}
-              active={this.state.current === item}
-              onClick={this.activeTab}
+              active={current === item}
+              onClick={activeTab}
             >
               {item}
             </Tab>
@@ -49,57 +75,38 @@ class BurgerIngredients extends React.Component {
         </div>
         <div className={stylesIngredients.body}>
           <div className='custom-scroll'>
-            <div className={stylesIngredients.grid}>
-              <h3 className={stylesIngredients.title} data-title='Булки'>
-                Булки
-              </h3>
-              {bunIngredients.map((item) => (
-                <IngredientDetails
-                  key={item._id}
-                  item={item}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                  type={item.type}
-                />
-              ))}
-            </div>
-            <div className={stylesIngredients.grid}>
-              <h3 className={stylesIngredients.title} data-title='Соусы'>
-                Соусы
-              </h3>
-              {sauceIngredients.map((item) => (
-                <IngredientDetails
-                  key={item._id}
-                  item={item}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                  type={item.type}
-                />
-              ))}
-            </div>
-            <div className={stylesIngredients.grid}>
-              <h3 className={stylesIngredients.title} data-title='Начинки'>
-                Начинки
-              </h3>
-              {mainIngredients.map((item) => (
-                <IngredientDetails
-                  key={item._id}
-                  item={item}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                  type={item.type}
-                />
-              ))}
-            </div>
+            {tabsIngredientsArr.map((wrapItem) => (
+              <div className={stylesIngredients.grid} key={wrapItem.title}>
+                <h3
+                  className={stylesIngredients.title}
+                  data-title={wrapItem.title}
+                >
+                  {wrapItem.title}
+                </h3>
+                {wrapItem.list.map((item) => (
+                  <IngredientItem
+                    key={item._id}
+                    item={item}
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                    type={item.type}
+                    handleClick={() => handleOpenModal(item)}
+                  />
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </section>
-    );
-  }
-}
+      {open && (
+        <Modal title='Детали ингредиента' onClose={handleCloseModal}>
+          <IngredientDetails item={item} />
+        </Modal>
+      )}
+    </>
+  );
+};
 
 BurgerIngredients.propTypes = {
   ingredients: PropTypes.array.isRequired,

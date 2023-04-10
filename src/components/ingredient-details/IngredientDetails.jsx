@@ -1,49 +1,41 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  Counter,
-  CurrencyIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+// import PropTypes from 'prop-types';
+import ingredientType from '../../utils/types';
+import stylesContent from './IngredientDetails.module.css';
 
-import stylesItem from './IngredientDetails.module.css';
-
-class IngredientDetails extends React.Component {
-  state = {
-    count: 0,
-  };
-  render() {
-    const item = this.props.item;
-
-    return (
-      <a
-        href='#modalDetails'
-        className={stylesItem.item}
-        data-id={item._id}
-        data-value={item.type}
-      >
-        {this.state.count !== 0 && (
-          <Counter count={this.state.count} size='default' extraClass='m-1' />
-        )}
-
-        <img className={stylesItem.pic} src={item.image} alt={item.name} />
-        <div className={stylesItem.price}>
-          <span>{item.price}</span>
-          <CurrencyIcon type='primary' />
-        </div>
-        <h3 className={stylesItem.title}>{item.name}</h3>
-      </a>
-    );
-  }
+function IngredientDetails({ item }) {
+  return (
+    <>
+      <img
+        className={stylesContent.pic}
+        src={item.image_large}
+        alt={item.name}
+      />
+      <h3 className={stylesContent.title}>{item.name}</h3>
+      <ul className={stylesContent.list}>
+        <li>
+          <span>Калории,ккал</span>
+          <span>{item.calories}</span>
+        </li>
+        <li>
+          <span>Белки, г</span>
+          <span>{item.proteins}</span>
+        </li>
+        <li>
+          <span>Жиры, г</span>
+          <span>{item.fat}</span>
+        </li>
+        <li>
+          <span>Углеводы, г</span>
+          <span>{item.carbohydrates}</span>
+        </li>
+      </ul>
+    </>
+  );
 }
 
 IngredientDetails.propTypes = {
-  item: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  }),
+  item: ingredientType,
 };
 
 export default IngredientDetails;
