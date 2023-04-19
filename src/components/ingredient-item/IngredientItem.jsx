@@ -9,7 +9,7 @@ import {
 import stylesItem from './IngredientItem.module.css';
 
 const IngredientItem = ({ item, handleClick }) => {
-  const count = 0;
+  const count = 1;
 
   return (
     <div

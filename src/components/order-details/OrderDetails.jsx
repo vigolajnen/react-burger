@@ -4,11 +4,11 @@ import stylesDetails from './OrderDetails.module.css';
 
 import IconDone from '../../images/done.svg';
 
-function OrderDetails() {
+function OrderDetails({orderId}) {
   return (
     <div className={stylesDetails.wrapper}>
       <div className={stylesDetails.header}>
-        <div className={stylesDetails.number}>034536</div>
+        <div className={stylesDetails.number}>{orderId}</div>
         <div>идентификатор заказа</div>
       </div>
       <img className={stylesDetails.pic} src={IconDone} alt='icon done' />

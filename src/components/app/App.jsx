@@ -3,6 +3,10 @@ import AppHeader from '../app-header/AppHeader';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 
+import { useSelector } from 'react-redux';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
+
 import appStyles from './App.module.css';
 // const data = require('../../utils/data.json');
 const URL_DATA = 'https://norma.nomoreparties.space/api/ingredients';
@@ -11,6 +15,8 @@ function App() {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  // const containers = useSelector((state) => state.containersList.containers);
 
   useEffect(() => {
     async function fetchData() {
@@ -47,8 +53,10 @@ function App() {
         <AppHeader className={appStyles.header} />
         <main className={appStyles.main}>
           <h1 className={appStyles.title}>Соберите бургер</h1>
-          <BurgerIngredients ingredients={data} />
-          <BurgerConstructor bun={bun} listElements={newData} />
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients ingredients={data} />
+            <BurgerConstructor bun={bun} listElements={newData} />
+          </DndProvider>
         </main>
       </div>
     );
