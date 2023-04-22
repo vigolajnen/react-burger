@@ -8,15 +8,27 @@ import {
 
 import stylesItem from './IngredientItem.module.css';
 
+import { useDrag } from "react-dnd";
+
 const IngredientItem = ({ item, handleClick }) => {
   const count = 1;
 
+  const [{isDrag}, dragRef] = useDrag({
+    type: "animal",
+    item: crypto.randomUUID(),
+    collect: monitor => ({
+      isDrag: monitor.isDragging()
+  })
+});
+
   return (
-    <div
+    !isDrag && <div
       className={stylesItem.item}
       data-id={item._id}
       data-value={item.type}
       onClick={handleClick}
+      ref={dragRef}
+      board='default'
     >
       {count !== 0 && <Counter count={count} size='default' extraClass='m-1' />}
 

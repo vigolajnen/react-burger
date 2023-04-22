@@ -1,5 +1,5 @@
 const initialState = {
-  containers: ['default', 'buns', 'ingredients'],
+  boards: ['default', 'bun', 'ingredients'],
 };
 
 export const dropTargetReducer = (state = initialState, action) => {

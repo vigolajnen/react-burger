@@ -4,7 +4,9 @@ import stylesDetails from './OrderDetails.module.css';
 
 import IconDone from '../../images/done.svg';
 
-function OrderDetails({orderId}) {
+
+
+function OrderDetails({ orderId }) {
   return (
     <div className={stylesDetails.wrapper}>
       <div className={stylesDetails.header}>

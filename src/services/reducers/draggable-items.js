@@ -1,23 +1,23 @@
 import { UPDATE_TYPE } from '../actions/draggable-items';
 
 const initialState = {
-  items: [
+  ingredients: [
     {
-      id: { id },
-      container: 'default',
+      id: crypto.randomUUID(),
+      board: 'default',
     },
   ],
 };
 
-export const draggableItemsReducer = (state = initialState, action) => {
+export const draggableIngredientsReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_TYPE: {
       return {
         ...state,
-        items: state.items.map(
+        ingredients: state.ingredients.map(
           item =>
             item.id === action.id
-              ? { ...item, container: action.container }
+              ? { ...item, board: action.board }
               : item,
         ),
       };
