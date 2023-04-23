@@ -50,6 +50,7 @@ const IngredientItem = ({ item, id, handleClick }) => {
 IngredientItem.propTypes = {
   item: ingredientType,
   handleClick: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default IngredientItem;

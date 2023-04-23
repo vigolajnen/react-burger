@@ -1,7 +1,7 @@
 const initialState = {
-  boards: ["bun", "ingredients"]
+  boards: ['bun', 'ingredients'],
 };
 
 export const boardsReducer = (state = initialState, action) => {
   return state;
-}; 
+};

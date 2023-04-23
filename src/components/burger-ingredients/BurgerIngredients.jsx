@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from '../ingredient-item/IngredientItem';
 import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
-
-import stylesIngredients from './BurgerIngredients.module.css';
-
-import { useSelector, useDispatch } from 'react-redux';
 import { loadIngredients } from '../../services/actions/menu';
 import {
   MODAL_ADD_INGREDIENT,
   MODAL_DELETE_INGREDIENT,
 } from '../../services/actions/menu';
+
+import stylesIngredients from './BurgerIngredients.module.css';
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
@@ -128,6 +127,7 @@ const BurgerIngredients = () => {
                   </h3>
                   {wrapItem.list.map((item) => (
                     <IngredientItem
+                      id={item._id}
                       key={item._id}
                       item={item}
                       text={item.name}

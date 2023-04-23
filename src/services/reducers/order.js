@@ -10,8 +10,6 @@ const initialState = {
   orderPrice: 0,
   orderRequest: false,
   orderFailed: false,
-  orderIngredients: [],
-  orderBun: [],
 };
 
 export const orderReducer = (state = initialState, action) => {
@@ -36,7 +34,7 @@ export const orderReducer = (state = initialState, action) => {
     case GET_ORDER_PRICE: {
       return {
         ...state,
-        orderPrice: action.orderPrice
+        orderPrice: action.orderPrice,
       };
     }
     default: {

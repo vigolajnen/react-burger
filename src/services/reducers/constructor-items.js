@@ -14,8 +14,10 @@ export const constructorItemsReducer = (state = initialState, action) => {
       return {
         ...state,
         constructorItems: state.constructorItems.map(
-          elem =>
-            elem.id === action.id ? { ...elem, board: action.board } : elem,
+          elem => (elem.id === action.id ? { ...elem } : elem),
+
+          // elem =>
+          //   elem.id === action.id ? { ...elem, board: action.board } : elem,
         ),
       };
     }
@@ -30,10 +32,7 @@ export const constructorItemsReducer = (state = initialState, action) => {
     case ADD_CONSTRUCTOR_ITEM: {
       return {
         ...state,
-        constructorItems: [
-          ...state.constructorItems,
-          action.payload,
-        ],
+        constructorItems: [...state.constructorItems, action.payload],
       };
     }
     default:

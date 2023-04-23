@@ -1,10 +1,7 @@
 import React from 'react';
-
-import stylesDetails from './OrderDetails.module.css';
-
+import PropTypes from 'prop-types';
 import IconDone from '../../images/done.svg';
-
-
+import stylesDetails from './OrderDetails.module.css';
 
 function OrderDetails({ orderId }) {
   return (
@@ -21,5 +18,9 @@ function OrderDetails({ orderId }) {
     </div>
   );
 }
+
+OrderDetails.propTypes = {
+  orderId: PropTypes.string.isRequired,
+};
 
 export default OrderDetails;
