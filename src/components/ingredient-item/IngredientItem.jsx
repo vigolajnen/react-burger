@@ -8,37 +8,42 @@ import {
 
 import stylesItem from './IngredientItem.module.css';
 
-import { useDrag } from "react-dnd";
+import { useDrag } from 'react-dnd';
 
-const IngredientItem = ({ item, handleClick }) => {
+const IngredientItem = ({ item, id, handleClick }) => {
   const count = 1;
-
-  const [{isDrag}, dragRef] = useDrag({
-    type: "animal",
-    item: crypto.randomUUID(),
-    collect: monitor => ({
-      isDrag: monitor.isDragging()
-  })
-});
+//  item: crypto.randomUUID(),
+  const [{ isDrag }, dragRef] = useDrag({
+    type: 'ingredients',
+    item: id,
+    collect: (monitor) => ({
+      isDrag: monitor.isDragging(),
+    }),
+  });
 
   return (
-    !isDrag && <div
-      className={stylesItem.item}
-      data-id={item._id}
-      data-value={item.type}
-      onClick={handleClick}
-      ref={dragRef}
-      board='default'
-    >
-      {count !== 0 && <Counter count={count} size='default' extraClass='m-1' />}
+    !isDrag && (
+      <div
+        className={stylesItem.item}
+        id={item._id}
+        data-id={item._id}
+        data-value={item.type}
+        onClick={handleClick}
+        ref={dragRef}
+        style={{ cursor: 'move' }}
+      >
+        {count !== 0 && (
+          <Counter count={count} size='default' extraClass='m-1' />
+        )}
 
-      <img className={stylesItem.pic} src={item.image} alt={item.name} />
-      <div className={stylesItem.price}>
-        <span>{item.price}</span>
-        <CurrencyIcon type='primary' />
+        <img className={stylesItem.pic} src={item.image} alt={item.name} />
+        <div className={stylesItem.price}>
+          <span>{item.price}</span>
+          <CurrencyIcon type='primary' />
+        </div>
+        <h3 className={stylesItem.title}>{item.name}</h3>
       </div>
-      <h3 className={stylesItem.title}>{item.name}</h3>
-    </div>
+    )
   );
 };
 

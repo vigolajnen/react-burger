@@ -7,6 +7,16 @@ export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
 export const MODAL_ADD_INGREDIENT = 'MODAL_ADD_INGREDIENT';
 export const MODAL_DELETE_INGREDIENT = 'MODAL_DELETE_INGREDIENT';
 
+export const DROP_INGREDIENT = 'DROP_INGREDIENT';
+
+
+
+export const dropIngredientId = id => {
+  return {
+    type: DROP_INGREDIENT,
+    id: id,
+  };
+};
 
 export const loadIngredients = () => dispatch => {
   dispatch({

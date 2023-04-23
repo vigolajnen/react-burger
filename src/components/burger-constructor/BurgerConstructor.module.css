@@ -9,7 +9,8 @@
 }
 
 .inner {
-  max-height: 350px;
+  width: 100%;
+  height: 350px;
   padding: 10px 0;
   overflow: hidden;
 }
@@ -17,6 +18,7 @@
 .inner > div {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 10px;
   height: 100%;
   overflow: auto;
@@ -24,8 +26,14 @@
 
 .inner > div > div {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-items: center;
+} 
+.inner > div > div > div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
 } 
 
 .footer {
@@ -66,33 +74,40 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  
   margin-left: 30px;
   padding: 16px 24px;
-  display: inline-block;
+
   border-radius: 20px;
   background: #2f2f37;
-  max-width: 536px;
+  /* max-width: 536px; */
+  max-width: 90%;
+  margin: auto;
+
   width: 100%;
   min-height: 80px;
+
   font-family: 'Jet Brains Mono';
   text-align: center;
   font-size: 16px;
   line-height: 24px;
-  color: #F2F2F3;
+  color: var(--text-inactive-color);
   flex-grow: 1;
   box-sizing: border-box;
 }
 
 .emptyBunTop {
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-right: 20px;
   padding: 16px 24px;
+  min-height: 80px;
   font-family: 'Jet Brains Mono';
   text-align: center;
   font-size: 16px;
   line-height: 24px;
-  color: #F2F2F3;
+  color: var(--text-inactive-color);
   flex-grow: 1;
   box-sizing: border-box;
   background: #2f2f37;
@@ -100,17 +115,31 @@
 }
 .emptyBunBottom {
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-left: 20px;
+  min-height: 80px;
   margin-right: 20px;
   padding: 16px 24px;
   font-family: 'Jet Brains Mono';
   text-align: center;
   font-size: 16px;
   line-height: 24px;
-  color: #F2F2F3;
+  color: var(--text-inactive-color);
   flex-grow: 1;
   box-sizing: border-box;
   background: #2f2f37;
   border-radius: 40px 40px 88px 88px;
+}
+
+.border {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 2px solid transparent;
+  border-radius: 20px;
+}
+
+.border  > div > div {
+  max-width: 100%;
 }

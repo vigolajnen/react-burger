@@ -16,7 +16,7 @@ export const loadOrder = () => dispatch => {
       if (res && res.success) {
         dispatch({
           type: GET_ORDER_SUCCESS,
-          order: res.data,
+          orders: res.order,
         });
       } else {
         dispatch({

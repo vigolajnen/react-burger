@@ -12,7 +12,7 @@ const requestOptions = {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    ingredients: ['60d3b41abdacab0026a733c8', '60d3b41abdacab0026a733d0'],
+    ingredients: ['643d69a5c3f7b9001cfa0941', '643d69a5c3f7b9001cfa093d'],
   }),
 };
 

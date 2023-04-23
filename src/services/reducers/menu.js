@@ -4,6 +4,7 @@ import {
   GET_INGREDIENTS_SUCCESS,
   MODAL_ADD_INGREDIENT,
   MODAL_DELETE_INGREDIENT,
+  DROP_INGREDIENT,
 } from '../actions/menu';
 
 const initialState = {
@@ -42,6 +43,12 @@ export const menuReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredient: null,
+      };
+    }
+    case DROP_INGREDIENT: {
+      return {
+        ...state,
+        id: action.id,
       };
     }
     default: {

@@ -57,14 +57,13 @@ const BurgerIngredients = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log(entry.target.title);
             setCurrent(entry.target.title);
           }
         });
       },
       {
         root: document.querySelector('.custom-scroll'),
-        threshold: [0, 0.3, 0.5, 1],
+        threshold: [0.2, 0.3, 0.5, 1],
       },
     );
     document

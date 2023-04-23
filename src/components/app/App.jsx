@@ -5,24 +5,23 @@ import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 // dnd
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import { useDispatch } from 'react-redux';
+import { addConstructorItems } from '../../services/actions/constructor-items';
+import { ADD_CONSTRUCTOR_ITEM } from '../../services/actions/menu';
 
 import appStyles from './App.module.css';
 
-import { useSelector } from 'react-redux';
-
 function App() {
-  // const boards = useSelector(state => state.boardList.boards)
-  const [elements, setElements] = React.useState([]);
-  const [draggedElements, setDraggedElements] = React.useState([]);
-
-  const handleDrop = (itemId) => {
-    setElements([...elements.filter((element) => element.id !== itemId.id)]);
-
-    setDraggedElements([
-      ...draggedElements,
-      ...elements.filter((element) => element.id === itemId.id),
-    ]);
-  };
+  const dispatch = useDispatch();
+  // const handleDrop = ({ item}) => {
+  //   console.log(item);
+  //   // dispatch({
+  //   //   type: ADD_CONSTRUCTOR_ITEM,
+  //   //   ...item
+  //   // });
+    
+    
+  // };
 
   return (
     <div className={appStyles.app}>
@@ -31,7 +30,7 @@ function App() {
         <h1 className={appStyles.title}>Соберите бургер</h1>
         <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
-          <BurgerConstructor onDropHandler={handleDrop}  />
+          <BurgerConstructor />
         </DndProvider>
       </main>
     </div>

@@ -1,52 +1,72 @@
-import React, { useState, useMemo } from 'react';
-// import PropTypes from 'prop-types';
+import React, { useState, useMemo, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Button,
   ConstructorElement,
-  DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-
+import BurgerConstructorIngredients from '../burger-constructor-ingredients/BurgerConstructorIngredients';
 import stylesConstructor from './BurgerConstructor.module.css';
 import AllPrice from '../all-price/AllPrice';
-import { useSelector, useDispatch } from 'react-redux';
 import { GET_ORDER_PRICE, loadOrder } from '../../services/actions/order.js';
-import { useDrop } from 'react-dnd';
+import {
+  UPDATE_CONSTRUCTOR_ITEMS,
+  ADD_CONSTRUCTOR_ITEM,
+} from '../../services/actions/constructor-items';
 
-const BurgerConstructor = ({ onDropHandler }) => {
+const BurgerConstructor = () => {
+  const boards = useSelector((state) => state.boardList.boards);
+
   const dispatch = useDispatch();
-  const list = useSelector((state) => state.order.orderIngredients);
-  const bun = useSelector((state) => state.order.orderBun);
+  const orders = useSelector((state) => state.orders.orders);
+  const { ingredients } = useSelector((state) => state.ingredients);
+  const listArr = useSelector(
+    (state) => state.constructorItemsList.constructorItems,
+  );
+
+  const bunArr = [];
+  const allArr = [...listArr, ...bunArr];
+
+  if (allArr.length !== 0) {
+    dispatch({ type: GET_ORDER_PRICE });
+  }
+
+  useEffect(() => {
+    dispatch(loadOrder());
+  }, [dispatch]);
 
   const [{ isHover }, dropTarget] = useDrop({
-    accept: 'bun',
+    accept: 'ingredients',
     drop(itemId) {
-      onDropHandler(itemId);
+      dispatch({
+        type: ADD_CONSTRUCTOR_ITEM,
+        payload: ingredients.filter((item) => item.id === itemId.id),
+      });
+      dispatch({
+        type: UPDATE_CONSTRUCTOR_ITEMS,
+        ...itemId
+      })
     },
-    collect: (monitor) => ({
-      isHover: monitor.isOver(),
-    }),
+    collect: (monitor) => (
+      console.log('moving item:', monitor.itemId),
+      {
+        isHover: monitor.isOver(),
+      }
+    ),
   });
 
+  const borderColor = isHover ? 'lightgreen' : 'transparent';
+
   const newList = useMemo(() => {
-    return list.map((item) => {
-      return (
-        <div key={item._id} {...item}>
-          <DragIcon type='primary' />
-          <ConstructorElement
-            text={item.name}
-            price={item.price}
-            thumbnail={item.image}
-          />
-        </div>
-      );
-    });
-  }, [list]);
+    return <BurgerConstructorIngredients items={listArr} />;
+  }, [listArr]);
 
   const newBunTop = useMemo(() => {
-    return bun.map((item) => {
+    return bunArr.map((item) => {
       return (
         <ConstructorElement
           type='top'
@@ -54,14 +74,14 @@ const BurgerConstructor = ({ onDropHandler }) => {
           text={item.name + ' (верх)'}
           price={item.price}
           thumbnail={item.image}
+          {...item}
         />
       );
     });
-  }, [bun]);
-
+  }, [bunArr]);
 
   const newBunBottom = useMemo(() => {
-    return bun.map((item) => {
+    return bunArr.map((item) => {
       return (
         <ConstructorElement
           type='bottom'
@@ -69,88 +89,54 @@ const BurgerConstructor = ({ onDropHandler }) => {
           text={item.name + ' (низ)'}
           price={item.price}
           thumbnail={item.image}
+          {...item}
         />
       );
     });
-  }, [bun]);
-
-  const borderColor = isHover ? 'lightgreen' : 'transparent';
+  }, [bunArr]);
 
   const [open, setOpen] = useState();
   const handleOpenModal = () => {
-    dispatch(loadOrder());
     setOpen(true);
   };
   const handleCloseModal = () => {
     setOpen(false);
   };
 
-  const allArr = [...list, ...bun];
-
-  if (allArr.length !== 0) {
-    dispatch({ type: GET_ORDER_PRICE });
-  }
-
-  const scrollList = list.map((item) => (
-    <div key={item._id} ref={dropTarget}>
-      <DragIcon type='primary' />
-      <ConstructorElement
-        text={item.name}
-        price={item.price}
-        thumbnail={item.image}
-      />
-    </div>
-  ));
-
   return (
     <>
       <section className={stylesConstructor.wrapper}>
         <section className={stylesConstructor.list}>
-          <div board='bun' style={{ borderColor }} ref={dropTarget}>
+          <div board={boards[0]} style={{ borderColor }} ref={dropTarget}>
             {newBunTop.length !== 0 ? (
-              { newBunTop }
+              newBunTop
             ) : (
-              // <ConstructorElement
-              //   type='top'
-              //   isLocked={true}
-              //   text={bun.name + ' (верх)'}
-              //   price={bun.price}
-              //   thumbnail={bun.image}
-              //   ref={dropTarget}
-              // />
               <div className={stylesConstructor.emptyBunTop}>
                 Выберите булку
               </div>
             )}
           </div>
-          <div className={stylesConstructor.inner}>
-            <div
-              className='custom-scroll'
-              board='ingredients'
-              style={{ borderColor }}
-              ref={dropTarget}
-            >
-              {newList.length !== 0 ? (
-                newList
-              ) : (
-                <div className={stylesConstructor.empty}>
-                  Выберите ингредиент
-                </div>
-              )}
+          <div
+            className={stylesConstructor.inner}
+            board={boards[1]}
+            ref={dropTarget}
+          >
+            <div className='custom-scroll'>
+              <div className={stylesConstructor.border} style={{ borderColor }}>
+                {listArr.length !== 0 ? (
+                  newList
+                ) : (
+                  <div className={stylesConstructor.empty}>
+                    Выберите ингредиенты
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-
-          <div board='bun' style={{ borderColor }} ref={dropTarget}>
+          <div board={boards[0]} style={{ borderColor }} ref={dropTarget}>
             {newBunBottom.length !== 0 ? (
-              { newBunBottom }
+              newBunBottom
             ) : (
-              // <ConstructorElement
-              //   type='bottom'
-              //   isLocked={true}
-              //   text={bun.name + ' (низ)'}
-              //   price={bun.price}
-              //   thumbnail={bun.image}
-              // />
               <div className={stylesConstructor.emptyBunBottom}>
                 Выберите булку
               </div>
@@ -171,16 +157,16 @@ const BurgerConstructor = ({ onDropHandler }) => {
       </section>
       {open && (
         <Modal onClose={handleCloseModal}>
-          <OrderDetails orderId={1234} />
+          <OrderDetails orderId={orders.number} />
         </Modal>
       )}
     </>
   );
 };
 
-// BurgerConstructor.propTypes = {
-//   bun: PropTypes.object.isRequired,
-//   listElements: PropTypes.array.isRequired,
-// };
+BurgerConstructor.propTypes = {
+  // bun: PropTypes.object.isRequired,
+  // onDropHandler: PropTypes.func.isRequired,
+};
 
 export default BurgerConstructor;
