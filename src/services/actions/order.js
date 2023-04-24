@@ -11,7 +11,7 @@ export const loadOrder = () => dispatch => {
   dispatch({
     type: GET_ORDER_REQUEST,
   });
-  sendGetOrderRequest()
+  sendGetOrderRequest('orders')
     .then(res => {
       if (res && res.success) {
         dispatch({

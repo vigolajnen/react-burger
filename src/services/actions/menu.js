@@ -11,7 +11,7 @@ export const loadIngredients = () => dispatch => {
   dispatch({
     type: GET_INGREDIENTS_REQUEST,
   });
-  sendGetIngredientsRequest()
+  sendGetIngredientsRequest('ingredients')
     .then(res => {
       if (res && res.success) {
         dispatch({

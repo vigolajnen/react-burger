@@ -1,5 +1,4 @@
-const URL_DATA = 'https://norma.nomoreparties.space/api/ingredients';
-const URL_ORDER = 'https://norma.nomoreparties.space/api/orders';
+const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
 const getRespose = res => {
   if (res.ok) {
@@ -16,10 +15,10 @@ const requestOptions = {
   }),
 };
 
-export const sendGetIngredientsRequest = () => {
-  return fetch(URL_DATA).then(getRespose);
+export const sendGetIngredientsRequest = (nameDate) => {
+  return fetch(BASE_URL + nameDate).then(getRespose);
 };
 
-export const sendGetOrderRequest = () => {
-  return fetch(URL_ORDER, requestOptions).then(getRespose);
+export const sendGetOrderRequest = (nameDate) => {
+  return fetch(BASE_URL + nameDate, requestOptions).then(getRespose);
 };
