@@ -29,7 +29,6 @@ const BurgerConstructor = () => {
     (state) => state.constructorItemsList.constructorBun,
   );
   const boards = useSelector((state) => state.boardList.boards);
-  const allList = [...bunArr, ...ingredientsArr];
 
   const dispatch = useDispatch();
 
@@ -68,7 +67,7 @@ const BurgerConstructor = () => {
           />
         </section>
         <div className={stylesConstructor.footer}>
-          <AllPrice items={allList} />
+          <AllPrice bun={bunArr} ingredients={ingredientsArr} />
           <Button
             htmlType='button'
             type='primary'
