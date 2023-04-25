@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { ADD_CONSTRUCTOR_ITEM } from '../../services/actions/constructor-items';
+import { addItemConstructor } from '../../services/actions/constructor-items';
 
 const BoardBun = ({ board, title, type, classBun, items }) => {
   const dispatch = useDispatch();
@@ -14,20 +14,14 @@ const BoardBun = ({ board, title, type, classBun, items }) => {
     accept: 'ingredients',
     collect: (monitor) => ({
       isHover: monitor.isOver(),
-      canDrop: monitor.canDrop()
+      canDrop: monitor.canDrop(),
     }),
     drop: (itemId) => {
-      // console.log(itemId)
-      dispatch({
-        type: ADD_CONSTRUCTOR_ITEM,
-        payload: ingredients.filter((item) => item._id === itemId.id),
-      });
-
-      // dispatch({
-      //   type: UPDATE_CONSTRUCTOR_ITEMS,
-      //   ...itemId,
-      //   board,
-      // });
+      dispatch(
+        addItemConstructor(
+          ingredients.filter((item) => item._id === itemId.id)[0],
+        ),
+      );
     },
   });
 
@@ -50,14 +44,14 @@ const BoardBun = ({ board, title, type, classBun, items }) => {
       ) : (
         items.map((elem) => (
           <ConstructorElement
-            key={crypto.randomUUID()}
+            key={elem.id}
             data={elem}
             type={type}
             isLocked={true}
             text={elem.name + title}
             price={elem.price}
             thumbnail={elem.image}
-            _id={elem._id}
+            id={elem._id}
           />
         ))
       )}

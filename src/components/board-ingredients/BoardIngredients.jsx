@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import {
-  ADD_CONSTRUCTOR_ITEM,
   UPDATE_CONSTRUCTOR_ITEMS,
+  addItemConstructor,
 } from '../../services/actions/constructor-items';
 import DragIngredient from '../drag-ingredient/DragIngredient';
 
@@ -19,10 +19,11 @@ const BoardIngredients = ({ board, classIngredients, items }) => {
       isHover: monitor.isOver(),
     }),
     drop: (itemId) => {
-      dispatch({
-        type: ADD_CONSTRUCTOR_ITEM,
-        payload: ingredients.filter((item) => item._id === itemId.id),
-      });
+      dispatch(
+        addItemConstructor(
+          ingredients.filter((item) => item._id === itemId.id)[0],
+        ),
+      );
 
       dispatch({
         type: UPDATE_CONSTRUCTOR_ITEMS,
@@ -35,16 +36,16 @@ const BoardIngredients = ({ board, classIngredients, items }) => {
   const border = isHover ? '2px solid lightgreen' : '2px solid transparent';
 
   return (
-    <div ref={drop} board={board} style={{border}}>
+    <div ref={drop} board={board} style={{ border }}>
       {items.length === 0 ? (
         <div className={classIngredients}>Выберите ингредиенты</div>
       ) : (
         items.map((elem, index) => (
           <DragIngredient
-            key={crypto.randomUUID()}
+            key={elem.id}
             index={index}
             item={elem}
-            id={crypto.randomUUID()}
+            id={elem._id}
           />
         ))
       )}

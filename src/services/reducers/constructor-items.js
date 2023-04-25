@@ -32,27 +32,27 @@ export const constructorItemsReducer = (state = initialState, action) => {
       };
     }
     case ADD_CONSTRUCTOR_ITEM: {
-      if (action.payload[0].type === 'bun') {
+      if (action.payload.type === 'bun') {
         if (state.constructorBun.length !== 0) {
-          if (state.constructorBun[0].name === action.payload[0].name) {
+          if (state.constructorBun.name === action.payload.name) {
             return { ...state };
           }
           return {
             ...state,
             constructorBun: [
-              ...state.constructorBun.slice(0, action.payload[0]),
-              action.payload[0],
+              ...state.constructorBun.slice(0, action.payload),
+              action.payload,
             ],
           };
         }
         return {
           ...state,
-          constructorBun: [...state.constructorBun, action.payload[0]],
+          constructorBun: [...state.constructorBun, action.payload],
         };
-      } else if (action.payload[0].type !== 'bun') {
+      } else if (action.payload.type !== 'bun') {
         return {
           ...state,
-          constructorItems: [...state.constructorItems, action.payload[0]],
+          constructorItems: [...state.constructorItems, action.payload],
         };
       }
     }
