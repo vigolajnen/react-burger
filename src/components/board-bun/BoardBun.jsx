@@ -57,6 +57,7 @@ const BoardBun = ({ board, title, type, classBun, items }) => {
             text={elem.name + title}
             price={elem.price}
             thumbnail={elem.image}
+            _id={elem._id}
           />
         ))
       )}

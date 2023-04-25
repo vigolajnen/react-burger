@@ -8,20 +8,20 @@ import OrderDetails from '../order-details/OrderDetails';
 import AllPrice from '../all-price/AllPrice';
 import BoardBun from '../board-bun/BoardBun';
 import BoardIngredients from '../board-ingredients/BoardIngredients';
-import { GET_ORDER_PRICE, loadOrder } from '../../services/actions/order.js';
+import {
+  GET_ORDER_PRICE,
+  UPDATE_ORDERS,
+  loadOrder,
+} from '../../services/actions/order.js';
 
 import stylesConstructor from './BurgerConstructor.module.css';
 
 const BurgerConstructor = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState();
-  const handleOpenModal = () => {
-    setOpen(true);
-  };
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
+  
   const orders = useSelector((state) => state.orders.orders);
+
   const ingredientsArr = useSelector(
     (state) => state.constructorItemsList.constructorItems,
   );
@@ -30,13 +30,32 @@ const BurgerConstructor = () => {
   );
   const boards = useSelector((state) => state.boardList.boards);
 
-  const dispatch = useDispatch();
+  const allOrderArr = [...bunArr, ...ingredientsArr];
 
   useEffect(() => {
-    dispatch(loadOrder());
     dispatch({ type: GET_ORDER_PRICE });
-  }, [dispatch, ingredientsArr]);
+    dispatch({
+      type: UPDATE_ORDERS,
+      payload: [...bunArr, ...ingredientsArr],
+    });
+    
+  }, [dispatch, ingredientsArr, bunArr]);
 
+  const ordersId = (arr) => {
+    const res = [];
+    arr.forEach((item) => res.push(item._id));
+    return res;
+  };
+
+  const handleOpenModal = () => {
+    dispatch(loadOrder(ordersId(allOrderArr)));
+
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
 
   return (
     <>

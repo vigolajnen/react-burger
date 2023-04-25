@@ -45,6 +45,7 @@ const BoardIngredients = ({ board, classIngredients, items }) => {
             index={index}
             item={elem}
             id={crypto.randomUUID()}
+            _id={elem._id}
           />
         ))
       )}

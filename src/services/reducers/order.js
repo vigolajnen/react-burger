@@ -3,10 +3,11 @@ import {
   GET_ORDER_SUCCESS,
   GET_ORDER_FAILED,
   GET_ORDER_PRICE,
+  UPDATE_ORDERS,
 } from '../actions/order';
 
 const initialState = {
-  orders: null,
+  orders: [],
   orderPrice: 0,
   orderRequest: false,
   orderFailed: false,
@@ -35,6 +36,12 @@ export const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         orderPrice: action.orderPrice,
+      };
+    }
+    case UPDATE_ORDERS: {
+      return {
+        ...state,
+        orders: action.payload,
       };
     }
     default: {

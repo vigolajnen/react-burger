@@ -6,13 +6,14 @@ export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 
 export const GET_ORDER_PRICE = 'GET_ORDER_PRICE';
 export const GET_ORDER_NUMBER = 'GET_ORDER_NUMBER';
+export const UPDATE_ORDERS = 'UPDATE_ORDERS';
 
 
-export const loadOrder = () => dispatch => {
+export const loadOrder = (orderData) => dispatch => {
   dispatch({
     type: GET_ORDER_REQUEST,
   });
-  sendGetOrderRequest('orders')
+  sendGetOrderRequest('orders', orderData)
     .then(res => {
       if (res && res.success) {
         dispatch({
