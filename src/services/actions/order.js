@@ -7,6 +7,7 @@ export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 export const GET_ORDER_PRICE = 'GET_ORDER_PRICE';
 export const GET_ORDER_NUMBER = 'GET_ORDER_NUMBER';
 
+
 export const loadOrder = () => dispatch => {
   dispatch({
     type: GET_ORDER_REQUEST,

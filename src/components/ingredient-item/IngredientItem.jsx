@@ -15,7 +15,9 @@ const IngredientItem = ({ item, id, handleClick }) => {
 //  item: crypto.randomUUID(),
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredients',
-    item: id,
+    item: () => {
+      return { id };
+    },
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),
     }),

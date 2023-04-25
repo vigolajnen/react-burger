@@ -22,19 +22,22 @@ const BurgerConstructor = () => {
   };
 
   const orders = useSelector((state) => state.orders.orders);
-  const allList = useSelector(
+  const ingredientsArr = useSelector(
     (state) => state.constructorItemsList.constructorItems,
   );
+  const bunArr = useSelector(
+    (state) => state.constructorItemsList.constructorBun,
+  );
   const boards = useSelector((state) => state.boardList.boards);
+  const allList = [...bunArr, ...ingredientsArr];
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadOrder());
     dispatch({ type: GET_ORDER_PRICE });
-  }, [dispatch, allList]);
+  }, [dispatch, ingredientsArr]);
 
-  const bunArr = allList.filter((item) => item.type === 'bun');
-  const ingredientsArr = allList.filter((item) => item.type !== 'bun');
 
   return (
     <>
