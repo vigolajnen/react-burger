@@ -8,7 +8,7 @@ import { DELETE_CONSTRUCTOR_ITEM } from '../../services/actions/constructor-item
 import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
 
-const DragIngredient = ({ item, id, index }) => {
+const DragIngredient = ({ item, id, index, count }) => {
   const dispatch = useDispatch();
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredients',
@@ -29,6 +29,7 @@ const DragIngredient = ({ item, id, index }) => {
           text={item.name}
           price={item.price}
           thumbnail={item.image}
+          count={count}
           handleClose={() =>
             dispatch({
               type: DELETE_CONSTRUCTOR_ITEM,

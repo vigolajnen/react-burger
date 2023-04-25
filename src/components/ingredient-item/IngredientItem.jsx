@@ -10,8 +10,7 @@ import stylesItem from './IngredientItem.module.css';
 
 import { useDrag } from 'react-dnd';
 
-const IngredientItem = ({ item, id, handleClick }) => {
-  const count = 1;
+const IngredientItem = ({ item, id, handleClick, count }) => {
 //  item: crypto.randomUUID(),
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredients',
@@ -34,7 +33,7 @@ const IngredientItem = ({ item, id, handleClick }) => {
         ref={dragRef}
         style={{ cursor: 'move' }}
       >
-        {count !== 0 && (
+        {count > 0 && (
           <Counter count={count} size='default' extraClass='m-1' />
         )}
 
@@ -53,6 +52,7 @@ IngredientItem.propTypes = {
   item: ingredientType,
   handleClick: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
+  count: PropTypes.number,
 };
 
 export default IngredientItem;

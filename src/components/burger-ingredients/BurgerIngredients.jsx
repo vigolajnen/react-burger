@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -19,6 +19,24 @@ const BurgerIngredients = () => {
   const ingredient = useSelector((state) => state.ingredients.ingredient);
   const ingredientsRequest = useSelector((state) => state.ingredientsRequest);
   const ingredientsFailed = useSelector((state) => state.ingredientsFailed);
+  const constructorBun = useSelector(
+    (state) => state.constructorItemsList.constructorBun,
+  );
+
+  const constructorItems = useSelector(
+    (state) => state.constructorItemsList.constructorItems,
+  );
+
+  const countersItems = useMemo(() => {
+    const itemOrderCounters = [];
+    constructorItems.forEach((item) => {
+      if (!itemOrderCounters[item._id]) itemOrderCounters[item._id] = 0;
+      itemOrderCounters[item._id]++;
+    });
+    if (constructorBun && constructorBun.length > 0)
+      itemOrderCounters[constructorBun[0]._id] = 2;
+    return itemOrderCounters;
+  }, [constructorItems, constructorBun]);
 
   useEffect(() => {
     dispatch(loadIngredients());
@@ -135,6 +153,7 @@ const BurgerIngredients = () => {
                       thumbnail={item.image}
                       type={item.type}
                       handleClick={() => handleOpenModal(item)}
+                      count={countersItems[item._id]}
                     />
                   ))}
                 </div>
@@ -144,7 +163,7 @@ const BurgerIngredients = () => {
         </section>
         {open && (
           <Modal title='Детали ингредиента' onClose={handleCloseModal}>
-            <IngredientDetails item={ingredient} />;
+            <IngredientDetails item={ingredient} />
           </Modal>
         )}
       </>

@@ -19,7 +19,7 @@ import stylesConstructor from './BurgerConstructor.module.css';
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState();
-  
+
   const orders = useSelector((state) => state.orders.orders);
 
   const ingredientsArr = useSelector(
@@ -38,7 +38,6 @@ const BurgerConstructor = () => {
       type: UPDATE_ORDERS,
       payload: [...bunArr, ...ingredientsArr],
     });
-    
   }, [dispatch, ingredientsArr, bunArr]);
 
   const ordersId = (arr) => {
