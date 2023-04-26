@@ -1,4 +1,4 @@
-import { sendGetIngredientsRequest } from '../api';
+import { generalRequest } from '../api';
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -11,7 +11,7 @@ export const loadIngredients = () => dispatch => {
   dispatch({
     type: GET_INGREDIENTS_REQUEST,
   });
-  sendGetIngredientsRequest('ingredients')
+  generalRequest('ingredients')
     .then(res => {
       if (res && res.success) {
         dispatch({
