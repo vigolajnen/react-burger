@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import {
-  UPDATE_CONSTRUCTOR_ITEMS,
-  addItemConstructor,
-} from '../../services/actions/constructor-items';
+import { addItemConstructor } from '../../services/actions/constructor-items';
 import DragIngredient from '../drag-ingredient/DragIngredient';
 
 const BoardIngredients = ({ board, classIngredients, items }) => {
@@ -24,12 +21,6 @@ const BoardIngredients = ({ board, classIngredients, items }) => {
           ingredients.filter((item) => item._id === itemId.id)[0],
         ),
       );
-
-      dispatch({
-        type: UPDATE_CONSTRUCTOR_ITEMS,
-        ...itemId,
-        board,
-      });
     },
   });
 

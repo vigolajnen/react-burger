@@ -91,6 +91,7 @@ const BurgerConstructor = () => {
             type='primary'
             size='medium'
             onClick={handleOpenModal}
+            disabled={allOrderArr.length === 0 ? true : false}
           >
             Оформить заказ
           </Button>

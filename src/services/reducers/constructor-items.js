@@ -1,7 +1,7 @@
 import {
-  UPDATE_CONSTRUCTOR_ITEMS,
   DELETE_CONSTRUCTOR_ITEM,
   ADD_CONSTRUCTOR_ITEM,
+  SORT_CONSTRUCTOR_ITEMS,
 } from '../actions/constructor-items';
 
 const initialState = {
@@ -11,17 +11,6 @@ const initialState = {
 
 export const constructorItemsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_CONSTRUCTOR_ITEMS: {
-      return {
-        ...state,
-        constructorItems: state.constructorItems.map(
-          elem => (elem.id === action.id ? { ...elem } : elem),
-
-          // elem =>
-          //   elem.id === action.id ? { ...elem, board: action.board } : elem,
-        ),
-      };
-    }
     case DELETE_CONSTRUCTOR_ITEM: {
       return {
         ...state,
@@ -55,6 +44,18 @@ export const constructorItemsReducer = (state = initialState, action) => {
           constructorItems: [...state.constructorItems, action.payload],
         };
       }
+    }
+    case SORT_CONSTRUCTOR_ITEMS: {
+      const constructorItems = [...state.constructorItems];
+      constructorItems.splice(
+        action.payload.to,
+        0,
+        constructorItems.splice(action.payload.from, 1)[0],
+      );
+      return {
+        ...state,
+        constructorItems,
+      };
     }
     default: {
       return state;
