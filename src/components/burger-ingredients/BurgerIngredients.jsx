@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from '../ingredient-item/IngredientItem';
 import Modal from '../modal/Modal';
+import { useModal } from '../../hooks/useModal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 import { loadIngredients } from '../../services/actions/menu';
 import {
@@ -14,6 +15,7 @@ import {
 import stylesIngredients from './BurgerIngredients.module.css';
 
 const BurgerIngredients = () => {
+  const { isModalOpen, openModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.ingredients);
   const ingredient = useSelector((state) => state.ingredients.ingredient);
@@ -22,7 +24,6 @@ const BurgerIngredients = () => {
   const constructorBun = useSelector(
     (state) => state.constructorItemsList.constructorBun,
   );
-
   const constructorItems = useSelector(
     (state) => state.constructorItemsList.constructorItems,
   );
@@ -43,21 +44,20 @@ const BurgerIngredients = () => {
   }, [dispatch]);
 
   const [current, setCurrent] = useState('Булки');
-  const [open, setOpen] = useState();
 
   const handleOpenModal = (e) => {
     dispatch({
       type: MODAL_ADD_INGREDIENT,
       ingredient: e,
     });
-    setOpen(true);
+    openModal();
   };
 
   const handleCloseModal = () => {
     dispatch({
       type: MODAL_DELETE_INGREDIENT,
     });
-    setOpen(false);
+    closeModal();
   };
 
   const activeTab = (tab) => {
@@ -94,7 +94,7 @@ const BurgerIngredients = () => {
   const sauceIngredients = ingredients.filter((item) => item.type === 'sauce');
   const mainIngredients = ingredients.filter((item) => item.type === 'main');
 
-  // массив обектов заголовок + список
+  // массив объектов заголовок + список
   const tabsIngredientsArr = [];
   for (let i in tabLabels) {
     const tabObj = {};
@@ -161,7 +161,7 @@ const BurgerIngredients = () => {
             </div>
           </div>
         </section>
-        {open && (
+        {isModalOpen && (
           <Modal title='Детали ингредиента' onClose={handleCloseModal}>
             <IngredientDetails item={ingredient} />
           </Modal>

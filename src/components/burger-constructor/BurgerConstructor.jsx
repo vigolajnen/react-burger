@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Modal from '../modal/Modal';
+import { useModal } from '../../hooks/useModal';
 import OrderDetails from '../order-details/OrderDetails';
 import AllPrice from '../all-price/AllPrice';
 import BoardBun from '../board-bun/BoardBun';
@@ -18,7 +19,7 @@ import stylesConstructor from './BurgerConstructor.module.css';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState();
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const orders = useSelector((state) => state.orders.orders);
 
@@ -38,6 +39,7 @@ const BurgerConstructor = () => {
       type: UPDATE_ORDERS,
       payload: [...bunArr, ...ingredientsArr],
     });
+    
   }, [dispatch, ingredientsArr, bunArr]);
 
   const ordersId = (arr) => {
@@ -48,12 +50,7 @@ const BurgerConstructor = () => {
 
   const handleOpenModal = () => {
     dispatch(loadOrder(ordersId(allOrderArr)));
-
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
+    openModal();
   };
 
   return (
@@ -91,14 +88,14 @@ const BurgerConstructor = () => {
             type='primary'
             size='medium'
             onClick={handleOpenModal}
-            disabled={allOrderArr.length === 0 ? true : false}
+            disabled={bunArr.length === 0 ? true : false}
           >
             Оформить заказ
           </Button>
         </div>
       </section>
-      {open && (
-        <Modal onClose={handleCloseModal}>
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
           <OrderDetails orderId={orders.number} />
         </Modal>
       )}
