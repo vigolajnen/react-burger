@@ -26,6 +26,10 @@
     url('./fonts/Jetbrainsmonobold.woff') format('woff');
 }
 
+*,*::before,*::after {
+  box-sizing: border-box;
+}
+
 body,
 html {
   margin: 0;

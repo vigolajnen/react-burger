@@ -9,6 +9,7 @@
 }
 
 .inner {
+  width: 100%;
   height: 350px;
   padding: 10px 0;
   overflow: hidden;
@@ -17,6 +18,7 @@
 .inner > div {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 10px;
   height: 100%;
   overflow: auto;
@@ -24,9 +26,16 @@
 
 .inner > div > div {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-} 
+  flex-direction: column;
+  height: 100%;
+}
+.inner > div > div > div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
 
 .footer {
   margin: 40px 0;
@@ -60,4 +69,77 @@
 
 .price span {
   margin-right: 10px;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 10px auto auto 30px;
+  padding: 16px 24px;
+
+  border-radius: 20px;
+  background: #2f2f37;
+  /* max-width: 536px; */
+  max-width: 90%;
+
+  width: 100%;
+  min-height: 80px;
+
+  font-family: 'Jet Brains Mono';
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-inactive-color);
+  flex-grow: 1;
+  box-sizing: border-box;
+}
+
+.emptyBunTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  padding: 16px 24px;
+  min-height: 80px;
+  font-family: 'Jet Brains Mono';
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-inactive-color);
+  flex-grow: 1;
+  box-sizing: border-box;
+  background: #2f2f37;
+  border-radius: 88px 88px 40px 40px;
+}
+.emptyBunBottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+  min-height: 80px;
+  margin-right: 20px;
+  padding: 16px 24px;
+  font-family: 'Jet Brains Mono';
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-inactive-color);
+  flex-grow: 1;
+  box-sizing: border-box;
+  background: #2f2f37;
+  border-radius: 40px 40px 88px 88px;
+}
+
+.border {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 2px solid transparent;
+  border-radius: 20px;
+}
+
+.border > div > div {
+  max-width: 100%;
 }

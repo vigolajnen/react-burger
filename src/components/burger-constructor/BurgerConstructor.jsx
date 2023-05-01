@@ -1,90 +1,106 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import {
-  Button,
-  ConstructorElement,
-  DragIcon,
-  CurrencyIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useEffect } from 'react';
+
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Modal from '../modal/Modal';
+import { useModal } from '../../hooks/useModal';
 import OrderDetails from '../order-details/OrderDetails';
+import AllPrice from '../all-price/AllPrice';
+import BoardBun from '../board-bun/BoardBun';
+import BoardIngredients from '../board-ingredients/BoardIngredients';
+import {
+  GET_ORDER_PRICE,
+  UPDATE_ORDERS,
+  loadOrder,
+} from '../../services/actions/order.js';
 
 import stylesConstructor from './BurgerConstructor.module.css';
 
-const BurgerConstructor = ({ ...props }) => {
-  const [open, setOpen] = useState();
+const BurgerConstructor = () => {
+  const dispatch = useDispatch();
+  const { isModalOpen, openModal, closeModal } = useModal();
+
+  const orders = useSelector((state) => state.orders.orders);
+
+  const ingredientsArr = useSelector(
+    (state) => state.constructorItemsList.constructorItems,
+  );
+  const bunArr = useSelector(
+    (state) => state.constructorItemsList.constructorBun,
+  );
+  const boards = useSelector((state) => state.boardList.boards);
+
+  const allOrderArr = [...bunArr, ...ingredientsArr];
+
+  useEffect(() => {
+    dispatch({ type: GET_ORDER_PRICE });
+    dispatch({
+      type: UPDATE_ORDERS,
+      payload: [...bunArr, ...ingredientsArr],
+    });
+    
+  }, [dispatch, ingredientsArr, bunArr]);
+
+  const ordersId = (arr) => {
+    const res = [];
+    arr.forEach((item) => res.push(item._id));
+    return res;
+  };
 
   const handleOpenModal = () => {
-    setOpen(true);
+    dispatch(loadOrder(ordersId(allOrderArr)));
+    openModal();
   };
 
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
-  const list = props.listElements;
-  const scrollList = list.map((item) => (
-    <div key={item._id}>
-      <DragIcon type='primary' />
-      <ConstructorElement
-        text={item.name}
-        price={item.price}
-        thumbnail={item.image}
-      />
-    </div>
-  ));
   return (
     <>
       <section className={stylesConstructor.wrapper}>
         <section className={stylesConstructor.list}>
-          <ConstructorElement
+          <BoardBun
+            items={bunArr}
+            board={boards[0]}
             type='top'
-            isLocked={true}
-            text={props.bun.name + ' (верх)'}
-            price={props.bun.price}
-            thumbnail={props.bun.image}
+            title=' (верх)'
+            classBun={stylesConstructor.emptyBunTop}
           />
-
           <div className={stylesConstructor.inner}>
-            <div className='custom-scroll'>{scrollList}</div>
+            <div className='custom-scroll'>
+              <BoardIngredients
+                items={ingredientsArr}
+                board={boards[1]}
+                classIngredients={stylesConstructor.empty}
+              />
+            </div>
           </div>
-
-          <ConstructorElement
+          <BoardBun
+            items={bunArr}
+            board={boards[0]}
             type='bottom'
-            isLocked={true}
-            text={props.bun.name + ' (низ)'}
-            price={props.bun.price}
-            thumbnail={props.bun.image}
+            title=' (низ)'
+            classBun={stylesConstructor.emptyBunBottom}
           />
         </section>
         <div className={stylesConstructor.footer}>
-          <div className={stylesConstructor.price}>
-            <span>610</span>
-            <CurrencyIcon type='primary' />
-          </div>
+          <AllPrice bun={bunArr} ingredients={ingredientsArr} />
           <Button
             htmlType='button'
             type='primary'
             size='medium'
             onClick={handleOpenModal}
+            disabled={bunArr.length === 0 ? true : false}
           >
             Оформить заказ
           </Button>
         </div>
       </section>
-      {open && (
-        <Modal onClose={handleCloseModal}>
-          <OrderDetails />
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <OrderDetails orderId={orders.number} />
         </Modal>
       )}
     </>
   );
-};
-
-BurgerConstructor.propTypes = {
-  bun: PropTypes.object.isRequired,
-  listElements: PropTypes.array.isRequired,
 };
 
 export default BurgerConstructor;
