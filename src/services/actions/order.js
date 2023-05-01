@@ -18,22 +18,16 @@ const optionRequestPost = orderData => {
   };
 };
 
-export const loadOrder = (orderData) => dispatch => {
+export const loadOrder = orderData => dispatch => {
   dispatch({
     type: GET_ORDER_REQUEST,
   });
   generalRequest('orders', optionRequestPost(orderData))
     .then(res => {
-      if (res && res.success) {
-        dispatch({
-          type: GET_ORDER_SUCCESS,
-          orders: res.order,
-        });
-      } else {
-        dispatch({
-          type: GET_ORDER_FAILED,
-        });
-      }
+      dispatch({
+        type: GET_ORDER_SUCCESS,
+        orders: res.order,
+      });
     })
     .catch(err => {
       console.log(err);
