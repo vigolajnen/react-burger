@@ -4,6 +4,7 @@ import {
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
 import styles from './page.module.css';
 // import appStyles from './login.module.css';
 
@@ -47,6 +48,20 @@ export const LoginPage = () => {
           Войти
         </Button>
       </form>
+      <div className="mb-2">
+      Вы — новый пользователь?
+        <Link to='/register' className={styles.link}>
+          {' '}
+          Зарегистрироваться
+        </Link>
+      </div>
+      <div className="mb-2">
+      Забыли пароль?
+        <Link to='/forgot-password' className={styles.link}>
+          {' '}
+          Восстановить пароль
+        </Link>
+      </div>
     </main>
   );
 };

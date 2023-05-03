@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from '../ingredient-item/IngredientItem';
 import Modal from '../modal/Modal';
@@ -163,8 +163,8 @@ const BurgerIngredients = () => {
         </section>
         {isModalOpen && (
           <Modal title='Детали ингредиента' onClose={handleCloseModal}>
-            <IngredientDetails item={ingredient} />
-          </Modal>
+          <IngredientDetails item={ingredient} />
+        </Modal>
         )}
       </>
     );
