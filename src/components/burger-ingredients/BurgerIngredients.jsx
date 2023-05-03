@@ -1,24 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import IngredientItem from '../ingredient-item/IngredientItem';
-import Modal from '../modal/Modal';
-import { useModal } from '../../hooks/useModal';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
 import { loadIngredients } from '../../services/actions/menu';
-import {
-  MODAL_ADD_INGREDIENT,
-  MODAL_DELETE_INGREDIENT,
-} from '../../services/actions/menu';
 
 import stylesIngredients from './BurgerIngredients.module.css';
 
 const BurgerIngredients = () => {
-  const { isModalOpen, openModal, closeModal } = useModal();
+
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.ingredients);
-  const ingredient = useSelector((state) => state.ingredients.ingredient);
+
   const ingredientsRequest = useSelector((state) => state.ingredientsRequest);
   const ingredientsFailed = useSelector((state) => state.ingredientsFailed);
   const constructorBun = useSelector(
@@ -44,21 +38,6 @@ const BurgerIngredients = () => {
   }, [dispatch]);
 
   const [current, setCurrent] = useState('Булки');
-
-  const handleOpenModal = (e) => {
-    dispatch({
-      type: MODAL_ADD_INGREDIENT,
-      ingredient: e,
-    });
-    openModal();
-  };
-
-  const handleCloseModal = () => {
-    dispatch({
-      type: MODAL_DELETE_INGREDIENT,
-    });
-    closeModal();
-  };
 
   const activeTab = (tab) => {
     setCurrent(tab);
@@ -115,58 +94,50 @@ const BurgerIngredients = () => {
     return <p>Загрузка...</p>;
   } else {
     return (
-      <>
-        <section>
-          <div className={stylesIngredients.header}>
-            {tabLabels.map((item) => (
-              <Tab
-                key={item}
-                value={item}
-                active={current === item}
-                onClick={activeTab}
+      <section>
+        <div className={stylesIngredients.header}>
+          {tabLabels.map((item) => (
+            <Tab
+              key={item}
+              value={item}
+              active={current === item}
+              onClick={activeTab}
+            >
+              {item}
+            </Tab>
+          ))}
+        </div>
+        <div className={stylesIngredients.body}>
+          <div className='custom-scroll' onScroll={onScrollActiveTab}>
+            {tabsIngredientsArr.map((wrapItem) => (
+              <div
+                className={stylesIngredients.grid}
+                key={wrapItem.title}
+                title={wrapItem.title}
               >
-                {item}
-              </Tab>
+                <h3
+                  className={stylesIngredients.title}
+                  data-title={wrapItem.title}
+                >
+                  {wrapItem.title}
+                </h3>
+                {wrapItem.list.map((item) => (
+                  <IngredientItem
+                    key={item._id}
+                    id={item._id}
+                    item={item}
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                    type={item.type}
+                    count={countersItems[item._id]}
+                  />
+                ))}
+              </div>
             ))}
           </div>
-          <div className={stylesIngredients.body}>
-            <div className='custom-scroll' onScroll={onScrollActiveTab}>
-              {tabsIngredientsArr.map((wrapItem) => (
-                <div
-                  className={stylesIngredients.grid}
-                  key={wrapItem.title}
-                  title={wrapItem.title}
-                >
-                  <h3
-                    className={stylesIngredients.title}
-                    data-title={wrapItem.title}
-                  >
-                    {wrapItem.title}
-                  </h3>
-                  {wrapItem.list.map((item) => (
-                    <IngredientItem
-                      id={item._id}
-                      key={item._id}
-                      item={item}
-                      text={item.name}
-                      price={item.price}
-                      thumbnail={item.image}
-                      type={item.type}
-                      handleClick={() => handleOpenModal(item)}
-                      count={countersItems[item._id]}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        {isModalOpen && (
-          <Modal title='Детали ингредиента' onClose={handleCloseModal}>
-          <IngredientDetails item={ingredient} />
-        </Modal>
-        )}
-      </>
+        </div>
+      </section>
     );
   }
 };

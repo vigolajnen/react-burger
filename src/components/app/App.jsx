@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+
 import { LayoutPage } from '../layout-page/LayoutPage';
 
 import { HomePage } from '../../pages/home';
@@ -10,10 +11,12 @@ import { ForgotPasswordPage } from '../../pages/forgot-password';
 import { ResetPasswordPage } from '../../pages/reset-password';
 import { ProfilePage } from '../../pages/profile';
 import { NotFoundPage } from '../../pages/not-found';
+import { ModalPage } from '../../pages/modal';
 
 import appStyles from './App.module.css';
 
 function App() {
+
   return (
     <BrowserRouter>
       <div className={appStyles.app}>
@@ -26,6 +29,7 @@ function App() {
             <Route path='forgot-password' element={<ForgotPasswordPage />} />
             <Route path='reset-password' element={<ResetPasswordPage />} />
             <Route path='*' element={<NotFoundPage />} />
+            <Route path='ingredients/:id' element={<ModalPage />} />
           </Route>
         </Routes>
       </div>

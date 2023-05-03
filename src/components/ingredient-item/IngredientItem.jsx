@@ -8,10 +8,11 @@ import {
 
 import stylesItem from './IngredientItem.module.css';
 
+import { Link } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
-
-const IngredientItem = ({ item, id, handleClick, count }) => {
-//  item: crypto.randomUUID(),
+// handleClick
+const IngredientItem = ({ item, id, count }) => {
+  //  item: crypto.randomUUID(),
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredients',
     item: () => {
@@ -24,18 +25,18 @@ const IngredientItem = ({ item, id, handleClick, count }) => {
 
   return (
     !isDrag && (
-      <div
+      <Link
+        item={item}
+        state={{item: item}}
+        to={`/ingredients/${item._id}`}
         className={stylesItem.item}
         id={item._id}
         data-id={item._id}
         data-value={item.type}
-        onClick={handleClick}
         ref={dragRef}
         style={{ cursor: 'move' }}
       >
-        {count > 0 && (
-          <Counter count={count} size='default' extraClass='m-1' />
-        )}
+        {count > 0 && <Counter count={count} size='default' extraClass='m-1' />}
 
         <img className={stylesItem.pic} src={item.image} alt={item.name} />
         <div className={stylesItem.price}>
@@ -43,14 +44,13 @@ const IngredientItem = ({ item, id, handleClick, count }) => {
           <CurrencyIcon type='primary' />
         </div>
         <h3 className={stylesItem.title}>{item.name}</h3>
-      </div>
+      </Link>
     )
   );
 };
 
 IngredientItem.propTypes = {
   item: ingredientType,
-  handleClick: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   count: PropTypes.number,
 };
