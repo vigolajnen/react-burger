@@ -1,23 +1,39 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Button,
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+
+import { useAuth } from '../services/auth';
 import styles from './page.module.css';
 // import appStyles from './login.module.css';
 
 // страница авторизации.
 export const LoginPage = () => {
-  const [value, setValue] = React.useState('');
-  const [valuePassword, setValuePassword] = React.useState('');
+  let auth = useAuth();
+
+  const [form, setValue] = useState({ email: '', password: '' });
+
   const onChange = (e) => {
-    setValue(e.target.value);
+    setValue({ ...form, [e.target.name]: e.target.value });
   };
-  const onChangePassword = (e) => {
-    setValuePassword(e.target.value);
-  };
+  let login = useCallback(
+    (e) => {
+      e.preventDefault();
+      auth.signIn(form);
+    },
+    [auth, form],
+  );
+  // Проверяем, авторизован ли пользователь
+  if (auth.user) {
+    return (
+      // Переадресовываем авторизованного пользователя на главную страницу
+      <Navigate to='/' replace />
+    );
+  }
+
   return (
     <main className={styles.main}>
       <form className={styles.center}>
@@ -28,7 +44,7 @@ export const LoginPage = () => {
         >
           <EmailInput
             onChange={onChange}
-            value={value}
+            value={form.email}
             name={'email'}
             isIcon={false}
           />
@@ -38,25 +54,25 @@ export const LoginPage = () => {
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           <PasswordInput
-            onChange={onChangePassword}
-            value={valuePassword}
+            onChange={onChange}
+            value={form.password}
             name={'password'}
             extraClass='mb-2'
           />
         </div>
-        <Button htmlType='button' type='primary' size='medium'>
+        <Button onClick={login} htmlType='button' type='primary' size='medium'>
           Войти
         </Button>
       </form>
-      <div className="mb-2">
-      Вы — новый пользователь?
+      <div className='mb-2'>
+        Вы — новый пользователь?
         <Link to='/register' className={styles.link}>
           {' '}
           Зарегистрироваться
         </Link>
       </div>
-      <div className="mb-2">
-      Забыли пароль?
+      <div className='mb-2'>
+        Забыли пароль?
         <Link to='/forgot-password' className={styles.link}>
           {' '}
           Восстановить пароль

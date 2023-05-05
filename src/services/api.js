@@ -1,3 +1,4 @@
+import { getCookie } from './utils';
 // 1 раз объявляем базовый урл
 export const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
@@ -26,4 +27,20 @@ export const generalRequest = (endpoint, options) => {
   return fetch(`${BASE_URL}${endpoint}`, options)
     .then(checkResponse)
     .then(checkSuccess);
+};
+
+
+export const loginRequest = async form => {
+  return await fetch('https://cosmic.nomoreparties.space/login', {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  });
 };
