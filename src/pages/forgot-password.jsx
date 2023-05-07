@@ -1,19 +1,38 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Button,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import {
+  passwordResetRequest,
+  checkResponse,
+  checkSuccess,
+} from '../services/api';
 import styles from './page.module.css';
-// import appStyles from './login.module.css';
 
 // страница восстановления пароля.
 export function ForgotPasswordPage() {
-  const [valueEmail, setValueEmail] = React.useState('');
+  const navigate = useNavigate();
+  const [form, setValue] = useState({ email: '' });
 
-  const onChangeEmail = (e) => {
-    setValueEmail(e.target.value);
+  const onChange = (e) => {
+    setValue({ ...form, [e.target.name]: e.target.value });
   };
+
+  let reset = useCallback(
+    (e) => {
+      e.preventDefault();
+      passwordResetRequest(form)
+        .then(checkResponse)
+        .then(checkSuccess)
+        .then(() => {
+          navigate('/reset-password', { replace: true });
+        });
+    },
+    [form, navigate],
+  );
 
   return (
     <main className={styles.main}>
@@ -24,14 +43,14 @@ export function ForgotPasswordPage() {
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           <EmailInput
-            onChange={onChangeEmail}
-            value={valueEmail}
+            onChange={onChange}
+            value={form.email}
             name={'email'}
             isIcon={false}
             placeholder={'Укажите e-mail'}
           />
         </div>
-        <Button htmlType='button' type='primary' size='medium'>
+        <Button onClick={reset} htmlType='button' type='primary' size='medium'>
           Восстановить
         </Button>
       </form>

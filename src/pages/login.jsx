@@ -5,34 +5,49 @@ import {
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useAuth } from '../services/auth';
+// import { useAuth } from '../services/auth';
+
+import { userLogin } from '../services/actions/user';
 import styles from './page.module.css';
-// import appStyles from './login.module.css';
 
 // страница авторизации.
 export const LoginPage = () => {
-  let auth = useAuth();
+  // let auth = useAuth();
+
+  const dispatch = useDispatch();
+
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   const [form, setValue] = useState({ email: '', password: '' });
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
+
   let login = useCallback(
     (e) => {
       e.preventDefault();
-      auth.signIn(form);
+      // auth.signIn(form);
+
+      dispatch(userLogin(form));
     },
-    [auth, form],
+    [dispatch, form],
   );
-  // Проверяем, авторизован ли пользователь
-  if (auth.user) {
-    return (
-      // Переадресовываем авторизованного пользователя на главную страницу
-      <Navigate to='/' replace />
-    );
+
+  if (isAuth) {
+    return <Navigate to={'/'} />;
   }
+
+  // Проверяем, авторизован ли пользователь
+  // if (auth.user) {
+  //   return (
+  //     <Navigate
+  //       to={'/'}
+  //     />
+  //   );
+  // }
 
   return (
     <main className={styles.main}>

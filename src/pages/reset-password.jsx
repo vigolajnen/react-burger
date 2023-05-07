@@ -1,25 +1,42 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Button,
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
+
+import {
+  createTestUser,
+  passwordNewRequest,
+  checkResponse,
+  checkSuccess,
+} from '../services/api';
+
+import { unitTestUser } from '../services/actions/user';
+
 import styles from './page.module.css';
-// import appStyles from './login.module.css';
 
 // страница восстановления пароля.
 export function ResetPasswordPage() {
-  const [valuePassword, setValuePassword] = React.useState('');
-  const [value, setValue] = React.useState('');
+  // const navigate = useNavigate();
+  const [form, setValue] = useState({ password: '', code: '' });
 
   const onChange = (e) => {
-    setValue(e.target.value);
+    setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onChangePassword = (e) => {
-    setValuePassword(e.target.value);
-  };
+  let reset = useCallback(
+    (e) => {
+      e.preventDefault();
+      // unitTestUser();
+      passwordNewRequest(form).then(checkResponse).then(checkSuccess);
+
+      // postUserRequest();
+      createTestUser();
+    },
+    [form],
+  );
 
   return (
     <main className={styles.main}>
@@ -30,8 +47,8 @@ export function ResetPasswordPage() {
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           <PasswordInput
-            onChange={onChangePassword}
-            value={valuePassword}
+            onChange={onChange}
+            value={form.password}
             name={'password'}
             extraClass='mb-2'
             placeholder={'Введите новый пароль'}
@@ -46,15 +63,15 @@ export function ResetPasswordPage() {
             placeholder={'Введите код из письма'}
             onChange={onChange}
             icon={false}
-            value={value}
-            name={'name'}
+            value={form.code}
+            name={'code'}
             error={false}
             errorText={'Ошибка'}
             size={'default'}
             extraClass='ml-1'
           />
         </div>
-        <Button htmlType='button' type='primary' size='medium'>
+        <Button onClick={reset} htmlType='button' type='primary' size='medium'>
           Восстановить
         </Button>
       </form>

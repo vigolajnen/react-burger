@@ -1,28 +1,44 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Button,
   Input,
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { userRegister } from '../services/actions/user';
+
 import styles from './page.module.css';
-// import appStyles from './login.module.css';
 
 // страница регистрации.
 export function RegisterPage() {
-  const [value, setValue] = React.useState('');
-  const [valueEmail, setValueEmail] = React.useState('');
-  const [valuePassword, setValuePassword] = React.useState('');
+  const isAuth = useSelector((state) => state.user.isAuth);
+  const dispatch = useDispatch();
+
+  const [form, setValue] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
   const onChange = (e) => {
-    setValue(e.target.value);
+    setValue({ ...form, [e.target.name]: e.target.value });
   };
-  const onChangeEmail = (e) => {
-    setValueEmail(e.target.value);
-  };
-  const onChangePassword = (e) => {
-    setValuePassword(e.target.value);
-  };
+
+  let register = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(userRegister(form));
+    },
+    [dispatch, form],
+  );
+
+  if (isAuth) {
+    return <Navigate to={'/'} />;
+  }
+
   return (
     <main className={styles.main}>
       <form className={styles.center}>
@@ -34,9 +50,9 @@ export function RegisterPage() {
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={onChange}
             icon={false}
-            value={value}
+            value={form.name}
             name={'name'}
             error={false}
             errorText={'Ошибка'}
@@ -49,8 +65,8 @@ export function RegisterPage() {
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           <EmailInput
-            onChange={onChangeEmail}
-            value={valueEmail}
+            onChange={onChange}
+            value={form.email}
             name={'email'}
             isIcon={false}
           />
@@ -60,13 +76,18 @@ export function RegisterPage() {
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           <PasswordInput
-            onChange={onChangePassword}
-            value={valuePassword}
+            onChange={onChange}
+            value={form.password}
             name={'password'}
             extraClass='mb-2'
           />
         </div>
-        <Button htmlType='button' type='primary' size='medium'>
+        <Button
+          onClick={register}
+          htmlType='button'
+          type='primary'
+          size='medium'
+        >
           Зарегистрироваться
         </Button>
       </form>
