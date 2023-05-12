@@ -1,42 +1,38 @@
-import React, { useCallback, useState } from 'react';
-import {
-  Button,
-  EmailInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate } from 'react-router-dom';
-
-import {
-  passwordResetRequest,
-  checkResponse,
-  checkSuccess,
-} from '../services/api';
-import styles from './page.module.css';
+import React, { useState } from 'react';
+import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { forgotPasswordRequest } from '../../services/api-auth';
+import styles from './forgot-password.module.css';
 
 // страница восстановления пароля.
 export function ForgotPasswordPage() {
   const navigate = useNavigate();
+  const isAuth = useSelector((state) => state.user.isAuth);
   const [form, setValue] = useState({ email: '' });
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  let reset = useCallback(
-    (e) => {
-      e.preventDefault();
-      passwordResetRequest(form)
-        .then(checkResponse)
-        .then(checkSuccess)
-        .then(() => {
-          navigate('/reset-password', { replace: true });
-        });
-    },
-    [form, navigate],
-  );
+  const reset = (e) => {
+    e.preventDefault();
+    forgotPasswordRequest(form.email)
+      .then(() => {
+        navigate('/reset-password', { replace: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  if (isAuth) {
+    return <Navigate to={'/'} />;
+  }
 
   return (
     <main className={styles.main}>
-      <form className={styles.center}>
+      <form onSubmit={reset} className={styles.center}>
         <h1>Восстановление пароля</h1>
         <div
           className='mb-4'
@@ -50,9 +46,9 @@ export function ForgotPasswordPage() {
             placeholder={'Укажите e-mail'}
           />
         </div>
-        <Button onClick={reset} htmlType='button' type='primary' size='medium'>
+        <button type='submit' className={styles.button_type_primary}>
           Восстановить
-        </Button>
+        </button>
       </form>
       <div>
         Вспомнили пароль?

@@ -1,44 +1,35 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Input,
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { USER_LOGOUT } from '../services/actions/user';
-import { logoutRequest } from '../services/api';
-import { deleteCookie } from '../services/utils';
-import styles from './page.module.css';
+import { userLogout } from '../../services/actions/user';
+
+import styles from './profile.module.css';
 
 export function ProfilePage() {
   const dispatch = useDispatch();
-  let location = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  let activeLink = location.pathname.substring(1);
-
+  const activeLink = location.pathname.substring(1);
   const user = useSelector((state) => state.user.user);
-  const isAuth = useSelector((state) => state.user.isAuth);
 
   const logout = useCallback(async () => {
-    await logoutRequest();
-    dispatch({
-      type: USER_LOGOUT,
+    dispatch(userLogout()).then(() => {
+      navigate('/', { replace: true });
     });
-    deleteCookie('token');
+  }, [dispatch, navigate]);
 
-    if (!isAuth) {
-      return <Navigate to='/' replace />;
-    }
-  }, [dispatch]);
+  const [value, setValue] = useState(undefined && user ? 'ff' : user.name);
+  const [valueEmail, setValueEmail] = useState(undefined ? 'ff' : user.email);
 
-  const [value, setValue] = React.useState(undefined ? 'ff' : user.name);
-  const [valueEmail, setValueEmail] = React.useState(
-    undefined ? 'ff' : user.email,
-  );
-  const [valuePassword, setValuePassword] = React.useState('1234567');
+  const [valuePassword, setValuePassword] = useState('1234567');
   const onChange = (e) => {
     setValue(e.target.value);
   };
@@ -60,9 +51,9 @@ export function ProfilePage() {
         <NavLink to='orders' className={setActiveLink}>
           История заказов
         </NavLink>
-        <Link onClick={logout} className={styles.item}>
+        <button type='button' onClick={logout} className={styles.item}>
           Выход
-        </Link>
+        </button>
         <div className={styles.text}>
           В этом разделе вы можете изменить свои персональные данные
         </div>
@@ -111,6 +102,7 @@ export function ProfilePage() {
                 name={'password'}
                 icon='EditIcon'
                 extraClass='mb-2'
+                autoComplete='off'
               />
             </div>
           </form>

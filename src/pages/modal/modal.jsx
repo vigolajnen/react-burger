@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { generalRequest } from '../services/api';
+import { generalRequest } from '../../services/api';
 
-import Modal from '../components/modal/Modal';
-import IngredientDetails from '../components/ingredient-details/IngredientDetails';
+import Modal from '../../components/modal/Modal';
+import IngredientDetails from '../../components/ingredient-details/IngredientDetails';
 
 const ModalPage = () => {
   const navigate = useNavigate();

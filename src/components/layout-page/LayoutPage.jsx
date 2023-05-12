@@ -5,11 +5,17 @@ import {
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector } from 'react-redux';
 
 import styles from './LayoutPage.module.css';
 
 const LayoutPage = () => {
-  const setActiveLink = ({ isActive }) => isActive ? styles.active : styles.link;
+  const user = useSelector((state) => state.user.user);
+  const isAuth = useSelector((state) => state.user.isAuth);
+
+  const setActiveLink = ({ isActive, isPending }) =>
+    isPending ? 'pending' : isActive ? styles.active : styles.link;
+
   return (
     <>
       <header className={styles.header}>
@@ -18,19 +24,23 @@ const LayoutPage = () => {
             <BurgerIcon type='primary' />
             <span className={styles.linkText}>Конструктор</span>
           </NavLink>
-
-          <a href='#' className={styles.linkSecondary}>
+       
+          <NavLink  to='/profile/orders' className={setActiveLink}>
             <ListIcon type='secondary' />
             <span className={styles.linkText}>Лента заказов</span>
-          </a>
+          </NavLink>
 
           <div className={styles.logo}>
             <Logo />
           </div>
 
           <NavLink to='/profile' className={setActiveLink}>
-            <ProfileIcon type='secondary' />
-            <span className={styles.linkText}>Личный кабинет</span>
+            <ProfileIcon type='primary' />
+            {isAuth ? (
+              <span className={styles.linkText}>{user.name}</span>
+            ) : (
+              <span className={styles.linkText}>Личный кабинет</span>
+            )}
           </NavLink>
         </div>
       </header>

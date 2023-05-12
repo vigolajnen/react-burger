@@ -8,30 +8,22 @@ import {
   GET_LOGOUT_REQUEST,
   GET_LOGOUT_SUCCESS,
   GET_LOGOUT_FAILED,
-  CREATE_USER_REQUEST,
-  CREATE_USER_SUCCESS,
-  CREATE_USER_FAILED,
-  USER_LOGOUT,
-  CREATE_USER,
-  unitTestUser,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAILED,
+  REFRESH_TOKEN_REQUEST,
+  REFRESH_TOKEN_SUCCESS,
+  REFRESH_TOKEN_FAILED,
 } from '../actions/user';
 
 const initialState = {
-  testUser: {
-    email: 'test-data@yandex.ru',
-    password: '123456',
-    name: 'Bob',
-  },
-  user: {
-    name: null,
-    email: null,
-    id: null,
-  },
+  user: null,
   token: null,
   refreshToken: null,
   isAuth: false,
   userRequest: false,
   userFailed: false,
+  refreshTokenRequest: false,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -87,10 +79,7 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         userFailed: false,
         userRequest: false,
-        user: {
-          name: null,
-          email: null,
-        },
+        user: null,
         token: null,
         refreshToken: null,
         isAuth: false,
@@ -99,44 +88,43 @@ export const userReducer = (state = initialState, action) => {
     case GET_LOGOUT_FAILED: {
       return { ...state, userFailed: true, userRequest: false };
     }
-    case USER_LOGOUT: {
-      return {
-        ...state,
-        userFailed: false,
-        userRequest: false,
-        user: {
-          name: null,
-          email: null,
-        },
-        token: null,
-        refreshToken: null,
-        isAuth: false,
-      };
-    }
-    case CREATE_USER_REQUEST: {
+    case GET_USER_REQUEST: {
       return {
         ...state,
         userRequest: true,
       };
     }
-    case CREATE_USER: {
+    case GET_USER_SUCCESS: {
       return {
         ...state,
+        user: action.user,
+        isAuth: true,
         userFailed: false,
         userRequest: false,
-        testUser: state.testUser,
       };
     }
-    case CREATE_USER_SUCCESS: {
+    case GET_USER_FAILED: {
+      return { ...state, isAuth: false, userFailed: true, userRequest: false };
+    }
+    case REFRESH_TOKEN_REQUEST: {
       return {
         ...state,
-        userFailed: false,
-        userRequest: false,
-        testUser: unitTestUser(state.testUser),
+        refreshTokenRequest: true,
       };
     }
-    case CREATE_USER_FAILED: {
-      return { ...state, userFailed: true, userRequest: false };
+    case REFRESH_TOKEN_SUCCESS: {
+      return {
+        ...state,
+        isAuth: true,
+        refreshTokenRequest: false,
+      };
+    }
+    case REFRESH_TOKEN_FAILED: {
+      return {
+        ...state,
+        isAuth: false,
+        refreshTokenRequest: false,
+      };
     }
     default: {
       return state;

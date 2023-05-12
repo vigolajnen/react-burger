@@ -86,12 +86,20 @@
   color: #8585ad;
 }
 
+.link svg {
+  fill: #8585ad;
+}
+
 .active {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   text-decoration: none;
   color: #ffffff;
+}
+
+.active svg {
+  fill: #ffffff;
 }
 
 

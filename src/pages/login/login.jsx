@@ -1,57 +1,39 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
-  Button,
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// import { useAuth } from '../services/auth';
+import { userLogin } from '../../services/actions/user';
 
-import { userLogin } from '../services/actions/user';
-import styles from './page.module.css';
+import styles from './login.module.css';
 
 // страница авторизации.
 export const LoginPage = () => {
-  // let auth = useAuth();
-
   const dispatch = useDispatch();
-
   const isAuth = useSelector((state) => state.user.isAuth);
-
   const [form, setValue] = useState({ email: '', password: '' });
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  let login = useCallback(
-    (e) => {
-      e.preventDefault();
-      // auth.signIn(form);
+  const login = (e) => {
+    e.preventDefault();
 
-      dispatch(userLogin(form));
-    },
-    [dispatch, form],
-  );
+    dispatch(userLogin(form));
+  };
 
   if (isAuth) {
     return <Navigate to={'/'} />;
-  }
-
-  // Проверяем, авторизован ли пользователь
-  // if (auth.user) {
-  //   return (
-  //     <Navigate
-  //       to={'/'}
-  //     />
-  //   );
-  // }
+  } 
+  
 
   return (
     <main className={styles.main}>
-      <form className={styles.center}>
+      <form onSubmit={login} className={styles.center}>
         <h1>Вход</h1>
         <div
           className='mb-4'
@@ -73,11 +55,12 @@ export const LoginPage = () => {
             value={form.password}
             name={'password'}
             extraClass='mb-2'
+            autoComplete='off'
           />
         </div>
-        <Button onClick={login} htmlType='button' type='primary' size='medium'>
+        <button type='submit' className={styles.button_type_primary}>
           Войти
-        </Button>
+        </button>
       </form>
       <div className='mb-2'>
         Вы — новый пользователь?

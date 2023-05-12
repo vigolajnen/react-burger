@@ -1,46 +1,36 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Button,
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import {
-  createTestUser,
-  passwordNewRequest,
-  checkResponse,
-  checkSuccess,
-} from '../services/api';
+import { resetPasswordRequest } from '../../services/api-auth';
 
-import { unitTestUser } from '../services/actions/user';
-
-import styles from './page.module.css';
+import styles from './reset-password.module.css';
 
 // страница восстановления пароля.
 export function ResetPasswordPage() {
-  // const navigate = useNavigate();
-  const [form, setValue] = useState({ password: '', code: '' });
+  const navigate = useNavigate();
+
+  const [form, setValue] = useState({ password: '', token: '' });
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  let reset = useCallback(
-    (e) => {
-      e.preventDefault();
-      // unitTestUser();
-      passwordNewRequest(form).then(checkResponse).then(checkSuccess);
-
-      // postUserRequest();
-      createTestUser();
-    },
-    [form],
-  );
+  let reset = (e) => {
+    e.preventDefault();
+    resetPasswordRequest({ password: form.password, token: form.token }).then(
+      () => {
+        navigate('/', { replace: true });
+      },
+    );
+  };
 
   return (
     <main className={styles.main}>
-      <form className={styles.center}>
+      <form onSubmit={reset} className={styles.center}>
         <h1>Восстановление пароля</h1>
         <div
           className='mb-4'
@@ -49,6 +39,7 @@ export function ResetPasswordPage() {
           <PasswordInput
             onChange={onChange}
             value={form.password}
+            autoComplete='off'
             name={'password'}
             extraClass='mb-2'
             placeholder={'Введите новый пароль'}
@@ -63,17 +54,17 @@ export function ResetPasswordPage() {
             placeholder={'Введите код из письма'}
             onChange={onChange}
             icon={false}
-            value={form.code}
-            name={'code'}
+            value={form.token}
+            name={'token'}
             error={false}
             errorText={'Ошибка'}
             size={'default'}
             extraClass='ml-1'
           />
         </div>
-        <Button onClick={reset} htmlType='button' type='primary' size='medium'>
+        <button type='submit' className={styles.button_type_primary}>
           Восстановить
-        </Button>
+        </button>
       </form>
       <div>
         Вспомнили пароль?

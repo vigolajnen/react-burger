@@ -4,8 +4,8 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import allPriceStyles from './allPriceStyles.module.css';
 
 const AllPrice = ({ bun, ingredients }) => {
-  let sumBunPrice = bun.reduce((a, b) => a + b.price, 0) * 2;
-  let sumIngredientsPrice = ingredients.reduce((a, b) => a + b.price, 0);
+  const sumBunPrice = bun.reduce((a, b) => a + b.price, 0) * 2;
+  const sumIngredientsPrice = ingredients.reduce((a, b) => a + b.price, 0);
   let sum = sumBunPrice + sumIngredientsPrice;
 
   if (isNaN(sum)) {

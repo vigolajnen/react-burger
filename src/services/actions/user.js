@@ -1,89 +1,53 @@
-import { generalRequest } from '../api';
-import { deleteCookie, setCookie } from '../utils';
+// import { generalRequest, getUserRequest } from '../api';
+import { deleteCookie, setCookie, getCookie } from '../utils';
+import {
+  registerRequest,
+  loginRequest,
+  refreshTokenRequest,
+  logoutRequest,
+  getUserRequest,
+  updateUserRequest,
+} from '../api-auth';
 
 export const GET_REGISTR_REQUEST = 'GET_REGISTR_REQUEST';
 export const GET_REGISTR_SUCCESS = 'GET_REGISTR_SUCCESS';
 export const GET_REGISTR_FAILED = 'GET_REGISTR_FAILED';
-export const UPDATE_USER = 'UPDATE_USER';
 
 export const GET_LOGOUT_REQUEST = 'GET_LOGOUT_REQUEST';
 export const GET_LOGOUT_SUCCESS = 'GET_LOGOUT_SUCCESS';
 export const GET_LOGOUT_FAILED = 'GET_LOGOUT_FAILED';
-export const USER_LOGOUT = 'USER_LOGOUT';
 
 export const GET_LOGIN_REQUEST = 'GET_LOGIN_REQUEST';
 export const GET_LOGIN_SUCCESS = 'GET_LOGIN_SUCCESS';
 export const GET_LOGIN_FAILED = 'GET_LOGIN_FAILED';
 
-export const CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
-export const CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
-export const CREATE_USER_FAILED = 'CREATE_USER_FAILED';
-export const CREATE_USER = 'CREATE_USER';
+export const GET_USER_REQUEST = 'GET_USER_REQUEST';
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED = 'GET_USER_FAILED';
 
-const optionTestUserPost = testUser => {
-  return {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(testUser),
-  };
-};
+export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
+export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
+export const REFRESH_TOKEN_FAILED = 'REFRESH_TOKEN_FAILED';
 
-const optionLoginRequestPost = form => {
-  return {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form),
-  };
-};
-
-const optionLogoutRequest = () => {
-  return {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-  };
-};
-
-export const optionLogoutRequestPost = () => {
-  return {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-  };
-};
-
-export const userLogin = form => dispatch => {
+export const userLogin = state => dispatch => {
   dispatch({
     type: GET_LOGIN_REQUEST,
   });
-  generalRequest('auth/login', optionLoginRequestPost(form))
+  return loginRequest(state)
     .then(res => {
-      dispatch({
-        type: GET_LOGIN_SUCCESS,
-        user: { ...res.user, id: res.user._id },
-        token: res.accessToken,
-        refreshToken: res.refreshToken,
-      });
-      setCookie('token', res.accessToken);
+      if (res && res.success) {
+        const token = res.accessToken.split('Bearer ')[1];
+        const refreshToken = res.refreshToken;
+        setCookie('token', token);
+        localStorage.setItem('refreshToken', refreshToken);
+        dispatch({
+          type: GET_LOGIN_SUCCESS,
+          user: res.user,
+          token: res.accessToken,
+          refreshToken: res.refreshToken,
+        });
+        return res;
+      }
     })
     .catch(err => {
       console.log(err);
@@ -93,15 +57,15 @@ export const userLogin = form => dispatch => {
     });
 };
 
-export const userRegister = form => dispatch => {
+export const userRegister = state => dispatch => {
   dispatch({
     type: GET_REGISTR_REQUEST,
   });
-  generalRequest('auth/register', optionLoginRequestPost(form))
+  return registerRequest(state)
     .then(res => {
       dispatch({
         type: GET_REGISTR_SUCCESS,
-        user: { ...res.user, id: res.user._id },
+        user: res.user,
         token: res.accessToken,
         refreshToken: res.refreshToken,
       });
@@ -119,7 +83,7 @@ export const userLogout = () => dispatch => {
   dispatch({
     type: GET_LOGOUT_REQUEST,
   });
-  generalRequest('auth/logout', optionLogoutRequest())
+  return logoutRequest()
     .then(() => {
       dispatch({
         type: GET_LOGOUT_SUCCESS,
@@ -127,18 +91,82 @@ export const userLogout = () => dispatch => {
       deleteCookie('token');
     })
     .catch(err => {
-      console.log(err);
+      alert(err);
+      // console.log(err);
       dispatch({
         type: GET_LOGOUT_FAILED,
       });
     });
 };
 
-export const unitTestUser = testUser => dispatch => {
-  generalRequest('auth/user', optionTestUserPost(testUser)).then((res) => {
-    console.log(res);
-    dispatch({
-      type: CREATE_USER,
-    });
+export const getUser = () => dispatch => {
+  dispatch({
+    type: GET_USER_REQUEST,
   });
+  return getUserRequest(getCookie('token'))
+    .then(res => {
+      dispatch({
+        type: GET_USER_SUCCESS,
+        user: res.user,
+      });
+    })
+    .catch(err => {
+      alert(err);
+      // console.log(err);
+      dispatch({
+        type: GET_USER_FAILED,
+      });
+      dispatch({
+        type: REFRESH_TOKEN_REQUEST,
+      });
+    });
+};
+
+export const updateUser = state => dispatch => {
+  dispatch({
+    type: GET_USER_REQUEST,
+  });
+  updateUserRequest(state.email, state.name, getCookie('token'))
+    .then(res => {
+      if (res && res.success) {
+        dispatch({
+          type: GET_USER_SUCCESS,
+          user: res.user,
+        });
+      } else {
+        dispatch({
+          type: GET_USER_FAILED,
+        });
+      }
+    })
+    .catch(err => {
+      alert(err);
+      dispatch({
+        type: GET_USER_FAILED,
+      });
+    });
+};
+
+export const refreshToken = () => dispatch => {
+  dispatch({
+    type: REFRESH_TOKEN_REQUEST,
+  });
+  refreshTokenRequest()
+    .then(res => {
+      if (res && res.success) {
+        localStorage.setItem('refreshToken', res.refreshToken);
+        const token = res.accessToken.split('Bearer ')[1];
+        setCookie('token', token);
+        dispatch({
+          type: REFRESH_TOKEN_SUCCESS,
+        });
+      }
+    })
+    .catch(err => {
+      dispatch({
+        type: REFRESH_TOKEN_FAILED,
+      });
+      alert(err);
+      // console.error(err);
+    });
 };

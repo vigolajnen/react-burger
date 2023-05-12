@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import {
-  Button,
   Input,
   PasswordInput,
   EmailInput,
@@ -8,13 +7,14 @@ import {
 import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { userRegister } from '../services/actions/user';
+import { userRegister } from '../../services/actions/user';
 
-import styles from './page.module.css';
+import styles from './register.module.css';
 
 // страница регистрации.
 export function RegisterPage() {
   const isAuth = useSelector((state) => state.user.isAuth);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const [form, setValue] = useState({
@@ -27,7 +27,7 @@ export function RegisterPage() {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  let register = useCallback(
+  const register = useCallback(
     (e) => {
       e.preventDefault();
       dispatch(userRegister(form));
@@ -35,13 +35,13 @@ export function RegisterPage() {
     [dispatch, form],
   );
 
-  if (isAuth) {
-    return <Navigate to={'/'} />;
+  if (isAuth && !user) {
+    return <Navigate to={'/'}  replace />;
   }
 
   return (
     <main className={styles.main}>
-      <form className={styles.center}>
+      <form onSubmit={register} className={styles.center}>
         <h1>Регистрация</h1>
         <div
           className='mb-4'
@@ -80,16 +80,12 @@ export function RegisterPage() {
             value={form.password}
             name={'password'}
             extraClass='mb-2'
+            autoComplete='off'
           />
         </div>
-        <Button
-          onClick={register}
-          htmlType='button'
-          type='primary'
-          size='medium'
-        >
+        <button type='submit' className={styles.button_type_primary}>
           Зарегистрироваться
-        </Button>
+        </button>
       </form>
       <div>
         Уже зарегистрированы?
