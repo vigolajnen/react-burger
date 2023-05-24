@@ -7,7 +7,7 @@ const ModalBody = ({ children }) => {
 };
 
 ModalBody.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 export default ModalBody;

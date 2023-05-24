@@ -12,6 +12,11 @@
   text-align: center;
   cursor: pointer;
   overflow: hidden;
+ 
+}
+
+.itemLink {
+  text-decoration: none;
 }
 
 .title {

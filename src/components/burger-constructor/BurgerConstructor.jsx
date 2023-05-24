@@ -15,11 +15,15 @@ import {
   loadOrder,
 } from '../../services/actions/order.js';
 
+import { useNavigate } from 'react-router-dom';
+
 import stylesConstructor from './BurgerConstructor.module.css';
 
 const BurgerConstructor = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isModalOpen, openModal, closeModal } = useModal();
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   const orders = useSelector((state) => state.orders.orders);
 
@@ -49,8 +53,13 @@ const BurgerConstructor = () => {
   };
 
   const handleOpenModal = () => {
-    dispatch(loadOrder(ordersId(allOrderArr)));
-    openModal();
+    if (!isAuth) {
+      navigate('/login', { replace: true });
+    } else {
+      dispatch(loadOrder(ordersId(allOrderArr)));
+      openModal();
+    }
+    
   };
 
   return (

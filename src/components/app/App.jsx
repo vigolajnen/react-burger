@@ -1,26 +1,75 @@
-import React from 'react';
-import AppHeader from '../app-header/AppHeader';
-import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
-// dnd
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { LayoutPage } from '../layout-page/LayoutPage';
+
+import { HomePage } from '../../pages/home/home';
+import { LoginPage } from '../../pages/login/login';
+import { RegisterPage } from '../../pages/register/register';
+import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
+import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
+import { ProfilePage } from '../../pages/profile/profile';
+import { NotFoundPage } from '../../pages/not-found/not-found';
+import { ModalPage } from '../../pages/modal/modal';
+import { OrdersPage } from '../../pages/orders/orders';
+import ProtectedRoute from '../protected-route/protected-route';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { getUser } from '../../services/actions/user';
 import appStyles from './App.module.css';
 
 function App() {
+  const dispatch = useDispatch();
+
+  if (window.location.pathname === '/reset-password') {
+    window.location.href = '/forgot-password';
+  }
+
+  const isAuth = useSelector((state) => state.user.isAuth);
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(getUser());
+    }
+  }, [dispatch, isAuth]);
 
   return (
-    <div className={appStyles.app}>
-      <AppHeader className={appStyles.header} />
-      <main className={appStyles.main}>
-        <h1 className={appStyles.title}>Соберите бургер</h1>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      </main>
-    </div>
+    <BrowserRouter>
+      <div className={appStyles.app}>
+        <Routes>
+          <Route path='/' element={<LayoutPage />}>
+            <Route index element={<HomePage />} />
+
+            <Route
+              path='profile/*'
+              element={
+                <ProtectedRoute>
+                  <ProfilePage authUser={isAuth}>
+                    <Route path='orders' element={<OrdersPage />} />
+                  </ProfilePage>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path='profile'
+              element={
+                <ProtectedRoute authUser={isAuth}>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path='login' element={<LoginPage />} />
+            <Route path='register' element={<RegisterPage />} />
+            <Route path='forgot-password' element={<ForgotPasswordPage />} />
+            <Route path='reset-password' element={<ResetPasswordPage />} />
+            <Route path='*' element={<NotFoundPage />} />
+            <Route path='ingredients/:id' element={<ModalPage />} />
+          </Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
