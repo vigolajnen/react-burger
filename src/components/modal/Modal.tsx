@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import ModalHeader from '../modal-header/ModalHeader';
@@ -8,11 +7,17 @@ import ModalOverlay from '../modal-overlay/ModalOverlay';
 
 import stylesModal from './Modal.module.css';
 
+type Props = {
+  onClose: () => void;
+  children: JSX.Element;
+  title?: string;
+}
+
 const modalRoot = document.getElementById('modals');
 
-const Modal = ({ onClose, children, title }) => {
+const Modal = ({ onClose, children, title }: Props) => {
   useEffect(() => {
-    const handleClickEscape = (e) => {
+    const handleClickEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
       }
@@ -22,24 +27,19 @@ const Modal = ({ onClose, children, title }) => {
     return () => {
       window.removeEventListener('keydown', handleClickEscape);
     };
-  }, []);
+  }, [onClose]);
 
   return ReactDOM.createPortal(
     <>
       <div className={stylesModal.modal}>
-        <ModalHeader onClose={onClose}>{title}</ModalHeader>
+        <ModalHeader onClose={onClose} title={title}>{children}</ModalHeader>
         <ModalBody>{children}</ModalBody>
       </div>
       <ModalOverlay handleClick={onClose} />
     </>,
-    modalRoot,
+    modalRoot!
   );
 };
 
-Modal.proptypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  title: PropTypes.string,
-};
 
 export default Modal;

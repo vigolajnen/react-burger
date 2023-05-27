@@ -1,9 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import ingredientType from '../../utils/types';
 import stylesContent from './IngredientDetails.module.css';
 
-function IngredientDetails({ item }) {
+type Props = {
+  item: {
+    name: string;
+    image_large: string;
+    calories: number;
+    proteins: number;
+    fat: number;
+    carbohydrates: number;
+  };
+};
+
+function IngredientDetails({ item }: Props) {
   return (
     <>
       <img
@@ -33,9 +42,5 @@ function IngredientDetails({ item }) {
     </>
   );
 }
-
-IngredientDetails.propTypes = {
-  item: ingredientType,
-};
 
 export default IngredientDetails;
