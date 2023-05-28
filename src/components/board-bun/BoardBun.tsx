@@ -1,14 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { addItemConstructor } from '../../services/actions/constructor-items';
+import { TIngredient } from '../../utils/types';
 
-const BoardBun = ({ board, title, type, classBun, items }) => {
+type Props = {
+  board: string;
+  title: string;
+  type: string;
+  classBun: string;
+  items: Array<TIngredient>;
+}
+
+const BoardBun = ({ board, title, type, classBun, items }: Props) => {
   const dispatch = useDispatch();
 
-  const { ingredients } = useSelector((state) => state.ingredients);
+  const { ingredients } = useSelector((state: any) => state.ingredients);
 
   const [{ isHover, canDrop }, drop] = useDrop({
     accept: 'ingredients',
@@ -16,10 +24,10 @@ const BoardBun = ({ board, title, type, classBun, items }) => {
       isHover: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
-    drop: (itemId) => {
+    drop: (itemId: TIngredient) => {
       dispatch(
         addItemConstructor(
-          ingredients.filter((item) => item._id === itemId.id)[0],
+          ingredients.filter((item: TIngredient) => item._id === itemId.id)[0],
         ),
       );
     },
@@ -38,20 +46,20 @@ const BoardBun = ({ board, title, type, classBun, items }) => {
   };
 
   return (
-    <div ref={drop} board={board} style={{ border: getBackgroundColor() }}>
+    <div ref={drop} data-board={board} style={{ border: getBackgroundColor() }}>
       {items.length === 0 ? (
         <div className={classBun}>Выберите булку</div>
       ) : (
-        items.map((elem) => (
+        items.map((elem: TIngredient) => (
           <ConstructorElement
             key={elem.id}
-            data={elem}
-            type={type}
+            data-elem={elem}
+            data-type={type}
             isLocked={true}
             text={elem.name + title}
             price={elem.price}
             thumbnail={elem.image}
-            id={elem._id}
+            data-id={elem._id}
           />
         ))
       )}
@@ -59,12 +67,5 @@ const BoardBun = ({ board, title, type, classBun, items }) => {
   );
 };
 
-BoardBun.propTypes = {
-  items: PropTypes.array.isRequired,
-  board: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  classBun: PropTypes.string,
-};
 
 export default BoardBun;

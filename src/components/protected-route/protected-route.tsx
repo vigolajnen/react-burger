@@ -1,8 +1,13 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const ProtectedRoute = ({ authUser, children }) => {
-  const user = useSelector((state) => state.user.user);
+type Props = {
+  authUser: boolean;
+  children: JSX.Element;
+}; 
+
+const ProtectedRoute = ({ authUser, children }: Props) => {
+  const user = useSelector((state: any) => state.user.user);
   const location = useLocation();
 
   if (!authUser && !user) {

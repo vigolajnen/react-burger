@@ -25,11 +25,12 @@ function App() {
     window.location.href = '/forgot-password';
   }
 
-  const isAuth = useSelector((state) => state.user.isAuth);
+  const isAuth = useSelector((state: any) => state.user.isAuth) as boolean;
 
   useEffect(() => {
     if (isAuth) {
-      dispatch(getUser());
+      const user: any = getUser();
+      dispatch(user) as unknown as Promise<unknown>;
     }
   }, [dispatch, isAuth]);
 
@@ -43,10 +44,11 @@ function App() {
             <Route
               path='profile/*'
               element={
-                <ProtectedRoute>
-                  <ProfilePage authUser={isAuth}>
+                <ProtectedRoute authUser={isAuth}>
+                  <OrdersPage />
+                  {/* <ProfilePage>
                     <Route path='orders' element={<OrdersPage />} />
-                  </ProfilePage>
+                  </ProfilePage> */}
                 </ProtectedRoute>
               }
             />

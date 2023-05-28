@@ -8,6 +8,13 @@
   margin-left: 20px;
 }
 
+.list [data-board="bun"]:first-child div {
+  border-radius: 88px 88px 40px 40px;
+}
+.list [data-board="bun"]:last-child div {
+  border-radius: 40px 40px 88px 88px;
+}
+
 .inner {
   width: 100%;
   height: 350px;
@@ -143,3 +150,5 @@
 .border > div > div {
   max-width: 100%;
 }
+
+

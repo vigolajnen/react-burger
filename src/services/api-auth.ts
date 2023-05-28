@@ -1,7 +1,8 @@
 // import { getCookie, deleteCookie, setCookie } from './utils';
 import { generalRequest } from './api';
+import {TUser, TUserRequest} from '../utils/types';
 
-export const loginRequest = async ({ email, password }) => {
+export const loginRequest = async ({ email, password }: TUser) => {
   return await generalRequest(`auth/login`, {
     method: 'POST',
     headers: {
@@ -23,7 +24,7 @@ export const logoutRequest = () => {
   });
 };
 
-export const registerRequest = async ({ email, password, name }) => {
+export const registerRequest = async ({ email, password, name }: TUser) => {
   return await generalRequest(`auth/register`, {
     method: 'POST',
     headers: {
@@ -33,7 +34,7 @@ export const registerRequest = async ({ email, password, name }) => {
   });
 };
 
-export const getUserRequest = (token) => {
+export const getUserRequest = (token: string) => {
   return generalRequest(`auth/user`, {
     method: 'GET',
     headers: {
@@ -43,7 +44,7 @@ export const getUserRequest = (token) => {
   });
 };
 
-export const updateUserRequest = (email, name, token) => {
+export const updateUserRequest = ({email, name, token}: TUserRequest) => {
   return generalRequest(`auth/user`, {
     method: 'PATCH',
     headers: {
@@ -66,7 +67,7 @@ export const refreshTokenRequest = () => {
   });
 };
 
-export const forgotPasswordRequest = (email) => {
+export const forgotPasswordRequest = (email: string) => {
   return generalRequest(`password-reset`, {
     method: 'POST',
     mode: 'cors',
@@ -79,7 +80,7 @@ export const forgotPasswordRequest = (email) => {
   })
 };
 
-export const resetPasswordRequest = ({ password, token }) => {
+export const resetPasswordRequest = (password: string, token: string) => {
   return generalRequest(`password-reset/reset`, {
     method: 'POST',
     mode: 'cors',

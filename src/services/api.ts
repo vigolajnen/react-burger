@@ -2,7 +2,7 @@
 export const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
 // создаем функцию проверки ответа на `ok`
-export const checkResponse = res => {
+export const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json();
   }
@@ -11,7 +11,7 @@ export const checkResponse = res => {
 };
 
 // создаем функцию проверки на `success`
-export const checkSuccess = res => {
+export const checkSuccess = (res: any) => {
   if (res && res.success) {
     return res;
   }
@@ -21,7 +21,7 @@ export const checkSuccess = res => {
 
 // создаем универсальную фукнцию запроса с проверкой ответа и `success`
 // В вызов приходит `endpoint`(часть урла, которая идет после базового) и опции
-export const generalRequest = async (endpoint, options) => {
+export const generalRequest = async (endpoint: string, options?: any): Promise<any> => {
   // а также в ней базовый урл сразу прописывается, чтобы не дублировать в каждом запросе
   return await fetch(`${BASE_URL}${endpoint}`, options)
     .then(checkResponse)

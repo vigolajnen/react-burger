@@ -1,24 +1,30 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { addItemConstructor } from '../../services/actions/constructor-items';
 import DragIngredient from '../drag-ingredient/DragIngredient';
+import { TIngredient } from '../../utils/types';
 
-const BoardIngredients = ({ board, classIngredients, items }) => {
+type Props = {
+  board: string;
+  classIngredients: string;
+  items: Array<TIngredient>;
+}
+
+const BoardIngredients = ({ board, classIngredients, items }: Props) => {
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state) => state.ingredients);
+  const { ingredients } = useSelector((state: any) => state.ingredients);
 
   const [{ isHover }, drop] = useDrop({
     accept: 'ingredients',
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
-    drop: (itemId) => {
+    drop: (itemId: TIngredient) => {
       dispatch(
         addItemConstructor(
-          ingredients.filter((item) => item._id === itemId.id)[0],
+          ingredients.filter((item: TIngredient) => item._id === itemId.id)[0],
         ),
       );
     },
@@ -27,7 +33,7 @@ const BoardIngredients = ({ board, classIngredients, items }) => {
   const border = isHover ? '2px solid lightgreen' : '2px solid transparent';
 
   return (
-    <div ref={drop} board={board} style={{ border }}>
+    <div ref={drop} data-board={board} style={{ border }}>
       {items.length === 0 ? (
         <div className={classIngredients}>Выберите ингредиенты</div>
       ) : (
@@ -42,12 +48,6 @@ const BoardIngredients = ({ board, classIngredients, items }) => {
       )}
     </div>
   );
-};
-
-BoardIngredients.propTypes = {
-  classIngredients: PropTypes.string,
-  board: PropTypes.string.isRequired,
-  items: PropTypes.array.isRequired,
 };
 
 export default BoardIngredients;
