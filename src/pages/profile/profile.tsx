@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, ChangeEvent } from 'react';
 import {
   Input,
   PasswordInput,
@@ -12,34 +12,44 @@ import { userLogout } from '../../services/actions/user';
 
 import styles from './profile.module.css';
 
+type PropsActiveLink = {
+  isActive: boolean;
+};
+
 export function ProfilePage() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
   const activeLink = location.pathname.substring(1);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state: any) => state.user.user);
 
   const logout = useCallback(async () => {
-    dispatch(userLogout()).then(() => {
+    const logOut: any = userLogout();
+    dispatch(logOut).then(() => {
       navigate('/', { replace: true });
     });
   }, [dispatch, navigate]);
 
-  const [value, setValue] = useState(undefined && user ? 'ff' : user.name);
-  const [valueEmail, setValueEmail] = useState(undefined ? 'ff' : user.email);
+  const [value, setValue] = useState<string>(
+    undefined && user ? 'ff' : user.name,
+  );
+  const [valueEmail, setValueEmail] = useState<string>(
+    undefined ? 'ff' : user.email,
+  );
 
-  const [valuePassword, setValuePassword] = useState('1234567');
-  const onChange = (e) => {
+  const [valuePassword, setValuePassword] = useState<string>('1234567');
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setValueEmail(e.target.value);
   };
-  const onChangePassword = (e) => {
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setValuePassword(e.target.value);
   };
-  const setActiveLink = ({ isActive }) =>
+
+  const setActiveLink = ({ isActive }: PropsActiveLink) =>
     isActive ? styles.itemActive : styles.item;
 
   return (

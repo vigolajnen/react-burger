@@ -1,6 +1,6 @@
 // import { getCookie, deleteCookie, setCookie } from './utils';
 import { generalRequest } from './api';
-import {TUser, TUserRequest} from '../utils/types';
+import {TUser, TUserRequest, TResetPassword} from '../utils/types';
 
 export const loginRequest = async ({ email, password }: TUser) => {
   return await generalRequest(`auth/login`, {
@@ -80,7 +80,9 @@ export const forgotPasswordRequest = (email: string) => {
   })
 };
 
-export const resetPasswordRequest = (password: string, token: string) => {
+
+
+export const resetPasswordRequest = ({password, token}: TResetPassword) => {
   return generalRequest(`password-reset/reset`, {
     method: 'POST',
     mode: 'cors',

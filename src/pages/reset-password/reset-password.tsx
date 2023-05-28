@@ -15,17 +15,20 @@ export function ResetPasswordPage() {
 
   const [form, setValue] = useState({ password: '', token: '' });
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  let reset = (e) => {
+  let reset = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    resetPasswordRequest({ password: form.password, token: form.token }).then(
-      () => {
-        navigate('/', { replace: true });
-      },
-    );
+    (
+      resetPasswordRequest({
+        password: form.password,
+        token: form.token,
+      }) as unknown as Promise<unknown>
+    ).then(() => {
+      navigate('/', { replace: true });
+    });
   };
 
   return (
@@ -53,7 +56,7 @@ export function ResetPasswordPage() {
             type={'text'}
             placeholder={'Введите код из письма'}
             onChange={onChange}
-            icon={false}
+            // icon={false}
             value={form.token}
             name={'token'}
             error={false}

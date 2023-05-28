@@ -9,11 +9,16 @@ import { useSelector } from 'react-redux';
 
 import styles from './LayoutPage.module.css';
 
-const LayoutPage = () => {
-  const user = useSelector((state) => state.user.user);
-  const isAuth = useSelector((state) => state.user.isAuth);
+type PropsActiveLink = {
+  isActive: boolean;
+  isPending: any;
+}
 
-  const setActiveLink = ({ isActive, isPending }) =>
+const LayoutPage = () => {
+  const user = useSelector((state: any) => state.user.user);
+  const isAuth = useSelector((state: any) => state.user.isAuth);
+
+  const setActiveLink = ({ isActive, isPending }: PropsActiveLink) =>
     isPending ? 'pending' : isActive ? styles.active : styles.link;
 
   return (

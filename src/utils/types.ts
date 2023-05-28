@@ -26,3 +26,8 @@ export type TUserRequest = {
   email: string;
   token: string;
 };
+
+export type TResetPassword = {
+  password: string;
+  token: string;
+}

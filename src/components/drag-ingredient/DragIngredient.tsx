@@ -75,34 +75,6 @@ const DragIngredient = ({ item, id, index, count }: Props) => {
   });
   dragRef(drop(ref));
 
-  // return (
-  //   !isDrag && (
-  //     <div
-  //       ref={ref}
-
-  //       style={{ cursor: 'move' }}
-  //       id={id}
-  //       data-id={handlerId}
-  //     >
-  //       <DragIcon type='primary' />
-
-  //       <ConstructorElement
-  //         // index={index}
-  //         text={item.name}
-  //         price={item.price}
-  //         thumbnail={item.image}
-  //         data-count={count}
-  //         handleClose={() =>
-  //           dispatch({
-  //             type: DELETE_CONSTRUCTOR_ITEM,
-  //             payload: index,
-  //           })
-  //         }
-  //       />
-  //     </div>
-  //   )
-  // );
-
   return (
     <div ref={ref} style={{ cursor: 'move' }} id={id} data-id={handlerId}>
       <DragIcon type='primary' />
