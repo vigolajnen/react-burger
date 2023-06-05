@@ -1,8 +1,12 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import styles from './LayoutPage.module.css';
 
+type PropsActiveLink = {
+  isActive: boolean;
+}
+
 const LayoutProfilePage = () => {
-  const setActiveLink = ({ isActive }) => isActive ? styles.active : styles.link;
+  const setActiveLink = ({ isActive }: PropsActiveLink) => isActive ? styles.active : styles.link;
   return (
     <>
       <aside className={styles.sidebar}>

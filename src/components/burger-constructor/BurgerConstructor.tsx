@@ -18,24 +18,25 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import stylesConstructor from './BurgerConstructor.module.css';
+import { TIngredient } from '../../utils/types';
 
 const BurgerConstructor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isModalOpen, openModal, closeModal } = useModal();
-  const isAuth = useSelector((state) => state.user.isAuth);
+  const isAuth = useSelector((state: any) => state.user.isAuth);
 
-  const orders = useSelector((state) => state.orders.orders);
+  const orders = useSelector((state: any) => state.orders.orders);
 
   const ingredientsArr = useSelector(
-    (state) => state.constructorItemsList.constructorItems,
+    (state: any) => state.constructorItemsList.constructorItems,
   );
   const bunArr = useSelector(
-    (state) => state.constructorItemsList.constructorBun,
+    (state: any) => state.constructorItemsList.constructorBun,
   );
-  const boards = useSelector((state) => state.boardList.boards);
+  const boards = useSelector((state: any) => state.boardList.boards);
 
-  const allOrderArr = [...bunArr, ...ingredientsArr];
+  const allOrderArr: Array<TIngredient> = [...bunArr, ...ingredientsArr];
 
   useEffect(() => {
     dispatch({ type: GET_ORDER_PRICE });
@@ -43,11 +44,10 @@ const BurgerConstructor = () => {
       type: UPDATE_ORDERS,
       payload: [...bunArr, ...ingredientsArr],
     });
-    
   }, [dispatch, ingredientsArr, bunArr]);
 
-  const ordersId = (arr) => {
-    const res = [];
+  const ordersId = (arr: Array<TIngredient>) => {
+    const res: Array<string> = [];
     arr.forEach((item) => res.push(item._id));
     return res;
   };
@@ -56,10 +56,10 @@ const BurgerConstructor = () => {
     if (!isAuth) {
       navigate('/login', { replace: true });
     } else {
-      dispatch(loadOrder(ordersId(allOrderArr)));
+      const orderLoad: any = loadOrder(ordersId(allOrderArr));
+      dispatch(orderLoad);
       openModal();
     }
-    
   };
 
   return (

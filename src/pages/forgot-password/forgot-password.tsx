@@ -8,16 +8,16 @@ import styles from './forgot-password.module.css';
 // страница восстановления пароля.
 export function ForgotPasswordPage() {
   const navigate = useNavigate();
-  const isAuth = useSelector((state) => state.user.isAuth);
+  const isAuth = useSelector((state: any) => state.user.isAuth);
   const [form, setValue] = useState({ email: '' });
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const reset = (e) => {
+  const reset = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    forgotPasswordRequest(form.email)
+    (forgotPasswordRequest(form.email) as unknown as Promise<unknown>)
       .then(() => {
         navigate('/reset-password', { replace: true });
       })

@@ -6,15 +6,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { userRegister } from '../../services/actions/user';
-
 import styles from './register.module.css';
 
 // страница регистрации.
 export function RegisterPage() {
-  const isAuth = useSelector((state) => state.user.isAuth);
-  const user = useSelector((state) => state.user.user);
+  const isAuth = useSelector((state: any) => state.user.isAuth);
+  const user = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
 
   const [form, setValue] = useState({
@@ -23,20 +21,22 @@ export function RegisterPage() {
     password: '',
   });
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
   const register = useCallback(
-    (e) => {
+    (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
-      dispatch(userRegister(form));
+      const ff: any = userRegister(form);
+      (dispatch(ff) as unknown as Promise<unknown>).then(() => {});
+      // dispatch(userRegister(form));
     },
     [dispatch, form],
   );
 
   if (isAuth && !user) {
-    return <Navigate to={'/'}  replace />;
+    return <Navigate to={'/'} replace />;
   }
 
   return (
@@ -51,7 +51,7 @@ export function RegisterPage() {
             type={'text'}
             placeholder={'Имя'}
             onChange={onChange}
-            icon={false}
+            // icon={false}
             value={form.name}
             name={'name'}
             error={false}

@@ -7,29 +7,29 @@ import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userLogin } from '../../services/actions/user';
+import { TUser } from '../../utils/types';
 
 import styles from './login.module.css';
 
 // страница авторизации.
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.user.isAuth);
+  const isAuth = useSelector((state: any) => state.user.isAuth);
   const [form, setValue] = useState({ email: '', password: '' });
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const login = (e) => {
+  const login = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-
-    dispatch(userLogin(form));
+    const ff: any = userLogin(form);
+    (dispatch(ff) as unknown as Promise<unknown>).then(() => {});
   };
 
   if (isAuth) {
     return <Navigate to={'/'} />;
-  } 
-  
+  }
 
   return (
     <main className={styles.main}>

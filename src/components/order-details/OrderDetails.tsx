@@ -1,9 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import IconDone from '../../images/done.svg';
 import stylesDetails from './OrderDetails.module.css';
 
-function OrderDetails({ orderId }) {
+type Props = {
+  orderId: number;
+};
+
+function OrderDetails({ orderId }: Props) {
   return (
     <div className={stylesDetails.wrapper}>
       <div className={stylesDetails.header}>
@@ -23,9 +27,5 @@ function OrderDetails({ orderId }) {
     </div>
   );
 }
-
-OrderDetails.propTypes = {
-  orderId: PropTypes.number,
-};
 
 export default OrderDetails;

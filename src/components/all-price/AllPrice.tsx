@@ -1,12 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import allPriceStyles from './allPriceStyles.module.css';
 
-const AllPrice = ({ bun, ingredients }) => {
+import { TIngredient } from '../../utils/types';
+
+type Props = {
+  bun: Array<TIngredient>;
+  ingredients: Array<TIngredient>;
+}
+
+const AllPrice = ({ bun, ingredients }: Props) => {
   const sumBunPrice = bun.reduce((a, b) => a + b.price, 0) * 2;
   const sumIngredientsPrice = ingredients.reduce((a, b) => a + b.price, 0);
-  let sum = sumBunPrice + sumIngredientsPrice;
+  let sum: number = sumBunPrice + sumIngredientsPrice;
 
   if (isNaN(sum)) {
     sum = 0;
@@ -17,11 +23,6 @@ const AllPrice = ({ bun, ingredients }) => {
       <CurrencyIcon type='primary' />
     </div>
   );
-};
-
-AllPrice.propTypes = {
-  bun: PropTypes.array.isRequired,
-  ingredients: PropTypes.array.isRequired,
 };
 
 export default AllPrice;

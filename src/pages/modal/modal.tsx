@@ -6,17 +6,18 @@ import { generalRequest } from '../../services/api';
 
 import Modal from '../../components/modal/Modal';
 import IngredientDetails from '../../components/ingredient-details/IngredientDetails';
+import { TIngredient } from '../../utils/types';
 
 const ModalPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const ingredient = useSelector((state) => state.ingredients.ingredient);
+  const ingredient = useSelector((state: any) => state.ingredients.ingredient);
   const [item, setItem] = useState(ingredient);
 
   useEffect(() => {
-    generalRequest('ingredients').then((data) => {
-      setItem(data.data.find((elem) => elem._id === id));
+    (generalRequest('ingredients') as unknown as Promise<unknown>).then((data: any) => {
+      setItem(data.data.find((elem: TIngredient) => elem._id === id));
     });
   }, [id]);
 

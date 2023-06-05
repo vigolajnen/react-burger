@@ -1,31 +1,38 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-
 import IngredientItem from '../ingredient-item/IngredientItem';
 import { loadIngredients } from '../../services/actions/menu';
-
 import stylesIngredients from './BurgerIngredients.module.css';
+import { TIngredient } from '../../utils/types';
+
+type TIngredientId = Omit<TIngredient, '_id'> & {
+  _id: number;
+};
+
 
 const BurgerIngredients = () => {
-
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state) => state.ingredients);
-
-  const ingredientsRequest = useSelector((state) => state.ingredientsRequest);
-  const ingredientsFailed = useSelector((state) => state.ingredientsFailed);
+  const { ingredients } = useSelector((state: any) => state.ingredients);
+  const ingredientsRequest = useSelector(
+    (state: any) => state.ingredientsRequest,
+  );
+  const ingredientsFailed = useSelector(
+    (state: any) => state.ingredientsFailed,
+  );
   const constructorBun = useSelector(
-    (state) => state.constructorItemsList.constructorBun,
+    (state: any) => state.constructorItemsList.constructorBun,
   );
   const constructorItems = useSelector(
-    (state) => state.constructorItemsList.constructorItems,
+    (state: any) => state.constructorItemsList.constructorItems,
   );
 
   const countersItems = useMemo(() => {
-    const itemOrderCounters = [];
-    constructorItems.forEach((item) => {
-      if (!itemOrderCounters[item._id]) itemOrderCounters[item._id] = 0;
+    const itemOrderCounters: Array<number> = [];
+    
+    constructorItems.forEach((item: TIngredientId) => {
+      if (!itemOrderCounters[item._id])
+        itemOrderCounters[item._id] = 0;
       itemOrderCounters[item._id]++;
     });
     if (constructorBun && constructorBun.length > 0)
@@ -34,15 +41,16 @@ const BurgerIngredients = () => {
   }, [constructorItems, constructorBun]);
 
   useEffect(() => {
-    dispatch(loadIngredients());
+    const loadMenu: any = loadIngredients();
+    dispatch(loadMenu) as unknown as Promise<unknown>;
   }, [dispatch]);
 
-  const [current, setCurrent] = useState('Булки');
+  const [current, setCurrent] = useState<string>('Булки');
 
-  const activeTab = (tab) => {
+  const activeTab = (tab: string) => {
     setCurrent(tab);
 
-    document.querySelector('[data-title="' + tab + '"]').scrollIntoView({
+    document.querySelector('[data-title="' + tab + '"]')?.scrollIntoView({
       behavior: 'smooth',
       inline: 'start',
     });
@@ -51,32 +59,42 @@ const BurgerIngredients = () => {
   const onScrollActiveTab = () => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        entries.forEach((entry: any) => {
           if (entry.isIntersecting) {
             setCurrent(entry.target.title);
           }
         });
       },
       {
-        root: document.querySelector('.custom-scroll'),
+        root: document.querySelector('.custom-scroll') as Element,
         threshold: [0.2, 0.3, 0.5, 1],
       },
     );
     document
       .querySelectorAll('.custom-scroll > div')
-      .forEach((div) => observer.observe(div));
+      .forEach((div: Element) => observer.observe(div));
   };
 
   const tabLabels = ['Булки', 'Соусы', 'Начинки'];
 
-  const bunIngredients = ingredients.filter((item) => item.type === 'bun');
-  const sauceIngredients = ingredients.filter((item) => item.type === 'sauce');
-  const mainIngredients = ingredients.filter((item) => item.type === 'main');
+  const bunIngredients = ingredients.filter(
+    (item: TIngredient) => item.type === 'bun',
+  );
+  const sauceIngredients = ingredients.filter(
+    (item: TIngredient) => item.type === 'sauce',
+  );
+  const mainIngredients = ingredients.filter(
+    (item: TIngredient) => item.type === 'main',
+  );
 
   // массив объектов заголовок + список
   const tabsIngredientsArr = [];
+
   for (let i in tabLabels) {
-    const tabObj = {};
+    const tabObj: { title: string; list: any } = {
+      title: tabLabels[0],
+      list: bunIngredients,
+    };
     tabObj.title = tabLabels[i];
     if (tabLabels[i] === 'Булки') {
       tabObj.list = bunIngredients;
@@ -121,18 +139,18 @@ const BurgerIngredients = () => {
                 >
                   {wrapItem.title}
                 </h3>
-                {wrapItem.list.map((item) => (
-                  <IngredientItem
-                    key={item._id}
-                    id={item._id}
-                    item={item}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                    type={item.type}
-                    count={countersItems[item._id]}
-                  />
-                ))}
+                {wrapItem.list.map((item: any) => { 
+                  return (
+                    <IngredientItem
+                      key={item._id}
+                      id={item._id}
+                      item={item}
+                      count={countersItems[item._id]}
+                      type={undefined}
+                      props={undefined}
+                    />
+                  );
+                })}
               </div>
             ))}
           </div>
