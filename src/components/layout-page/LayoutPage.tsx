@@ -5,7 +5,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks';
 
 import styles from './LayoutPage.module.css';
 
@@ -15,8 +15,8 @@ type PropsActiveLink = {
 }
 
 const LayoutPage = () => {
-  const user = useSelector((state: any) => state.user.user);
-  const isAuth = useSelector((state: any) => state.user.isAuth);
+  const user = useSelector((state) => state.user.user);
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   const setActiveLink = ({ isActive, isPending }: PropsActiveLink) =>
     isPending ? 'pending' : isActive ? styles.active : styles.link;

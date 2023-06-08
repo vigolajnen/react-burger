@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../hooks';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from '../ingredient-item/IngredientItem';
 import { loadIngredients } from '../../services/actions/menu';
@@ -13,18 +13,18 @@ type TIngredientId = Omit<TIngredient, '_id'> & {
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state: any) => state.ingredients);
+  const { ingredients } = useSelector((state) => state.ingredients);
   const ingredientsRequest = useSelector(
-    (state: any) => state.ingredientsRequest,
+    (state) => state.ingredients.ingredientsRequest,
   );
   const ingredientsFailed = useSelector(
-    (state: any) => state.ingredientsFailed,
+    (state) => state.ingredients.ingredientsFailed,
   );
   const constructorBun = useSelector(
-    (state: any) => state.constructorItemsList.constructorBun,
+    (state) => state.constructorItemsList.constructorBun,
   );
   const constructorItems = useSelector(
-    (state: any) => state.constructorItemsList.constructorItems,
+    (state) => state.constructorItemsList.constructorItems,
   );
 
   const countersItems = useMemo(() => {

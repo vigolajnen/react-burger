@@ -14,9 +14,21 @@ import {
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILED,
-} from '../actions/user';
+} from '../constants';
 
-const initialState = {
+import { TUserActions } from '../actions/user';
+
+export type TUserItemsState = {
+  user: any,
+  token: any,
+  refreshToken: any,
+  isAuth: Boolean,
+  userRequest: Boolean,
+  userFailed: Boolean,
+  refreshTokenRequest: Boolean,
+};
+
+const initialState: TUserItemsState = {
   user: null,
   token: null,
   refreshToken: null,
@@ -26,7 +38,7 @@ const initialState = {
   refreshTokenRequest: false,
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions) => {
   switch (action.type) {
     case GET_REGISTR_REQUEST: {
       return {

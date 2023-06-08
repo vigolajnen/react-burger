@@ -5,14 +5,14 @@ import {
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks';
 import { userRegister } from '../../services/actions/user';
 import styles from './register.module.css';
 
 // страница регистрации.
 export function RegisterPage() {
-  const isAuth = useSelector((state: any) => state.user.isAuth);
-  const user = useSelector((state: any) => state.user.user);
+  const isAuth = useSelector((state) => state.user.isAuth);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const [form, setValue] = useState({

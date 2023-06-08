@@ -4,11 +4,8 @@ import {
   ConstructorElement,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import {
-  DELETE_CONSTRUCTOR_ITEM,
-  SORT_CONSTRUCTOR_ITEMS,
-} from '../../services/actions/constructor-items';
-import { useDispatch } from 'react-redux';
+import { DELETE_CONSTRUCTOR_ITEM, SORT_CONSTRUCTOR_ITEMS } from '../../services/constants';
+import { useDispatch } from '../../hooks';
 import { useDrag, useDrop } from 'react-dnd';
 import { Identifier } from 'dnd-core';
 import { TIngredient } from '../../utils/types';
@@ -64,7 +61,7 @@ const DragIngredient = ({ item, id, index, count }: Props) => {
     },
   });
 
-  const [{ isDrag }, dragRef] = useDrag({
+  const [, dragRef] = useDrag({
     type: 'sortItems',
     item: () => {
       return { item, index };

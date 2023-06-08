@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../hooks';
 
 import Modal from '../modal/Modal';
 import { useModal } from '../../hooks/useModal';
@@ -10,10 +10,9 @@ import AllPrice from '../all-price/AllPrice';
 import BoardBun from '../board-bun/BoardBun';
 import BoardIngredients from '../board-ingredients/BoardIngredients';
 import {
-  GET_ORDER_PRICE,
-  UPDATE_ORDERS,
   loadOrder,
-} from '../../services/actions/order.js';
+} from '../../services/actions/order';
+import { UPDATE_ORDERS,  GET_ORDER_PRICE } from '../../services/constants';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -24,17 +23,17 @@ const BurgerConstructor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isModalOpen, openModal, closeModal } = useModal();
-  const isAuth = useSelector((state: any) => state.user.isAuth);
+  const isAuth = useSelector((state) => state.user.isAuth);
 
-  const orders = useSelector((state: any) => state.orders.orders);
+  const orders = useSelector((state) => state.orders.orders);
 
   const ingredientsArr = useSelector(
-    (state: any) => state.constructorItemsList.constructorItems,
+    (state) => state.constructorItemsList.constructorItems,
   );
   const bunArr = useSelector(
-    (state: any) => state.constructorItemsList.constructorBun,
+    (state) => state.constructorItemsList.constructorBun,
   );
-  const boards = useSelector((state: any) => state.boardList.boards);
+  const boards = useSelector((state) => state.boardList.boards);
 
   const allOrderArr: Array<TIngredient> = [...bunArr, ...ingredientsArr];
 
@@ -56,8 +55,8 @@ const BurgerConstructor = () => {
     if (!isAuth) {
       navigate('/login', { replace: true });
     } else {
-      const orderLoad: any = loadOrder(ordersId(allOrderArr));
-      dispatch(orderLoad);
+      dispatch(loadOrder(allOrderArr));
+      ordersId(allOrderArr);
       openModal();
     }
   };

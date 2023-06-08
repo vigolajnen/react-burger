@@ -13,7 +13,7 @@ import { NotFoundPage } from '../../pages/not-found/not-found';
 import { ModalPage } from '../../pages/modal/modal';
 import { OrdersPage } from '../../pages/orders/orders';
 import ProtectedRoute from '../protected-route/protected-route';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../hooks';
 
 import { getUser } from '../../services/actions/user';
 import appStyles from './App.module.css';

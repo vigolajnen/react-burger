@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { generalRequest } from '../../services/api';
@@ -12,7 +12,7 @@ const ModalPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const ingredient = useSelector((state: any) => state.ingredients.ingredient);
+  const ingredient = useSelector((state) => state.ingredients.ingredient);
   const [item, setItem] = useState(ingredient);
 
   useEffect(() => {

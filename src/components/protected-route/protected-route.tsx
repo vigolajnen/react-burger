@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks';
 
 type Props = {
   authUser: boolean;
@@ -7,7 +7,7 @@ type Props = {
 }; 
 
 const ProtectedRoute = ({ authUser, children }: Props) => {
-  const user = useSelector((state: any) => state.user.user);
+  const user = useSelector((state) => state.user.user);
   const location = useLocation();
 
   if (!authUser && !user) {

@@ -6,7 +6,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../hooks';
 
 import { userLogout } from '../../services/actions/user';
 
@@ -22,11 +22,11 @@ export function ProfilePage() {
   const navigate = useNavigate();
 
   const activeLink = location.pathname.substring(1);
-  const user = useSelector((state: any) => state.user.user);
+  const user = useSelector((state) => state.user.user);
 
   const logout = useCallback(async () => {
-    const logOut: any = userLogout();
-    dispatch(logOut).then(() => {
+
+    dispatch(userLogout()).then(() => {
       navigate('/', { replace: true });
     });
   }, [dispatch, navigate]);

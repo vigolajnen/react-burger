@@ -5,13 +5,13 @@ import allPriceStyles from './allPriceStyles.module.css';
 import { TIngredient } from '../../utils/types';
 
 type Props = {
-  bun: Array<TIngredient>;
-  ingredients: Array<TIngredient>;
+  bun: Array<TIngredient> | any;
+  ingredients: Array<TIngredient> | any;
 }
 
 const AllPrice = ({ bun, ingredients }: Props) => {
-  const sumBunPrice = bun.reduce((a, b) => a + b.price, 0) * 2;
-  const sumIngredientsPrice = ingredients.reduce((a, b) => a + b.price, 0);
+  const sumBunPrice = bun.reduce((a: any, b: any) => a + b.price, 0) * 2;
+  const sumIngredientsPrice = ingredients.reduce((a: any, b: any) => a + b.price, 0);
   let sum: number = sumBunPrice + sumIngredientsPrice;
 
   if (isNaN(sum)) {

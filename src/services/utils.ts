@@ -6,10 +6,10 @@ export function getCookie(name: string) {
         '=([^;]*)',
     ),
   );
-  return matches ? decodeURIComponent(matches[1]) : undefined;
+  return matches ? decodeURIComponent(matches[1]) : 'undefined';
 }
 
-export function setCookie(name: string, value: string, options: any) {
+export function setCookie(name: string, value: string, options?: any) {
   // props = {
   //   path: '/',
   //   ...props

@@ -4,17 +4,16 @@ import {
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks';
 
 import { userLogin } from '../../services/actions/user';
-import { TUser } from '../../utils/types';
 
 import styles from './login.module.css';
 
 // страница авторизации.
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector((state: any) => state.user.isAuth);
+  const isAuth = useSelector((state) => state.user.isAuth);
   const [form, setValue] = useState({ email: '', password: '' });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

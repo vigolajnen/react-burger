@@ -2,14 +2,24 @@ import {
   DELETE_CONSTRUCTOR_ITEM,
   ADD_CONSTRUCTOR_ITEM,
   SORT_CONSTRUCTOR_ITEMS,
-} from '../actions/constructor-items';
+} from '../constants';
+import { TIngredient } from '../../utils/types';
+import { TConstructorItemsActions } from '../actions/constructor-items';
 
-const initialState = {
+export type TConstructorItemsState = {
+  constructorBun: ReadonlyArray<TIngredient> | any;
+  constructorItems: ReadonlyArray<TIngredient> | any;
+};
+
+const initialState: TConstructorItemsState = {
   constructorBun: [],
   constructorItems: [],
 };
 
-export const constructorItemsReducer = (state = initialState, action) => {
+export const constructorItemsReducer = (
+  state = initialState,
+  action: TConstructorItemsActions,
+): TConstructorItemsState => {
   switch (action.type) {
     case DELETE_CONSTRUCTOR_ITEM: {
       return {
@@ -20,10 +30,22 @@ export const constructorItemsReducer = (state = initialState, action) => {
         ],
       };
     }
+    case SORT_CONSTRUCTOR_ITEMS: {
+      const constructorItems = [...state.constructorItems];
+      constructorItems.splice(
+        action.payload.to,
+        0,
+        constructorItems.splice(action.payload.from, 1)[0],
+      );
+      return {
+        ...state,
+        constructorItems,
+      };
+    }
     case ADD_CONSTRUCTOR_ITEM: {
       if (action.payload.type === 'bun') {
         if (state.constructorBun.length !== 0) {
-          if (state.constructorBun.name === action.payload.name) {
+          if (state.constructorBun[0].name === action.payload.name) {
             return { ...state };
           }
           return {
@@ -44,18 +66,6 @@ export const constructorItemsReducer = (state = initialState, action) => {
           constructorItems: [...state.constructorItems, action.payload],
         };
       }
-    }
-    case SORT_CONSTRUCTOR_ITEMS: {
-      const constructorItems = [...state.constructorItems];
-      constructorItems.splice(
-        action.payload.to,
-        0,
-        constructorItems.splice(action.payload.from, 1)[0],
-      );
-      return {
-        ...state,
-        constructorItems,
-      };
     }
     default: {
       return state;
