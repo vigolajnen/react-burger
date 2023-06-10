@@ -1,5 +1,6 @@
 // 1 раз объявляем базовый урл
-export const BASE_URL = 'https://norma.nomoreparties.space/api/';
+import { BASE_URL } from '../utils/constants';
+// export const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
 // создаем функцию проверки ответа на `ok`
 export const checkResponse = (res: Response) => {

@@ -11,7 +11,7 @@ import { TGetIngredientsActions } from '../actions/menu';
 import { TModalIngredientActions } from '../actions/modal';
 
 export type TGetIngredientsState = {
-  ingredients: ReadonlyArray<TIngredient>;
+  ingredients: Array<TIngredient>;
   ingredientsRequest: Boolean;
   ingredientsFailed: Boolean;
   ingredient: TIngredient | any;

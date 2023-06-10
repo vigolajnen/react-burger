@@ -28,31 +28,6 @@ const IngredientItem = ({ item, id, count }: Props) => {
     }),
   });
 
-  // return (
-  //   !isDrag &&  (
-  //     <Link
-  //       // item={item}
-  //       state={{item: item}}
-  //       to={`/ingredients/${item._id}`}
-  //       className={stylesItem.item}
-  //       id={item._id}
-  //       data-id={item._id}
-  //       data-value={item.type}
-  //       ref={dragRef}
-  //       style={{ cursor: 'move' }}
-  //     >
-  //       {count > 0 && <Counter count={count} size='default' extraClass='m-1' />}
-
-  //       <img className={stylesItem.pic} src={item.image} alt={item.name} />
-  //       <div className={stylesItem.price}>
-  //         <span>{item.price}</span>
-  //         <CurrencyIcon type='primary' />
-  //       </div>
-  //       <h3 className={stylesItem.title}>{item.name}</h3>
-  //     </Link>
-  //   )
-  // );
-
   return (
     <Link
       // item={item}

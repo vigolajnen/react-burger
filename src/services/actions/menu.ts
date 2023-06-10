@@ -5,6 +5,7 @@ import {
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_FAILED
 } from '../constants';
+import { AppDispatch } from '../types';
 
 // Типизация экшенов
 export interface IGetIngredientsRequestAction {
@@ -26,7 +27,7 @@ export type TGetIngredientsActions =
   | IGetIngredientsSuccessAction
   | IgetIngredientsFaildeAction;
 
-export const loadIngredients = () => (dispatch: any) => {
+export const loadIngredients = () => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_INGREDIENTS_REQUEST,
   });

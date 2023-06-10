@@ -5,6 +5,7 @@ import { menuReducer } from './menu';
 import { boardsReducer } from './boards';
 import { constructorItemsReducer } from './constructor-items';
 import { userReducer } from './user';
+import { wsReducer } from './wsReducer';
 
 export const rootReducer = combineReducers({
   orders: orderReducer,
@@ -12,4 +13,5 @@ export const rootReducer = combineReducers({
   boardList: boardsReducer,
   constructorItemsList: constructorItemsReducer,
   user: userReducer,
+  feedList: wsReducer
 });

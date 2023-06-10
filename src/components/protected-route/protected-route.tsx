@@ -2,7 +2,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from '../../hooks';
 
 type Props = {
-  authUser: boolean;
+  authUser: boolean | any;
   children: JSX.Element;
 }; 
 

@@ -27,6 +27,7 @@ import {
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILED,
 } from '../constants';
+import { AppDispatch } from '../types';
 
 // Типизация экшенов
 export interface IGetRegistrRequestAction {
@@ -100,7 +101,7 @@ export type TUserActions =
   | IRefreshTokenSuccessAction
   | IRefreshTokenFailedAction;
 
-export const userLogin = (state: any) => (dispatch: any) => {
+export const userLogin = (state: TUser) => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_LOGIN_REQUEST,
   });
@@ -128,7 +129,7 @@ export const userLogin = (state: any) => (dispatch: any) => {
     });
 };
 
-export const userRegister = (state: any) => (dispatch: any) => {
+export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_REGISTR_REQUEST,
   });
@@ -150,7 +151,7 @@ export const userRegister = (state: any) => (dispatch: any) => {
     });
 };
 
-export const userLogout = () => (dispatch: any) => {
+export const userLogout = () => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_LOGOUT_REQUEST,
   });
@@ -170,7 +171,7 @@ export const userLogout = () => (dispatch: any) => {
     });
 };
 
-export const getUser = () => (dispatch: any) => {
+export const getUser = () => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_USER_REQUEST,
   });
@@ -193,7 +194,7 @@ export const getUser = () => (dispatch: any) => {
     });
 };
 
-export const updateUser = (state: TUserRequest) => (dispatch: any) => {
+export const updateUser = (state: TUserRequest) => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_USER_REQUEST,
   });
@@ -222,7 +223,7 @@ export const updateUser = (state: TUserRequest) => (dispatch: any) => {
     });
 };
 
-export const refreshToken = () => (dispatch: any) => {
+export const refreshToken = () => (dispatch: AppDispatch) => {
   dispatch({
     type: REFRESH_TOKEN_REQUEST,
   });

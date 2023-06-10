@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+
 import { forgotPasswordRequest } from '../../services/api-auth';
 import styles from './forgot-password.module.css';
+import { useSelector } from '../../hooks';
 
 // страница восстановления пароля.
 export function ForgotPasswordPage() {
   const navigate = useNavigate();
-  const isAuth = useSelector((state: any) => state.user.isAuth);
+  const isAuth = useSelector((state) => state.user.isAuth);
   const [form, setValue] = useState({ email: '' });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

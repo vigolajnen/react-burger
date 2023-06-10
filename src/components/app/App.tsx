@@ -12,11 +12,13 @@ import { ProfilePage } from '../../pages/profile/profile';
 import { NotFoundPage } from '../../pages/not-found/not-found';
 import { ModalPage } from '../../pages/modal/modal';
 import { OrdersPage } from '../../pages/orders/orders';
+import { FeedPage } from '../../pages/feed/feed';
 import ProtectedRoute from '../protected-route/protected-route';
 import { useSelector, useDispatch } from '../../hooks';
 
 import { getUser } from '../../services/actions/user';
 import appStyles from './App.module.css';
+import { ModalOrderPage } from '../../pages/modal/modalOrder';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,7 +27,7 @@ function App() {
     window.location.href = '/forgot-password';
   }
 
-  const isAuth = useSelector((state: any) => state.user.isAuth) as boolean;
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   useEffect(() => {
     if (isAuth) {
@@ -64,10 +66,13 @@ function App() {
 
             <Route path='login' element={<LoginPage />} />
             <Route path='register' element={<RegisterPage />} />
+            <Route path='feed' element={<FeedPage />} />
             <Route path='forgot-password' element={<ForgotPasswordPage />} />
             <Route path='reset-password' element={<ResetPasswordPage />} />
             <Route path='*' element={<NotFoundPage />} />
             <Route path='ingredients/:id' element={<ModalPage />} />
+            
+            <Route path='feed/:id' element={<ModalOrderPage />}  />
           </Route>
         </Routes>
       </div>
