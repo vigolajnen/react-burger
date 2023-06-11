@@ -23,6 +23,7 @@ export function ProfilePage() {
 
   const activeLink = location.pathname.substring(1);
   const user = useSelector((state) => state.user.user);
+  console.log(activeLink);
 
   const logout = useCallback(async () => {
 
@@ -71,7 +72,7 @@ export function ProfilePage() {
 
       <div className={styles.content}>
         {activeLink === 'profile' ? (
-          <form className={styles.content}>
+          <form className={styles.form}>
             <div
               className='mb-4'
               style={{ display: 'flex', flexDirection: 'column' }}

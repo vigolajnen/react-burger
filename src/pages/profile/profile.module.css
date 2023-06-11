@@ -45,6 +45,13 @@
 
 .content {
   width: 60%;
+  min-height: 80vh;
+  margin: auto;
+  display: flex;
+}
+
+.form {
+  margin: auto;
 }
 
 .title {

@@ -63,6 +63,19 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path='profile'
+              element={
+                <ProtectedRoute authUser={isAuth}>
+                  <OrdersPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path='profile' element={<ProfilePage />}>
+              <Route path='orders' element={<OrdersPage />} />
+            </Route>
+
 
             <Route path='login' element={<LoginPage />} />
             <Route path='register' element={<RegisterPage />} />
@@ -71,8 +84,9 @@ function App() {
             <Route path='reset-password' element={<ResetPasswordPage />} />
             <Route path='*' element={<NotFoundPage />} />
             <Route path='ingredients/:id' element={<ModalPage />} />
-            
-            <Route path='feed/:id' element={<ModalOrderPage />}  />
+
+            <Route path='feed/:id' element={<ModalOrderPage />} />
+            <Route path='orders/:id' element={<ModalOrderPage />} />
           </Route>
         </Routes>
       </div>

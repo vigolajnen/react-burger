@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 import classNames from 'classnames';
 import { loadIngredients } from '../../services/actions/menu';
+import { dayFormat } from '../order-item/OrderItem';
 
 type Props = {
   item: {
@@ -37,17 +38,6 @@ const OrderItemDetails: FC<IOrderItemDetails> = ({ order }) => {
   let count = 1;
 
   const resPrice = res.reduce((a: any, b: any) => a + b.price, 0);
-
-  const dayFormat = (orderDay: string) => {
-    const day = '';
-    const today = new Date().toISOString().slice(0, 10);
-    const time = orderDay.slice(11, 16);
-
-    if (today === orderDay.slice(0, 10)) {
-      return 'Сегодня' + ', ' + time;
-    }
-    return day + ', ' + time;
-  };
 
   const orderStatus = (status: string) => {
     if (status === 'done') {

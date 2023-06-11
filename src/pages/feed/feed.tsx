@@ -10,29 +10,36 @@ import {
 } from '../../services/actions/wsActions';
 
 import { FeedList } from '../../components/feed-list/FeedList';
+import { useLocation } from 'react-router-dom';
 
 export const FeedPage = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { orders, total, totalToday } = useSelector((store) => store.feedList);
 
   const ordersDone = orders.filter((item) => item.status === 'done');
   const ordersDoneMax = ordersDone.slice(0, 20);
   // const ordersCreate = orders.filter((item) => item.status === 'create');
 
+  const isAuth = useSelector((state) => state.user.isAuth);
+  const activeLink = location.pathname.substring(1);
+
   useEffect(() => {
     dispatch(wsConnectionStart(WS_URL_ALL));
+    if (isAuth && activeLink === 'feed') {
+      dispatch(wsConnectionStart(WS_URL_ALL));
+    }
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, [dispatch]);
-
+  }, [dispatch, wsConnectionClosed]);
 
   return (
     <main className={styles.main}>
       <div>
         <h1 className={styles.title}>Лента заказов</h1>
         <div className={classNames('custom-scroll', `${styles.items}`)}>
-          <FeedList orders={orders} />
+          {orders.length > 0 ? <FeedList orders={orders} />: 'Загрузка ...'}
         </div>
       </div>
       <div>

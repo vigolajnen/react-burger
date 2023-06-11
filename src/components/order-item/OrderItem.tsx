@@ -6,19 +6,37 @@ import { FeedOrder } from '../../services/types/live-orders';
 import { useDispatch, useSelector } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 import { loadIngredients } from '../../services/actions/menu';
+import { useLocation } from 'react-router-dom';
 
 interface IOrderItem {
   order: FeedOrder;
 }
+
+export const dayFormat = (orderDay: string) => {
+  const today = new Date().toISOString().slice(0, 10);
+  const time = orderDay.slice(11, 16);
+  const resCountDay = +today.slice(8, 10) - +orderDay.slice(8, 10);
+
+  if (resCountDay === 0) {
+    return 'Сегодня' + ', ' + time;
+  } else if (resCountDay === 1) {
+    return resCountDay + ' день назад, ' + time;
+  } else if (resCountDay === 2 || resCountDay === 3 || resCountDay === 4) {
+    return resCountDay + ' дня назад, ' + time;
+  }
+  return resCountDay + ' дней назад, ' + time;
+};
 
 const OrderItem: FC<IOrderItem> = ({ order }) => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.user.isAuth);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const orderIngredients = order.ingredients;
+  const location = useLocation();
+  const urlOrder = location.pathname.substring(1);
 
   useEffect(() => {
-    dispatch(loadIngredients())
+    dispatch(loadIngredients());
   }, [dispatch]);
 
   const res = ingredients.filter(
@@ -35,17 +53,16 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
 
   const resPrice = res.reduce((a: any, b: any) => a + b.price, 0);
 
-  const dayFormat = (orderDay: string) => {
-    const day = '';
-    const today = new Date().toISOString().slice(0, 10);
-    const time = orderDay.slice(11, 16);
-
-    if (today === orderDay.slice(0, 10)) {
-      return 'Сегодня' + ', ' + time;
+  const orderStatus = (status: string) => {
+    if (status === 'done') {
+      return 'Выполнено';
     }
-    return day + ', ' + time;
+    return status;
   };
 
+  // if (isAuth) {
+  //   console.log(order._id);
+  // }
 
   return (
     <Link
@@ -56,7 +73,12 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
         <div className={styles.number}>#{order.number}</div>
         <div className={styles.time}>{dayFormat(order.createdAt)}</div>
       </div>
-      <h1 className={styles.title}>{order.name}</h1>
+      <div className={styles.titleAndStatus}>
+        <h3 className={styles.title}>{order.name}</h3>
+        {urlOrder === 'profile/orders' && (
+          <div className={styles.status}>{orderStatus(order.status)}</div>
+        )}
+      </div>
       <div className={styles.body}>
         <div className={styles.infoList}>
           <ul className={styles.list}>

@@ -19,17 +19,17 @@ type Props = {
 
 const ModalOrderPage = () => {
   const dispatch = useDispatch();
-  const authUser = false;
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   useEffect(() => {
     const accessToken = getCookie('accessToken')?.split('Bearer ')[1];
-    authUser
+    isAuth
       ? dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`))
       : dispatch(wsConnectionStart(WS_URL_ALL));
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, [authUser]);
+  }, [isAuth]);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -37,6 +37,7 @@ const ModalOrderPage = () => {
   const orders = useSelector((store) => store.feedList.orders);
   const order = orders.find((item: FeedOrder) => item._id === id);
 
+  console.log(order);
   return (
     <>
       {order &&
