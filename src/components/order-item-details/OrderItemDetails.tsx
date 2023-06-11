@@ -35,16 +35,26 @@ const OrderItemDetails: FC<IOrderItemDetails> = ({ order }) => {
     (item) => !orderIngredients.includes(item._id),
   );
 
-  let count = 1;
+  function counter(ingredient: TIngredient) {
+    let counter = 0;
+    ingredients.forEach((el) => {
+      if (el._id === ingredient._id) {
+        counter += 1;
+      }
+    })
+    return counter;
+  }
 
   const resPrice = res.reduce((a: any, b: any) => a + b.price, 0);
 
   const orderStatus = (status: string) => {
     if (status === 'done') {
-      return 'Выполнено'
+      return 'Выполнено';
+    } else if (status = 'created') {
+      return 'Создан';
     }
-    return status;
-  }
+    return 'Готовится';
+  };
 
   return (
     <section className={stylesContent.wrapper}>
@@ -67,7 +77,7 @@ const OrderItemDetails: FC<IOrderItemDetails> = ({ order }) => {
               <h3 className={stylesContent.liTitle}>{item.name}</h3>
               <div className={stylesContent.liPrice}>
                 <span>
-                  {count} x {item.price}
+                  {counter(item)} x {item.price}
                 </span>
                 <CurrencyIcon type='primary' />
               </div>

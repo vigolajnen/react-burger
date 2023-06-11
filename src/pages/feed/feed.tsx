@@ -18,8 +18,9 @@ export const FeedPage = () => {
   const { orders, total, totalToday } = useSelector((store) => store.feedList);
 
   const ordersDone = orders.filter((item) => item.status === 'done');
+  const ordersNotDone = orders.filter((item) => item.status !== 'done');
   const ordersDoneMax = ordersDone.slice(0, 20);
-  // const ordersCreate = orders.filter((item) => item.status === 'create');
+  const ordersNotDoneMax = ordersNotDone.slice(0, 20);
 
   const isAuth = useSelector((state) => state.user.isAuth);
   const activeLink = location.pathname.substring(1);
@@ -39,7 +40,7 @@ export const FeedPage = () => {
       <div>
         <h1 className={styles.title}>Лента заказов</h1>
         <div className={classNames('custom-scroll', `${styles.items}`)}>
-          {orders.length > 0 ? <FeedList orders={orders} />: 'Загрузка ...'}
+          {orders.length > 0 ? <FeedList orders={orders} /> : 'Загрузка ...'}
         </div>
       </div>
       <div>
@@ -49,22 +50,30 @@ export const FeedPage = () => {
             <div className={styles.ListCol}>
               <ul className={styles.infoOrdersListReady}>
                 {ordersDoneMax.slice(0, 9).map((item) => (
-                  <li key={item._id}>#{item.number}</li>
+                  <li key={item._id}>{item.number}</li>
                 ))}
               </ul>
               <ul className={styles.infoOrdersListReady}>
                 {ordersDoneMax.slice(10, 19).map((item) => (
-                  <li key={item._id}>#{item.number}</li>
+                  <li key={item._id}>{item.number}</li>
                 ))}
               </ul>
             </div>
           </div>
           <div>
             <h2 className={styles.infoOrdersTitle}>В работе:</h2>
-            <ul className={styles.infoOrdersList}>
-              <li>034538</li>
-              <li>034538</li>
-            </ul>
+            <div className={styles.ListCol}>
+              <ul className={styles.infoOrdersList}>
+                {ordersNotDoneMax.slice(0, 9).map((item) => (
+                  <li key={item._id}>{item.number}</li>
+                ))}
+              </ul>
+              <ul className={styles.infoOrdersList}>
+                {ordersNotDoneMax.slice(10, 19).map((item) => (
+                  <li key={item._id}>{item.number}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
         <div>

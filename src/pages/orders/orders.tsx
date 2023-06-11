@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from '../../hooks';
-import { WS_URL, WS_URL_ALL } from '../../utils/constants';
+import { WS_URL } from '../../utils/constants';
 import {
   wsConnectionClosed,
   wsConnectionStart,
@@ -34,7 +34,7 @@ export function OrdersPage() {
     <div className={styles.contentOrder}>
       <div className={classNames('custom-scroll', `${styles.items}`)}>
         {!orders && 'Загрузка ...'}
-        {orders.length > 0 && token ? (
+        {orders && token ? (
           <FeedList orders={orders} />
         ) : (
           <h1>История заказов пуста</h1>

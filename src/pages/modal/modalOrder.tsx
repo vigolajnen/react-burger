@@ -23,9 +23,12 @@ const ModalOrderPage = () => {
 
   useEffect(() => {
     const accessToken = getCookie('accessToken')?.split('Bearer ')[1];
-    isAuth
+    setTimeout(() => {
+      isAuth
       ? dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`))
       : dispatch(wsConnectionStart(WS_URL_ALL));
+    }, 15000);
+    
     return () => {
       dispatch(wsConnectionClosed());
     };

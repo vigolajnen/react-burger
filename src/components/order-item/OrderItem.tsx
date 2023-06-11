@@ -56,8 +56,10 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   const orderStatus = (status: string) => {
     if (status === 'done') {
       return 'Выполнено';
+    } else if (status = 'created') {
+      return 'Создан';
     }
-    return status;
+    return 'Готовится';
   };
 
   // if (isAuth) {

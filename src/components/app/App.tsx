@@ -44,38 +44,25 @@ function App() {
             <Route index element={<HomePage />} />
 
             <Route
-              path='profile/*'
-              element={
-                <ProtectedRoute authUser={isAuth}>
-                  <OrdersPage />
-                  {/* <ProfilePage>
-                    <Route path='orders' element={<OrdersPage />} />
-                  </ProfilePage> */}
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
               path='profile'
               element={
                 <ProtectedRoute authUser={isAuth}>
                   <ProfilePage />
                 </ProtectedRoute>
               }
-            />
-            <Route
-              path='profile'
-              element={
+            >
+              <Route path='orders' element={
                 <ProtectedRoute authUser={isAuth}>
                   <OrdersPage />
                 </ProtectedRoute>
-              }
-            />
+              } />
 
-            <Route path='profile' element={<ProfilePage />}>
-              <Route path='orders' element={<OrdersPage />} />
+              <Route path='orders/:id' element={
+                <ProtectedRoute authUser={isAuth}>
+                  <ModalOrderPage />
+                </ProtectedRoute>
+              } />
             </Route>
-
 
             <Route path='login' element={<LoginPage />} />
             <Route path='register' element={<RegisterPage />} />
@@ -86,7 +73,7 @@ function App() {
             <Route path='ingredients/:id' element={<ModalPage />} />
 
             <Route path='feed/:id' element={<ModalOrderPage />} />
-            <Route path='orders/:id' element={<ModalOrderPage />} />
+            {/* <Route path='profile/orders/:id' element={<ModalOrderPage />} /> */}
           </Route>
         </Routes>
       </div>

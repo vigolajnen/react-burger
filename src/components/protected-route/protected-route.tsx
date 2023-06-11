@@ -3,7 +3,7 @@ import { useSelector } from '../../hooks';
 
 type Props = {
   authUser: boolean | any;
-  children: JSX.Element;
+  children: JSX.Element | any;
 }; 
 
 const ProtectedRoute = ({ authUser, children }: Props) => {
