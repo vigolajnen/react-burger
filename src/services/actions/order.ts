@@ -69,21 +69,24 @@ export type TGetOrderActions =
 // });
 
 
-const optionRequestPost = (orderData: Array<TIngredient>) => {
+const optionRequestPost = (orderData: Array<TIngredient>, token: string | undefined) => {
   return {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'authorization': token
+    },
     body: JSON.stringify({
       ingredients: [...orderData],
     }),
   };
 };
 
-export const loadOrder = (orderData: Array<TIngredient>) => (dispatch: AppDispatch) => {
+export const loadOrder = (orderData: Array<TIngredient>, token: string | undefined) => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_ORDER_REQUEST,
   });
-  generalRequest('orders', optionRequestPost(orderData))
+  generalRequest('orders', optionRequestPost(orderData, token))
     .then((res) => {
       dispatch({
         type: GET_ORDER_SUCCESS,

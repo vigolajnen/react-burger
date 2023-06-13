@@ -6,7 +6,7 @@ import {
   refreshTokenRequest,
   logoutRequest,
   getUserRequest,
-  updateUserRequest,
+  // updateUserRequest,
 } from '../api-auth';
 
 import { TUserRequest, TUser } from '../../utils/types';
@@ -194,34 +194,34 @@ export const getUser = () => (dispatch: AppDispatch) => {
     });
 };
 
-export const updateUser = (state: TUserRequest) => (dispatch: AppDispatch) => {
-  dispatch({
-    type: GET_USER_REQUEST,
-  });
-  updateUserRequest({
-    email: state.email,
-    name: state.name,
-    token: getCookie('token'),
-  })
-    .then((res) => {
-      if (res && res.success) {
-        dispatch({
-          type: GET_USER_SUCCESS,
-          user: res.user,
-        });
-      } else {
-        dispatch({
-          type: GET_USER_FAILED,
-        });
-      }
-    })
-    .catch((err) => {
-      alert(err);
-      dispatch({
-        type: GET_USER_FAILED,
-      });
-    });
-};
+// export const updateUser = (state: TUserRequest) => (dispatch: AppDispatch) => {
+//   dispatch({
+//     type: GET_USER_REQUEST,
+//   });
+//   // updateUserRequest({
+//   //   email: state.email,
+//   //   name: state.name,
+//   //   token: getCookie('token'),
+//   // })
+//     .then((res) => {
+//       if (res && res.success) {
+//         dispatch({
+//           type: GET_USER_SUCCESS,
+//           user: res.user,
+//         });
+//       } else {
+//         dispatch({
+//           type: GET_USER_FAILED,
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       alert(err);
+//       dispatch({
+//         type: GET_USER_FAILED,
+//       });
+//     });
+// };
 
 export const refreshToken = () => (dispatch: AppDispatch) => {
   dispatch({

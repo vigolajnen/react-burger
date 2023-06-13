@@ -16,16 +16,16 @@ const ModalPage = () => {
   const [item, setItem] = useState(ingredient);
 
   useEffect(() => {
-    (generalRequest('ingredients') as unknown as Promise<unknown>).then((data: any) => {
+    generalRequest('ingredients').then((data) => {
       setItem(data.data.find((elem: TIngredient) => elem._id === id));
     });
   }, [id]);
 
   return (
     <>
-      <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
+      {/* <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
         {item && <IngredientDetails item={item} />}
-      </Modal>
+      </Modal> */}
     </>
   );
 };

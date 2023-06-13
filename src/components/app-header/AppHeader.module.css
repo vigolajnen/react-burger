@@ -1,0 +1,93 @@
+
+.header {
+  background-color: #fff;
+}
+
+.grid {
+  gap: 60px;
+  row-gap: 24px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.grid section {
+  width: 100%;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  composes: grid;
+}
+
+
+@media (min-width: 992px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.header {
+  padding: 16px 0;
+  font-family: 'JetBrains Mono';
+  background-color: #1c1c21;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  gap: 50px;
+}
+
+.logo {
+  margin: 0 auto;
+}
+
+.link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  text-decoration: none;
+  color: #8585ad;
+}
+
+.link svg {
+  fill: #8585ad;
+}
+
+.active {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.active svg {
+  fill: #ffffff;
+}
+
+
+.linkText {
+  margin-left: 9px;
+}
+
+.linkSecondary {
+  composes: link;
+  color: #8585ad;
+}
+
+.linkRight {
+  composes: linkSecondary;
+  margin-right: 0;
+  margin-left: auto;
+}

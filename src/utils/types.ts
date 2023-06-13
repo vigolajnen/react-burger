@@ -17,8 +17,8 @@ export type TIngredient = {
 
 export type TUser = {
   name?: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 };
 
 export type TUserRequest = {
@@ -30,4 +30,14 @@ export type TUserRequest = {
 export type TResetPassword = {
   password: string;
   token: string;
+}
+
+export type TOrder = {
+  readonly _id: string;
+  readonly ingredients: Array<string>;
+  readonly status: string;
+  readonly name: string;
+  readonly createdAt: string | number | Date;
+  readonly updatedAt: string;
+  readonly number: number;
 }

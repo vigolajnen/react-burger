@@ -22,7 +22,7 @@ const ModalOrderPage = () => {
   const isAuth = useSelector((state) => state.user.isAuth);
 
   useEffect(() => {
-    const accessToken = getCookie('accessToken')?.split('Bearer ')[1];
+    const accessToken = getCookie('token')?.split('Bearer ')[1];
     setTimeout(() => {
       isAuth
       ? dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`))
@@ -43,11 +43,11 @@ const ModalOrderPage = () => {
   console.log(order);
   return (
     <>
-      {order &&
+      {/* {order &&
         <Modal onClose={() => navigate(-1)}>
           <OrderItemDetails order={order} />
         </Modal>
-      }
+      } */}
     </>
   );
 };

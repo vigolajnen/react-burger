@@ -18,13 +18,13 @@ import { useNavigate } from 'react-router-dom';
 
 import stylesConstructor from './BurgerConstructor.module.css';
 import { TIngredient } from '../../utils/types';
+import { getCookie } from '../../services/utils';
 
 const BurgerConstructor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isModalOpen, openModal, closeModal } = useModal();
   const isAuth = useSelector((state) => state.user.isAuth);
-
   const orders = useSelector((state) => state.orders.orders);
 
   const ingredientsArr = useSelector(
@@ -48,6 +48,7 @@ const BurgerConstructor = () => {
   const ordersId = (arr: Array<TIngredient>) => {
     const res: Array<string> = [];
     arr.forEach((item) => res.push(item._id));
+    console.log(res);
     return res;
   };
 
@@ -55,7 +56,7 @@ const BurgerConstructor = () => {
     if (!isAuth) {
       navigate('/login', { replace: true });
     } else {
-      dispatch(loadOrder(allOrderArr));
+      dispatch(loadOrder(allOrderArr, getCookie("token")));
       ordersId(allOrderArr);
       openModal();
     }

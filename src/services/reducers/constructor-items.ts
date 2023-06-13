@@ -7,8 +7,8 @@ import { TIngredient } from '../../utils/types';
 import { TConstructorItemsActions } from '../actions/constructor-items';
 
 export type TConstructorItemsState = {
-  constructorBun: ReadonlyArray<TIngredient> | any;
-  constructorItems: ReadonlyArray<TIngredient> | any;
+  constructorBun: Array<TIngredient> | any;
+  constructorItems: Array<TIngredient> | any;
 };
 
 const initialState: TConstructorItemsState = {

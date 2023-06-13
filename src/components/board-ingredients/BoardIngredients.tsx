@@ -37,7 +37,7 @@ const BoardIngredients = ({ board, classIngredients, items }: Props) => {
       {items.length === 0 ? (
         <div className={classIngredients}>Выберите ингредиенты</div>
       ) : (
-        items.map((elem: any, index: number) => (
+        items.map((elem: TIngredient, index: number) => (
           <DragIngredient
             key={elem.id}
             index={index}

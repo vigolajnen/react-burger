@@ -1,12 +1,12 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './OrderItem.module.css';
 import { FeedOrder } from '../../services/types/live-orders';
-import { useDispatch, useSelector } from '../../hooks';
+import { useSelector } from '../../hooks';
 import { TIngredient } from '../../utils/types';
-import { loadIngredients } from '../../services/actions/menu';
 import { useLocation } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 
 interface IOrderItem {
   order: FeedOrder;
@@ -28,48 +28,52 @@ export const dayFormat = (orderDay: string) => {
 };
 
 const OrderItem: FC<IOrderItem> = ({ order }) => {
-  const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.user.isAuth);
-  const ingredients = useSelector((state) => state.ingredients.ingredients);
-  const orderIngredients = order.ingredients;
   const location = useLocation();
   const urlOrder = location.pathname.substring(1);
+  const isAuth = useSelector((state) => state.user.isAuth);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
+  const orderIngredients = () => {
+    const items: Array<TIngredient> = [];
+    order?.ingredients.forEach((itemId) => {
+      ingredients.forEach((item: TIngredient) => {
+        if (item._id === itemId) {
+          items.push(item);
+        }
+      });
+    });
 
-  useEffect(() => {
-    dispatch(loadIngredients());
-  }, [dispatch]);
+    return items;
+  };
 
-  const res = ingredients.filter(
-    (item) => !orderIngredients.includes(item._id),
-  );
+  const orderIngredientsArr = orderIngredients();
 
   const countProduct = () => {
     let count = 0;
-    if (res.length > 6) {
-      count = res.length - 6;
+    if (orderIngredientsArr.length > 6) {
+      count = orderIngredientsArr.length - 6;
     }
     return count;
   };
 
-  const resPrice = res.reduce((a: any, b: any) => a + b.price, 0);
+  const resPrice: number = orderIngredientsArr.reduce(
+    (a: number, b: TIngredient) => a + b.price,
+    0,
+  );
 
   const orderStatus = (status: string) => {
     if (status === 'done') {
       return 'Выполнено';
-    } else if (status = 'created') {
+    } else if ((status = 'created')) {
       return 'Создан';
     }
     return 'Готовится';
   };
 
-  // if (isAuth) {
-  //   console.log(order._id);
-  // }
-
   return (
     <Link
       to={isAuth ? `/profile/orders/${order._id}` : `/feed/${order._id}`}
       className={styles.wrapper}
+      state={!isAuth ? { bgProfileFeed: location } : { bgFeedList: location }}
     >
       <div className={styles.header}>
         <div className={styles.number}>#{order.number}</div>
@@ -84,15 +88,15 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
       <div className={styles.body}>
         <div className={styles.infoList}>
           <ul className={styles.list}>
-            {res.map((item: TIngredient) => (
-              <li key={item._id}>
+            {orderIngredientsArr.map((item: TIngredient) => (
+              <li key={uuid()}>
                 <div className={styles.liInner}>
                   <img src={item.image_mobile} alt='pic' />
                 </div>
               </li>
             ))}
           </ul>
-          {res.length > 6 && (
+          {orderIngredientsArr.length > 6 && (
             <div className={styles.listCount}>+{countProduct()}</div>
           )}
         </div>

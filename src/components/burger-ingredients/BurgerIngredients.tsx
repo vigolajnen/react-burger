@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSelector, useDispatch } from '../../hooks';
+import React, { useState, useMemo } from 'react';
+import { useSelector } from '../../hooks';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from '../ingredient-item/IngredientItem';
-import { loadIngredients } from '../../services/actions/menu';
 import stylesIngredients from './BurgerIngredients.module.css';
 import { TIngredient } from '../../utils/types';
 
@@ -10,9 +9,8 @@ type TIngredientId = Omit<TIngredient, '_id'> & {
   _id: number;
 };
 
-
 const BurgerIngredients = () => {
-  const dispatch = useDispatch();
+  
   const { ingredients } = useSelector((state) => state.ingredients);
   const ingredientsRequest = useSelector(
     (state) => state.ingredients.ingredientsRequest,
@@ -29,21 +27,15 @@ const BurgerIngredients = () => {
 
   const countersItems = useMemo(() => {
     const itemOrderCounters: Array<number> = [];
-    
+
     constructorItems.forEach((item: TIngredientId) => {
-      if (!itemOrderCounters[item._id])
-        itemOrderCounters[item._id] = 0;
+      if (!itemOrderCounters[item._id]) itemOrderCounters[item._id] = 0;
       itemOrderCounters[item._id]++;
     });
     if (constructorBun && constructorBun.length > 0)
       itemOrderCounters[constructorBun[0]._id] = 2;
     return itemOrderCounters;
   }, [constructorItems, constructorBun]);
-
-  useEffect(() => {
-    const loadMenu: any = loadIngredients();
-    dispatch(loadMenu) as unknown as Promise<unknown>;
-  }, [dispatch]);
 
   const [current, setCurrent] = useState<string>('Булки');
 
@@ -58,10 +50,10 @@ const BurgerIngredients = () => {
 
   const onScrollActiveTab = () => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry: any) => {
+      (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
           if (entry.isIntersecting) {
-            setCurrent(entry.target.title);
+            setCurrent(entry.target!.getAttribute('title')!);
           }
         });
       },
@@ -91,7 +83,7 @@ const BurgerIngredients = () => {
   const tabsIngredientsArr = [];
 
   for (let i in tabLabels) {
-    const tabObj: { title: string; list: any } = {
+    const tabObj: { title: string; list: Array<TIngredient> } = {
       title: tabLabels[0],
       list: bunIngredients,
     };
@@ -139,7 +131,7 @@ const BurgerIngredients = () => {
                 >
                   {wrapItem.title}
                 </h3>
-                {wrapItem.list.map((item: any) => { 
+                {wrapItem.list.map((item: any) => {
                   return (
                     <IngredientItem
                       key={item._id}

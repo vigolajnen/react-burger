@@ -17,11 +17,12 @@ import {
 } from '../constants';
 
 import { TUserActions } from '../actions/user';
+import { TUser } from '../../utils/types';
 
 export type TUserItemsState = {
-  user: any,
-  token: any,
-  refreshToken: any,
+  user: TUser | any,
+  token: string | null,
+  refreshToken: string | null,
   isAuth: Boolean,
   userRequest: Boolean,
   userFailed: Boolean,

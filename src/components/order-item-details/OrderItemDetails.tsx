@@ -1,37 +1,25 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import stylesContent from './OrderItemDetails.module.css';
 import { FeedOrder } from '../../services/types/live-orders';
-import { useDispatch, useSelector } from '../../hooks';
+import { useSelector } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 import classNames from 'classnames';
-import { loadIngredients } from '../../services/actions/menu';
 import { dayFormat } from '../order-item/OrderItem';
+import { useParams } from 'react-router-dom';
 
-type Props = {
-  item: {
-    number: number;
-    title: string;
-    name: string;
-    status: string;
-    image_min: string;
-  };
-};
+// interface IOrderItemDetails {
+//   order: FeedOrder;
+// }
 
-interface IOrderItemDetails {
-  order: FeedOrder;
-}
+const OrderItemDetails: FC = () => {
+  const orders = useSelector((store) => store.orders.orders);
+  const { id } = useParams();
+  const order = orders.find((item: any) => item?._id === id);
 
-const OrderItemDetails: FC<IOrderItemDetails> = ({ order }) => {
-  const dispatch = useDispatch();
-  const ingredients = useSelector((state) => state.ingredients.ingredients);
+  const ingredients = useSelector((store) => store.ingredients.ingredients);
   const orderIngredients = order.ingredients;
-
-  useEffect(() => {
-    dispatch(loadIngredients());
-  }, [dispatch]);
-
-  const res = ingredients.filter(
+  const orderIngredientsList = ingredients.filter(
     (item) => !orderIngredients.includes(item._id),
   );
 
@@ -41,16 +29,19 @@ const OrderItemDetails: FC<IOrderItemDetails> = ({ order }) => {
       if (el._id === ingredient._id) {
         counter += 1;
       }
-    })
+    });
     return counter;
   }
 
-  const resPrice = res.reduce((a: any, b: any) => a + b.price, 0);
+  const resPrice: number = orderIngredientsList.reduce(
+    (a: number, b: TIngredient) => a + b.price,
+    0,
+  );
 
   const orderStatus = (status: string) => {
     if (status === 'done') {
       return 'Выполнено';
-    } else if (status = 'created') {
+    } else if ((status = 'created')) {
       return 'Создан';
     }
     return 'Готовится';
@@ -69,7 +60,7 @@ const OrderItemDetails: FC<IOrderItemDetails> = ({ order }) => {
       <h3>Состав:</h3>
       <div className={classNames('custom-scroll', `${stylesContent.items}`)}>
         <ul className={stylesContent.list}>
-          {res.map((item: TIngredient) => (
+          {orderIngredientsList.map((item: TIngredient) => (
             <li key={item._id}>
               <div className={stylesContent.liPic}>
                 <img src={item.image_mobile} alt='pic' />

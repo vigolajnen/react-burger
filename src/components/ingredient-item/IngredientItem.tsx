@@ -7,7 +7,7 @@ import {
 
 import stylesItem from './IngredientItem.module.css';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
 
 // handleClick
 const IngredientItem = ({ item, id, count }: Props) => {
+  let location = useLocation();
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredients',
     item: () => {
@@ -30,8 +31,7 @@ const IngredientItem = ({ item, id, count }: Props) => {
 
   return (
     <Link
-      // item={item}
-      state={{ item: item }}
+      state={{ item: item, bgIngredient: location }}
       to={`/ingredients/${item._id}`}
       className={stylesItem.item}
       id={item._id}

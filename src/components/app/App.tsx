@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { LayoutPage } from '../layout-page/LayoutPage';
 
@@ -19,65 +19,122 @@ import { useSelector, useDispatch } from '../../hooks';
 import { getUser } from '../../services/actions/user';
 import appStyles from './App.module.css';
 import { ModalOrderPage } from '../../pages/modal/modalOrder';
+import { loadIngredients } from '../../services/actions/menu';
+import { updateUserRequest } from '../../services/api-auth';
+import { getCookie } from '../../services/utils';
+import Modal from '../modal/Modal';
+import ModalBg from '../modal/ModalBg';
+import IngredientDetails from '../ingredient-details/IngredientDetails';
+import OrderItemDetails from '../order-item-details/OrderItemDetails';
+import IngredientPage from '../../pages/ingredient/Ingredient';
+import OrderPage from '../../pages/order/order';
 
 function App() {
   const dispatch = useDispatch();
-
-  if (window.location.pathname === '/reset-password') {
-    window.location.href = '/forgot-password';
-  }
-
+  const location = useLocation();
+  const navigate = useNavigate();
   const isAuth = useSelector((state) => state.user.isAuth);
+  const accessToken = getCookie('accessToken');
 
   useEffect(() => {
-    if (isAuth) {
-      const user: any = getUser();
-      dispatch(user) as unknown as Promise<unknown>;
+    dispatch(loadIngredients());
+
+    if (!accessToken) {
+      console.log(accessToken);
+      dispatch(getUser());
     }
-  }, [dispatch, isAuth]);
+    console.log(!accessToken);
+  }, [dispatch, accessToken]);
+
+  const background =
+    location.state?.bgIngredient ||
+    location.state?.bgFeedList ||
+    location.state?.bgProfileFeed ||
+    location;
 
   return (
-    <BrowserRouter>
-      <div className={appStyles.app}>
-        <Routes>
-          <Route path='/' element={<LayoutPage />}>
-            <Route index element={<HomePage />} />
-
+    <div className={appStyles.app}>
+      <Routes location={background}>
+        <Route path='/' element={<LayoutPage />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path='profile'
+            element={
+              <ProtectedRoute authUser={isAuth}>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          >
             <Route
-              path='profile'
+              path='orders'
               element={
-                <ProtectedRoute authUser={isAuth}>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            >
-              <Route path='orders' element={
                 <ProtectedRoute authUser={isAuth}>
                   <OrdersPage />
                 </ProtectedRoute>
-              } />
-
-              <Route path='orders/:id' element={
+              }
+            />
+{/* 
+            <Route
+              path='orders/:id'
+              element={
                 <ProtectedRoute authUser={isAuth}>
                   <ModalOrderPage />
                 </ProtectedRoute>
-              } />
-            </Route>
-
-            <Route path='login' element={<LoginPage />} />
-            <Route path='register' element={<RegisterPage />} />
-            <Route path='feed' element={<FeedPage />} />
-            <Route path='forgot-password' element={<ForgotPasswordPage />} />
-            <Route path='reset-password' element={<ResetPasswordPage />} />
-            <Route path='*' element={<NotFoundPage />} />
-            <Route path='ingredients/:id' element={<ModalPage />} />
-
-            <Route path='feed/:id' element={<ModalOrderPage />} />
-            {/* <Route path='profile/orders/:id' element={<ModalOrderPage />} /> */}
+              }
+            /> */}
           </Route>
+          <Route path='login' element={<LoginPage />} />
+          <Route path='register' element={<RegisterPage />} />
+          <Route path='feed' element={<FeedPage />} />
+          
+          <Route path='forgot-password' element={<ForgotPasswordPage />} />
+          <Route path='reset-password' element={<ResetPasswordPage />} />
+          <Route path='*' element={<NotFoundPage />} />
+          
+          <Route path='ingredients/:id' element={<IngredientPage />} />
+          <Route path='feed/:id' element={<ProtectedRoute authUser={isAuth}><OrderPage isAuth={isAuth} /></ProtectedRoute>} />
+        </Route>
+      </Routes>
+
+      {location.state?.bgIngredient && (
+        <Routes>
+          <Route
+            path='ingredients/:id'
+            element={
+              <ModalBg title='Детали ингредиента' onClose={() => navigate(-1)}>
+                <IngredientDetails />
+              </ModalBg>
+            }
+          />
         </Routes>
-      </div>
-    </BrowserRouter>
+      )}
+
+      {location.state?.bgFeedList && (
+        <Routes>
+          <Route
+            path='feed/:id'
+            element={
+              <ModalBg onClose={() => navigate(-1)}>
+                <OrderItemDetails />
+              </ModalBg>
+            }
+          />
+        </Routes>
+      )}
+
+      {location.state?.bgProfileFeed && (
+        <Routes>
+          <Route
+            path='/profile/orders/:id'
+            element={
+              <ModalBg onClose={() => navigate(-1)}>
+                <OrderItemDetails />
+              </ModalBg>
+            }
+          />
+        </Routes>
+      )}
+    </div>
   );
 }
 
