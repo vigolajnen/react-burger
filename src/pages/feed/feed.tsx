@@ -34,7 +34,7 @@ export const FeedPage: FC = () => {
       <div>
         <h1 className={styles.title}>Лента заказов</h1>
         <div className={classNames('custom-scroll', `${styles.items}`)}>
-          {orders ? <FeedList orders={orders} /> : 'Загрузка ...'}
+          {orders && orders.length > 0 ? <FeedList orders={orders} /> : 'Загрузка ...'}
         </div>
       </div>
       <div>

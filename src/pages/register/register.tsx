@@ -28,14 +28,12 @@ export function RegisterPage() {
   const register = useCallback(
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
-      const ff: any = userRegister(form);
-      (dispatch(ff) as unknown as Promise<unknown>).then(() => {});
-      // dispatch(userRegister(form));
+      dispatch(userRegister(form));
     },
     [dispatch, form],
   );
 
-  if (isAuth && !user) {
+  if (isAuth) {
     return <Navigate to={'/'} replace />;
   }
 

@@ -20,7 +20,6 @@ const OrderPage: FC<Props> = ({ isAuth }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    
     const accessToken = getCookie('token');
 
     isAuth

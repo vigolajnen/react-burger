@@ -18,7 +18,6 @@ export function OrdersPage() {
 
   useEffect(() => {
     dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
-
     return () => {
       dispatch(wsConnectionClosed());
     };
@@ -27,8 +26,15 @@ export function OrdersPage() {
   return (
     <div className={styles.contentOrder}>
       <div className={classNames('custom-scroll', `${styles.items}`)}>
-        {orders ? <FeedList orders={orders} /> : 'Загрузка ...'}
-        {orders.length === 0 && 'Заказов нет'}
+        {orders ? (
+          orders.length > 0 ? (
+            <FeedList orders={orders} />
+          ) : (
+            ' Загрузка ...'
+          )
+        ) : (
+          'Заказов нет'
+        )}
       </div>
     </div>
   );

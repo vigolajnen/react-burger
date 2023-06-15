@@ -141,7 +141,10 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
         token: res.accessToken,
         refreshToken: res.refreshToken,
       });
-      setCookie('token', res.accessToken);
+      const token = res.accessToken.split('Bearer ')[1];
+      const refreshToken = res.refreshToken;
+      setCookie('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
     })
     .catch((err) => {
       console.log(err);
