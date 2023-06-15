@@ -47,16 +47,6 @@ export const getUserRequest = (token: string) => {
   });
 };
 
-// export const updateUserRequest = ({email, name, token}: TUserRequest) => {
-//   return generalRequest(`auth/user`, {
-//     method: 'PATCH',
-//     headers: {
-//       'Content-Type': 'application/json;charset=utf-8',
-//       Authorization: 'Bearer ' + token
-//     },
-//     body: JSON.stringify({ email, name })
-//   });
-// };
 export const updateUserRequest = (token: string) => {
   return (dispatch: AppDispatch) => {
     generalRequest(`auth/user`, {

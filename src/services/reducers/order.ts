@@ -10,6 +10,7 @@ import { TGetOrderActions } from '../actions/order';
 
 export type TGetOrderState = {
   orders: TIngredient[] | any;
+  order: any,
   orderPrice: number;
   orderRequest: Boolean,
   orderFailed: Boolean,
@@ -17,6 +18,7 @@ export type TGetOrderState = {
 
 const initialState: TGetOrderState = {
   orders: [],
+  order: null,
   orderPrice: 0,
   orderRequest: false,
   orderFailed: false,
@@ -35,6 +37,7 @@ export const orderReducer = (state = initialState, action: TGetOrderActions) => 
         ...state,
         orderFailed: false,
         orders: action.orders,
+        order: action.orders.order,
         orderRequest: false,
       };
     }

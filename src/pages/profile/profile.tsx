@@ -23,7 +23,6 @@ export function ProfilePage() {
 
   const activeLink = location.pathname.substring(1);
   const user = useSelector((state) => state.user.user);
-  console.log(activeLink);
 
   const logout = useCallback(async () => {
 

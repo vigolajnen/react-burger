@@ -34,16 +34,14 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const isAuth = useSelector((state) => state.user.isAuth);
-  const accessToken = getCookie('accessToken');
+  const accessToken = getCookie('token');
 
   useEffect(() => {
     dispatch(loadIngredients());
 
-    if (!accessToken) {
-      console.log(accessToken);
+    if (accessToken !== 'undefined') {
       dispatch(getUser());
     }
-    console.log(!accessToken);
   }, [dispatch, accessToken]);
 
   const background =
@@ -73,7 +71,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-{/* 
+            {/* 
             <Route
               path='orders/:id'
               element={
@@ -86,13 +84,17 @@ function App() {
           <Route path='login' element={<LoginPage />} />
           <Route path='register' element={<RegisterPage />} />
           <Route path='feed' element={<FeedPage />} />
-          
+
           <Route path='forgot-password' element={<ForgotPasswordPage />} />
           <Route path='reset-password' element={<ResetPasswordPage />} />
           <Route path='*' element={<NotFoundPage />} />
-          
+
           <Route path='ingredients/:id' element={<IngredientPage />} />
-          <Route path='feed/:id' element={<ProtectedRoute authUser={isAuth}><OrderPage isAuth={isAuth} /></ProtectedRoute>} />
+          <Route path='feed/:id' element={<OrderPage isAuth={!isAuth} />} />
+          <Route
+            path='profile/orders/:id'
+            element={<OrderPage isAuth={isAuth} />}
+          />
         </Route>
       </Routes>
 
@@ -125,7 +127,7 @@ function App() {
       {location.state?.bgProfileFeed && (
         <Routes>
           <Route
-            path='/profile/orders/:id'
+            path='profile/orders/:id'
             element={
               <ModalBg onClose={() => navigate(-1)}>
                 <OrderItemDetails />

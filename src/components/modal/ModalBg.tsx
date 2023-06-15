@@ -18,9 +18,6 @@ const modalRoot = document.getElementById('modals');
 
 const ModalBg = ({ onClose, children, title }: Props) => {
   let navigate = useNavigate();
-  let { id } = useParams<"id">();
-  // let image = getImageById(Number(id));
-  // let buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleClickEscape = (e: KeyboardEvent) => {

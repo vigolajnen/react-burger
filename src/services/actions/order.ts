@@ -74,7 +74,7 @@ const optionRequestPost = (orderData: Array<TIngredient>, token: string | undefi
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'authorization': token
+      'authorization': 'Bearer ' + token
     },
     body: JSON.stringify({
       ingredients: [...orderData],
@@ -91,6 +91,7 @@ export const loadOrder = (orderData: Array<TIngredient>, token: string | undefin
       dispatch({
         type: GET_ORDER_SUCCESS,
         orders: res.order,
+        order: res.order.order,
       });
     })
     .catch((err) => {

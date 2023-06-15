@@ -9,22 +9,16 @@ import {
 
 import styles from './orders.module.css';
 import { FeedList } from '../../components/feed-list/FeedList';
-import { useLocation } from 'react-router-dom';
+import { getCookie } from '../../services/utils';
 
 export function OrdersPage() {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const { orders } = useSelector((store) => store.feedList);
-  const token = useSelector((state) => state.user.token)?.split('Bearer ')[1];
-
-  const activeLink = location.pathname.substring(1);
+  const orders = useSelector((store) => store.feedList.orders);
+  const accessToken = getCookie('token');
 
   useEffect(() => {
-    dispatch(wsConnectionStart(`${WS_URL}?token=${token}`));
+    dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
 
-    if (activeLink === 'profile/orders') {
-      dispatch(wsConnectionStart(`${WS_URL}?token=${token}`));
-    }
     return () => {
       dispatch(wsConnectionClosed());
     };
@@ -33,12 +27,8 @@ export function OrdersPage() {
   return (
     <div className={styles.contentOrder}>
       <div className={classNames('custom-scroll', `${styles.items}`)}>
-        {!orders && 'Загрузка ...'}
-        {orders && token ? (
-          <FeedList orders={orders} />
-        ) : (
-          <h1>История заказов пуста</h1>
-        )}
+        {orders ? <FeedList orders={orders} /> : 'Загрузка ...'}
+        {orders.length === 0 && 'Заказов нет'}
       </div>
     </div>
   );

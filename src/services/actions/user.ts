@@ -161,6 +161,7 @@ export const userLogout = () => (dispatch: AppDispatch) => {
         type: GET_LOGOUT_SUCCESS,
       });
       deleteCookie('token');
+      localStorage.clear();
     })
     .catch((err) => {
       alert(err);

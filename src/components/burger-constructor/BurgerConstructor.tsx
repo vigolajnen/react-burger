@@ -26,6 +26,7 @@ const BurgerConstructor = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
   const isAuth = useSelector((state) => state.user.isAuth);
   const orders = useSelector((state) => state.orders.orders);
+  const order = useSelector((state) => state.orders.order);
 
   const ingredientsArr = useSelector(
     (state) => state.constructorItemsList.constructorItems,
@@ -57,6 +58,7 @@ const BurgerConstructor = () => {
       navigate('/login', { replace: true });
     } else {
       dispatch(loadOrder(allOrderArr, getCookie("token")));
+      console.log(orders);
       ordersId(allOrderArr);
       openModal();
     }

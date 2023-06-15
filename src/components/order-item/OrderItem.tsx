@@ -13,6 +13,7 @@ interface IOrderItem {
 }
 
 export const dayFormat = (orderDay: string) => {
+  
   const today = new Date().toISOString().slice(0, 10);
   const time = orderDay.slice(11, 16);
   const resCountDay = +today.slice(8, 10) - +orderDay.slice(8, 10);
@@ -28,6 +29,7 @@ export const dayFormat = (orderDay: string) => {
 };
 
 const OrderItem: FC<IOrderItem> = ({ order }) => {
+  const orderIngredientsMax = 6;
   const location = useLocation();
   const urlOrder = location.pathname.substring(1);
   const isAuth = useSelector((state) => state.user.isAuth);
@@ -49,8 +51,8 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
 
   const countProduct = () => {
     let count = 0;
-    if (orderIngredientsArr.length > 6) {
-      count = orderIngredientsArr.length - 6;
+    if (orderIngredientsArr.length > orderIngredientsMax) {
+      count = orderIngredientsArr.length - orderIngredientsMax;
     }
     return count;
   };
@@ -69,11 +71,12 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
     return 'Готовится';
   };
 
+
   return (
     <Link
       to={isAuth ? `/profile/orders/${order._id}` : `/feed/${order._id}`}
       className={styles.wrapper}
-      state={!isAuth ? { bgProfileFeed: location } : { bgFeedList: location }}
+      state={isAuth ? { bgProfileFeed: location } : { bgFeedList: location }}
     >
       <div className={styles.header}>
         <div className={styles.number}>#{order.number}</div>
@@ -96,7 +99,7 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
               </li>
             ))}
           </ul>
-          {orderIngredientsArr.length > 6 && (
+          {orderIngredientsArr.length > orderIngredientsMax && (
             <div className={styles.listCount}>+{countProduct()}</div>
           )}
         </div>
