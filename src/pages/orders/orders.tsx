@@ -16,24 +16,29 @@ export function OrdersPage() {
   const orders = useSelector((store) => store.feedList.orders);
   const accessToken = getCookie('token');
 
+
   useEffect(() => {
     dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
+
     return () => {
       dispatch(wsConnectionClosed());
+
     };
   }, [dispatch]);
+
 
   return (
     <div className={styles.contentOrder}>
       <div className={classNames('custom-scroll', `${styles.items}`)}>
+      
         {orders ? (
-          orders.length > 0 ? (
-            <FeedList orders={orders} />
+          orders.length === 0 ? (
+            'Заказов нет'
           ) : (
-            ' Загрузка ...'
+            <FeedList orders={orders} />
           )
         ) : (
-          'Заказов нет'
+          ' Загрузка ...'
         )}
       </div>
     </div>

@@ -10,7 +10,6 @@ type PropsActiveLink = {
 
 const AppHeader = () => {
   const user = useSelector((state) => state.user.user);
-  const isAuth = useSelector((state) => state.user.isAuth);
 
   const setActiveLink = ({ isActive, isPending }: PropsActiveLink) =>
     isPending ? 'pending' : isActive ? styles.active : styles.link;
@@ -34,8 +33,8 @@ const AppHeader = () => {
 
         <NavLink to='/profile' className={setActiveLink}>
           <ProfileIcon type='primary' />
-          {isAuth ? (
-            <span className={styles.linkText}>{user.name}</span>
+          {user ? (
+            <span className={styles.linkText}>{user?.user?.name}</span>
           ) : (
             <span className={styles.linkText}>Личный кабинет</span>
           )}

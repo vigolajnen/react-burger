@@ -15,7 +15,7 @@ export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
         url = payload;
         socket = new WebSocket(url);
       } else if (type === onClose) {
-        socket && socket.close(1000, 'CLOSE_NORMAL');
+        // socket && socket.close(1000, 'CLOSE_NORMAL');
       }
       if (socket) {
         socket.onopen = event => {

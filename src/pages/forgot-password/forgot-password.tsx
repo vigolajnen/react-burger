@@ -9,6 +9,7 @@ import { useSelector } from '../../hooks';
 // страница восстановления пароля.
 export function ForgotPasswordPage() {
   const navigate = useNavigate();
+
   const isAuth = useSelector((state) => state.user.isAuth);
   const [form, setValue] = useState({ email: '' });
 

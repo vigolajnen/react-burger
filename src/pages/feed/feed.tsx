@@ -22,7 +22,6 @@ export const FeedPage: FC = () => {
 
   useEffect(() => {
     dispatch(wsConnectionStart(WS_URL_ALL));
-
     return () => {
       dispatch(wsConnectionClosed());
     };

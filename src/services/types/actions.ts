@@ -6,25 +6,7 @@ import {
   WS_SEND_MESSAGE,
   WS_CONNECTION_START,
 } from '../constants';
-// import type { IMessage, IUserResponse } from "./modelsData";
-
-// export interface IJoinChatAction {
-//   readonly type: typeof JOIN_CHAT;
-// }
-
-// export interface IJoinChatFailedAction {
-//   readonly type: typeof JOIN_CHAT_FAILED;
-// }
-
-// export interface IJoinChatSuccessAction {
-//   readonly type: typeof JOIN_CHAT_SUCCESS;
-//   readonly user: IUserResponse;
-// }
-
-// export type TUserActions =
-//   | IJoinChatAction
-//   | IJoinChatFailedAction
-//   | IJoinChatSuccessAction;
+import { FeedOrders } from './live-orders';
 
 export interface IWSConnectionStart {
   readonly type: typeof WS_CONNECTION_START;
@@ -45,7 +27,7 @@ export interface IWSConnectionClosedAction {
 
 export interface IWSGetMessageAction {
   readonly type: typeof WS_GET_MESSAGE;
-  readonly payload: any;
+  readonly payload: FeedOrders;
 }
 
 export interface IWSSendMessageAction {

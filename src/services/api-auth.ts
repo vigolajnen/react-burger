@@ -1,9 +1,9 @@
 // import { getCookie, deleteCookie, setCookie } from './utils';
 import { generalRequest } from './api';
-import { TUser, TUserRequest, TResetPassword } from '../utils/types';
+import { TUser, TResetPassword } from '../utils/types';
 import { getUser } from './actions/user';
-import { useDispatch } from '../hooks';
 import { AppDispatch } from './types';
+import { getCookie } from './utils';
 
 export const loginRequest = async ({ email, password }: TUser) => {
   return await generalRequest(`auth/login`, {
@@ -14,7 +14,7 @@ export const loginRequest = async ({ email, password }: TUser) => {
     body: JSON.stringify({ email: email, password }),
   });
 };
-
+// localStorage.getItem('refreshToken')
 export const logoutRequest = () => {
   return generalRequest(`auth/logout`, {
     method: 'POST',
@@ -22,7 +22,7 @@ export const logoutRequest = () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: localStorage.getItem('refreshToken'),
+      token: getCookie('refreshToken'),
     }),
   });
 };
@@ -37,13 +37,24 @@ export const registerRequest = async ({ email, password, name }: TUser) => {
   });
 };
 
-export const getUserRequest = (token: string) => {
+export const getUserRequest = () => {
   return generalRequest(`auth/user`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token,
+      Authorization: 'Bearer ' + getCookie('token'),
     },
+  });
+};
+
+export const updateUserData = (data: { email: string; name: string }) => {
+  return generalRequest(`auth/user`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      Authorization: 'Bearer ' + getCookie('token'),
+    },
+    body: JSON.stringify(data),
   });
 };
 
@@ -59,7 +70,7 @@ export const updateUserRequest = (token: string) => {
     });
   };
 };
-
+// localStorage.getItem('refreshToken')
 export const refreshTokenRequest = () => {
   return generalRequest(`auth/token`, {
     method: 'POST',
@@ -67,7 +78,7 @@ export const refreshTokenRequest = () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: localStorage.getItem('refreshToken'),
+      token: getCookie('token'),
     }),
   });
 };

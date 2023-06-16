@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './OrderItem.module.css';
+import styles from './OrderFeedItem.module.css';
 import { FeedOrder } from '../../services/types/live-orders';
 import { useSelector } from '../../hooks';
 import { TIngredient } from '../../utils/types';
@@ -27,10 +27,9 @@ export const dayFormat = (orderDay: string) => {
   return `${resCountDay} дней назад, ${time}`;
 };
 
-const OrderItem: FC<IOrderItem> = ({ order }) => {
+const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
   const orderIngredientsMax = 6;
   const location = useLocation();
-  const isAuth = useSelector((state) => state.user.isAuth);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const orderIngredients = () => {
     const items: Array<TIngredient> = [];
@@ -60,26 +59,11 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
     0,
   );
 
-  const orderStatus = (status: string) => {
-    if (status === 'done') {
-      return 'Выполнено';
-    } else if ((status = 'created')) {
-      return 'Создан';
-    }
-    return 'Готовится';
-  };
-
-//   <Link
-//   to={isAuth ? `/profile/orders/${order._id}` : `/feed/${order._id}`}
-//   className={styles.wrapper}
-//   state={isAuth ? { bgProfileFeed: location } : { bgFeedList: location }}
-// >
-
   return (
     <Link
-      to={`/profile/orders/${order._id}`}
+      to={`/feed/${order._id}`}
       className={styles.wrapper}
-      state={isAuth ? { bgProfileFeed: location } : { bgFeedList: location }}
+      state={{ bgFeedList: location }}
     >
       <div className={styles.header}>
         <div className={styles.number}>#{order.number}</div>
@@ -87,9 +71,6 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
       </div>
       <div className={styles.titleAndStatus}>
         <h3 className={styles.title}>{order.name}</h3>
-        {isAuth && (
-          <div className={styles.status}>{orderStatus(order.status)}</div>
-        )}
       </div>
       <div className={styles.body}>
         <div className={styles.infoList}>
@@ -116,4 +97,4 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   );
 };
 
-export default OrderItem;
+export default OrderFeedItem;

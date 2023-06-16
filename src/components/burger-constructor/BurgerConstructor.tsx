@@ -49,7 +49,6 @@ const BurgerConstructor = () => {
   const ordersId = (arr: Array<TIngredient>) => {
     const res: Array<string> = [];
     arr.forEach((item) => res.push(item._id));
-    console.log(res);
     return res;
   };
 
@@ -58,7 +57,6 @@ const BurgerConstructor = () => {
       navigate('/login', { replace: true });
     } else {
       dispatch(loadOrder(allOrderArr, getCookie("token")));
-      console.log(orders);
       ordersId(allOrderArr);
       openModal();
     }

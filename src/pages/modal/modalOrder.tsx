@@ -40,7 +40,6 @@ const ModalOrderPage = () => {
   const orders = useSelector((store) => store.feedList.orders);
   const order = orders.find((item: FeedOrder) => item._id === id);
 
-  console.log(order);
   return (
     <>
       {/* {order &&

@@ -14,7 +14,7 @@ export type TGetIngredientsState = {
   ingredients: Array<TIngredient>;
   ingredientsRequest: Boolean;
   ingredientsFailed: Boolean;
-  ingredient: TIngredient | any;
+  ingredient: TIngredient | null;
 };
 
 const initialState: TGetIngredientsState = {

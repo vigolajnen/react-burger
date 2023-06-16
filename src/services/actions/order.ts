@@ -9,7 +9,7 @@ import {
   UPDATE_ORDERS,
 } from '../constants';
 
-import { TIngredient } from '../../utils/types';
+import { TIngredient, TOrder } from '../../utils/types';
 import { AppDispatch } from '../types';
 
 // Типизация экшенов

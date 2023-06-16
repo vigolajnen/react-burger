@@ -24,7 +24,7 @@ export const LoginPage = () => {
 
   const login = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    (dispatch(userLogin(form)) as unknown as Promise<unknown>).then(() => {});
+    dispatch(userLogin(form));
   };
 
   if (isAuth) {

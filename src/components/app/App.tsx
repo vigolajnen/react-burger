@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 
 import { LayoutPage } from '../layout-page/LayoutPage';
 
@@ -10,7 +16,7 @@ import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password'
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilePage } from '../../pages/profile/profile';
 import { NotFoundPage } from '../../pages/not-found/not-found';
-import { ModalPage } from '../../pages/modal/modal';
+
 import { OrdersPage } from '../../pages/orders/orders';
 import { FeedPage } from '../../pages/feed/feed';
 import ProtectedRoute from '../protected-route/protected-route';
@@ -18,31 +24,32 @@ import { useSelector, useDispatch } from '../../hooks';
 
 import { getUser } from '../../services/actions/user';
 import appStyles from './App.module.css';
-import { ModalOrderPage } from '../../pages/modal/modalOrder';
+
 import { loadIngredients } from '../../services/actions/menu';
-import { updateUserRequest } from '../../services/api-auth';
+
 import { getCookie } from '../../services/utils';
-import Modal from '../modal/Modal';
+
 import ModalBg from '../modal/ModalBg';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 import OrderItemDetails from '../order-item-details/OrderItemDetails';
 import IngredientPage from '../../pages/ingredient/Ingredient';
 import OrderPage from '../../pages/order/order';
+import OrderFeedPage from '../../pages/order-feed/orderFeed';
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const isAuth = useSelector((state) => state.user.isAuth);
-  const accessToken = getCookie('token');
 
   useEffect(() => {
-    dispatch(loadIngredients());
 
-    if (accessToken !== 'undefined') {
+    dispatch(loadIngredients());
+    if (isAuth || getCookie('refreshToken') !== 'undefined') { 
       dispatch(getUser());
     }
-  }, [dispatch, accessToken]);
+    
+  }, [dispatch, isAuth]);
 
   const background =
     location.state?.bgIngredient ||
@@ -63,34 +70,30 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route
-              path='orders'
-              element={
-                <ProtectedRoute authUser={isAuth}>
-                  <OrdersPage />
-                </ProtectedRoute>
-              }
-            />
-            {/* 
-            <Route
-              path='orders/:id'
-              element={
-                <ProtectedRoute authUser={isAuth}>
-                  <ModalOrderPage />
-                </ProtectedRoute>
-              }
-            /> */}
+            <Route path='orders' element={<OrdersPage />} />
           </Route>
-          <Route path='login' element={<LoginPage />} />
-          <Route path='register' element={<RegisterPage />} />
+          <Route
+            path='login'
+            element={!isAuth ? <LoginPage /> : <Navigate to={'/'} />}
+          />
+          <Route
+            path='register'
+            element={!isAuth ? <RegisterPage /> : <Navigate to={'/'} />}
+          />
+
           <Route path='feed' element={<FeedPage />} />
 
-          <Route path='forgot-password' element={<ForgotPasswordPage />} />
+          <Route
+            path='forgot-password'
+            element={!isAuth ? <ForgotPasswordPage /> : <Navigate to={'/'} />}
+          />
+
           <Route path='reset-password' element={<ResetPasswordPage />} />
           <Route path='*' element={<NotFoundPage />} />
 
           <Route path='ingredients/:id' element={<IngredientPage />} />
-          <Route path='feed/:id' element={<OrderPage isAuth={!isAuth} />} />
+          <Route path='feed/:id' element={<OrderFeedPage />} />
+
           <Route
             path='profile/orders/:id'
             element={<OrderPage isAuth={isAuth} />}

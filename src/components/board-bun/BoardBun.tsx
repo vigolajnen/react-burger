@@ -10,7 +10,7 @@ type Props = {
   title: string;
   type: string;
   classBun: string;
-  items: Array<TIngredient> | any;
+  items?: Array<TIngredient>;
 }
 
 const BoardBun = ({ board, title, type, classBun, items }: Props) => {
@@ -47,10 +47,10 @@ const BoardBun = ({ board, title, type, classBun, items }: Props) => {
 
   return (
     <div ref={drop} data-board={board} style={{ border: getBackgroundColor() }}>
-      {items.length === 0 ? (
+      {items?.length === 0 ? (
         <div className={classBun}>Выберите булку</div>
       ) : (
-        items.map((elem: TIngredient) => (
+        items?.map((elem: TIngredient) => (
           <ConstructorElement
             key={elem.id}
             data-elem={elem}

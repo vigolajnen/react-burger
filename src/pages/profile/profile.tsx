@@ -22,10 +22,9 @@ export function ProfilePage() {
   const navigate = useNavigate();
 
   const activeLink = location.pathname.substring(1);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user.user);
 
   const logout = useCallback(async () => {
-
     dispatch(userLogout()).then(() => {
       navigate('/', { replace: true });
     });

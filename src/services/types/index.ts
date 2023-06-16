@@ -29,18 +29,6 @@ export type TApplicationActions =
   | TGetIngredientsActions
   | TUserActions;
 
-// export type AppDispatch = ThunkDispatch<
-//   RootState,
-//   unknown,
-//   TApplicationActions
-//   >;
-
-// export type AppThunkAction<ReturnType = void> = ThunkAction<
-//   ReturnType,
-//   RootState,
-//   unknown,
-//   TApplicationActions
-//   >;
 
   export type TWSStoreActions = {
     wsInit: typeof  WS_CONNECTION_START,

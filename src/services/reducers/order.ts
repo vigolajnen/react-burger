@@ -5,15 +5,15 @@ import {
   GET_ORDER_PRICE,
   UPDATE_ORDERS,
 } from '../constants';
-import { TIngredient } from '../../utils/types';
+import { TOrder } from '../../utils/types';
 import { TGetOrderActions } from '../actions/order';
 
 export type TGetOrderState = {
-  orders: TIngredient[] | any;
-  order: any,
+  orders: any;
+  order: TOrder | null;
   orderPrice: number;
-  orderRequest: Boolean,
-  orderFailed: Boolean,
+  orderRequest: Boolean;
+  orderFailed: Boolean;
 };
 
 const initialState: TGetOrderState = {
@@ -24,7 +24,10 @@ const initialState: TGetOrderState = {
   orderFailed: false,
 };
 
-export const orderReducer = (state = initialState, action: TGetOrderActions) => {
+export const orderReducer = (
+  state = initialState,
+  action: TGetOrderActions,
+) => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {

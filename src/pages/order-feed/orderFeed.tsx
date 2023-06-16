@@ -3,30 +3,25 @@ import { useDispatch, useSelector } from '../../hooks';
 import { useParams } from 'react-router-dom';
 import { TOrder } from '../../utils/types';
 
-import { getCookie } from '../../services/utils';
-import { WS_URL } from '../../utils/constants';
+
+import { WS_URL_ALL } from '../../utils/constants';
 import {
   wsConnectionClosed,
   wsConnectionStart,
 } from '../../services/actions/wsActions';
 import OrderItemDetails from '../../components/order-item-details/OrderItemDetails';
-import styles from './order.module.css';
+import styles from './orderFeed.module.css';
 
-type Props = {
-  isAuth: Boolean;
-};
 
-const OrderPage: FC<Props> = ({ isAuth }) => {
+const OrderFeedPage: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const accessToken = getCookie('token');
-    isAuth && dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
-
+    dispatch(wsConnectionStart(WS_URL_ALL));
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, [dispatch, isAuth]);
+  }, [dispatch]);
 
   const orders = useSelector((store) => store.feedList.orders);
   const { id } = useParams();
@@ -43,4 +38,4 @@ const OrderPage: FC<Props> = ({ isAuth }) => {
   );
 };
 
-export default OrderPage;
+export default OrderFeedPage;

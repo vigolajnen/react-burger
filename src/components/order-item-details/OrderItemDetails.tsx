@@ -1,16 +1,14 @@
 import React, { FC } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import stylesContent from './OrderItemDetails.module.css';
-import { FeedOrder } from '../../services/types/live-orders';
+
 import { useSelector } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 import classNames from 'classnames';
 import { dayFormat } from '../order-item/OrderItem';
 import { useParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-// interface IOrderItemDetails {
-//   order: FeedOrder;
-// }
+
 
 const OrderItemDetails: FC = () => {
   const orders = useSelector((store) => store.feedList.orders);

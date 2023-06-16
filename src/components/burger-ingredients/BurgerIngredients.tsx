@@ -3,11 +3,7 @@ import { useSelector } from '../../hooks';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from '../ingredient-item/IngredientItem';
 import stylesIngredients from './BurgerIngredients.module.css';
-import { TIngredient } from '../../utils/types';
-
-type TIngredientId = Omit<TIngredient, '_id'> & {
-  _id: number;
-};
+import { TIngredient, TIngredientId } from '../../utils/types';
 
 const BurgerIngredients = () => {
   

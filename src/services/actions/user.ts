@@ -6,10 +6,9 @@ import {
   refreshTokenRequest,
   logoutRequest,
   getUserRequest,
-  // updateUserRequest,
 } from '../api-auth';
 
-import { TUserRequest, TUser } from '../../utils/types';
+import { TUserRequest, TUser, TUserData } from '../../utils/types';
 import {
   GET_REGISTR_REQUEST,
   GET_REGISTR_SUCCESS,
@@ -56,9 +55,10 @@ export interface IGetLoginRequestAction {
 }
 export interface IGetLoginSuccessAction {
   readonly type: typeof GET_LOGIN_SUCCESS;
-  readonly user: TUser;
-  readonly token: string;
-  readonly refreshToken: string;
+  payload: any
+  // readonly user: TUser;
+  // readonly token: string;
+  // readonly refreshToken: string;
 }
 export interface IGetLoginFailedAction {
   readonly type: typeof GET_LOGIN_FAILED;
@@ -68,7 +68,8 @@ export interface IGetUserRequestAction {
 }
 export interface IGetUserSuccessAction {
   readonly type: typeof GET_USER_SUCCESS;
-  readonly user: TUserRequest;
+  user: TUserRequest;
+  // readonly user: TUserRequest;
 }
 export interface IGetUserFailedAction {
   readonly type: typeof GET_USER_FAILED;
@@ -78,6 +79,7 @@ export interface IRefreshTokenRequestAction {
 }
 export interface IRefreshTokenSuccessAction {
   readonly type: typeof REFRESH_TOKEN_SUCCESS;
+  payload: TUserData;
 }
 export interface IRefreshTokenFailedAction {
   readonly type: typeof REFRESH_TOKEN_FAILED;
@@ -101,31 +103,58 @@ export type TUserActions =
   | IRefreshTokenSuccessAction
   | IRefreshTokenFailedAction;
 
+export const userLoginRequest = (): IGetLoginRequestAction => ({
+  type: GET_LOGIN_REQUEST,
+});
+export const userLoginSuccess = (
+  payload: TUserData,
+): IGetLoginSuccessAction => ({
+  type: GET_LOGIN_SUCCESS,
+  payload,
+});
+
+export const userLoginFailed = (): IGetLoginFailedAction => ({
+  type: GET_LOGIN_FAILED,
+});
+
+export const getUserDataRequest = (): IGetUserRequestAction => ({
+  type: GET_USER_REQUEST,
+});
+export const getUserDataSuccess = (
+  user: TUserRequest,
+): IGetUserSuccessAction => ({
+  type: GET_USER_SUCCESS,
+  user,
+});
+
+export const getUserDataFailed = (): IGetUserFailedAction => ({
+  type: GET_USER_FAILED,
+});
+
+export const refreshAccessTokenRequest = (): IRefreshTokenRequestAction => ({
+  type: REFRESH_TOKEN_REQUEST,
+});
+export const refreshAccessTokenSuccess = (
+  payload: TUserData,
+): IRefreshTokenSuccessAction => ({
+  type: REFRESH_TOKEN_SUCCESS,
+  payload,
+});
+export const refreshAccessTokenFailed = (): IRefreshTokenFailedAction => ({
+  type: REFRESH_TOKEN_FAILED,
+});
+
 export const userLogin = (state: TUser) => (dispatch: AppDispatch) => {
-  dispatch({
-    type: GET_LOGIN_REQUEST,
-  });
+  dispatch(userLoginRequest());
   return loginRequest(state)
     .then((res) => {
-      if (res && res.success) {
-        const token = res.accessToken.split('Bearer ')[1];
-        const refreshToken = res.refreshToken;
-        setCookie('token', token);
-        localStorage.setItem('refreshToken', refreshToken);
-        dispatch({
-          type: GET_LOGIN_SUCCESS,
-          user: res.user,
-          token: res.accessToken,
-          refreshToken: res.refreshToken,
-        });
-        return res;
-      }
+      setCookie('token', res.accessToken.split('Bearer ')[1]);
+      setCookie('refreshToken', res.refreshToken);
+      dispatch(userLoginSuccess(res));
     })
     .catch((err) => {
       console.log(err);
-      dispatch({
-        type: GET_LOGIN_FAILED,
-      });
+      dispatch(userLoginFailed());
     });
 };
 
@@ -141,10 +170,8 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
         token: res.accessToken,
         refreshToken: res.refreshToken,
       });
-      const token = res.accessToken.split('Bearer ')[1];
-      const refreshToken = res.refreshToken;
-      setCookie('token', token);
-      localStorage.setItem('refreshToken', refreshToken);
+      setCookie('token', res.accessToken.split('Bearer ')[1]);
+      setCookie('refreshToken', res.refreshToken);
     })
     .catch((err) => {
       console.log(err);
@@ -164,7 +191,7 @@ export const userLogout = () => (dispatch: AppDispatch) => {
         type: GET_LOGOUT_SUCCESS,
       });
       deleteCookie('token');
-      localStorage.clear();
+      deleteCookie('refreshToken');
     })
     .catch((err) => {
       alert(err);
@@ -176,76 +203,30 @@ export const userLogout = () => (dispatch: AppDispatch) => {
 };
 
 export const getUser = () => (dispatch: AppDispatch) => {
-  dispatch({
-    type: GET_USER_REQUEST,
-  });
-  return getUserRequest(getCookie('token'))
+  dispatch(getUserDataRequest());
+  return getUserRequest()
     .then((res) => {
-      dispatch({
-        type: GET_USER_SUCCESS,
-        user: res.user,
-      });
+      dispatch(getUserDataSuccess(res));
     })
     .catch((err) => {
       alert(err);
       // console.log(err);
-      dispatch({
-        type: GET_USER_FAILED,
-      });
-      dispatch({
-        type: REFRESH_TOKEN_REQUEST,
-      });
+      dispatch(getUserDataFailed());
+      dispatch(refreshToken());
     });
 };
 
-// export const updateUser = (state: TUserRequest) => (dispatch: AppDispatch) => {
-//   dispatch({
-//     type: GET_USER_REQUEST,
-//   });
-//   // updateUserRequest({
-//   //   email: state.email,
-//   //   name: state.name,
-//   //   token: getCookie('token'),
-//   // })
-//     .then((res) => {
-//       if (res && res.success) {
-//         dispatch({
-//           type: GET_USER_SUCCESS,
-//           user: res.user,
-//         });
-//       } else {
-//         dispatch({
-//           type: GET_USER_FAILED,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       alert(err);
-//       dispatch({
-//         type: GET_USER_FAILED,
-//       });
-//     });
-// };
-
 export const refreshToken = () => (dispatch: AppDispatch) => {
-  dispatch({
-    type: REFRESH_TOKEN_REQUEST,
-  });
+  dispatch(refreshAccessTokenRequest());
   refreshTokenRequest()
     .then((res) => {
-      if (res && res.success) {
-        localStorage.setItem('refreshToken', res.refreshToken);
-        const token = res.accessToken.split('Bearer ')[1];
-        setCookie('token', token);
-        dispatch({
-          type: REFRESH_TOKEN_SUCCESS,
-        });
-      }
+      dispatch(refreshAccessTokenSuccess(res));
+      setCookie('token', res.accessToken.split('Bearer ')[1]);
+      setCookie('refreshToken', res.refreshToken);
+      getUser();
     })
     .catch((err) => {
-      dispatch({
-        type: REFRESH_TOKEN_FAILED,
-      });
+      dispatch(refreshAccessTokenFailed());
       alert(err);
       // console.error(err);
     });
