@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import stylesContent from './OrderItemDetails.module.css';
+import stylesContent from './OrderFeedItemDetails.module.css';
 
 import { useSelector } from '../../hooks';
 import { TIngredient, TIngredientCount } from '../../utils/types';
@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { dayFormat } from '../order-item/OrderItem';
 import { useParams } from 'react-router-dom';
 
-const OrderItemDetails: FC = () => {
+const OrderFeedItemDetails: FC = () => {
   const orders = useSelector((store) => store.feedList.orders);
   const { id } = useParams();
   const order = orders?.find((item) => item?._id === id);
@@ -20,9 +20,6 @@ const OrderItemDetails: FC = () => {
       ingredients.find((item: TIngredient) => {
         if (item._id === itemId) {
           items.push(item);
-           if (item.type === 'bun') {
-            items.push(item);
-           }
         }
       });
     });
@@ -122,4 +119,4 @@ const OrderItemDetails: FC = () => {
   );
 };
 
-export default OrderItemDetails;
+export default OrderFeedItemDetails;

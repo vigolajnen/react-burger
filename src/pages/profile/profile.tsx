@@ -1,4 +1,4 @@
-import React, { useCallback, useState, ChangeEvent } from 'react';
+import React, { useCallback, useState, ChangeEvent, useEffect } from 'react';
 import {
   Input,
   PasswordInput,
@@ -22,7 +22,7 @@ export function ProfilePage() {
   const navigate = useNavigate();
 
   const activeLink = location.pathname.substring(1);
-  const user = useSelector((state) => state.user.user.user);
+  const user = useSelector((state) => state.user.user);
 
   const logout = useCallback(async () => {
     dispatch(userLogout()).then(() => {
@@ -30,12 +30,18 @@ export function ProfilePage() {
     });
   }, [dispatch, navigate]);
 
-  const [value, setValue] = useState<string>(
-    undefined && user ? 'ff' : user.name,
-  );
-  const [valueEmail, setValueEmail] = useState<string>(
-    undefined ? 'ff' : user.email,
-  );
+  const [value, setValue] = useState<string>('user');
+  const [valueEmail, setValueEmail] = useState<string>('user@email.rr');
+
+  useEffect(() => {
+    if (user !== null) {
+      setTimeout(() => {
+        setValue(user.user?.name || user.name);
+        setValueEmail(user.user?.email || user.email);
+      }, 500);
+     
+    }
+  }, [setValue, user]);
 
   const [valuePassword, setValuePassword] = useState<string>('1234567');
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

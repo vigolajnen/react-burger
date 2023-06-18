@@ -20,7 +20,8 @@ const OrderPage: FC<Props> = ({ isAuth }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const accessToken = getCookie('token');
+    // const accessToken = getCookie('token');
+    const accessToken = localStorage.getItem('token');
     isAuth && dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
 
     return () => {

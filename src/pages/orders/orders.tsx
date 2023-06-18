@@ -14,7 +14,8 @@ import { getCookie } from '../../services/utils';
 export function OrdersPage() {
   const dispatch = useDispatch();
   const orders = useSelector((store) => store.feedList.orders);
-  const accessToken = getCookie('token');
+  // const accessToken = getCookie('token');
+  const accessToken = localStorage.getItem('token');
 
 
   useEffect(() => {

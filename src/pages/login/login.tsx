@@ -16,7 +16,7 @@ export const LoginPage = () => {
   const location = useLocation();
   const isAuth = useSelector((state) => state.user.isAuth);
   const [form, setValue] = useState({ email: '', password: '' });
-  const from = location.state?.from?.pathname || '/'; 
+  const from = location.state?.from?.pathname; 
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -24,7 +24,7 @@ export const LoginPage = () => {
 
   const login = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    dispatch(userLogin(form));
+    dispatch(userLogin(form)).then(() => {});
   };
 
   if (isAuth) {

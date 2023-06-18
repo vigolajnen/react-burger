@@ -27,25 +27,26 @@ import appStyles from './App.module.css';
 
 import { loadIngredients } from '../../services/actions/menu';
 
-import { getCookie } from '../../services/utils';
-
 import ModalBg from '../modal/ModalBg';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 import OrderItemDetails from '../order-item-details/OrderItemDetails';
 import IngredientPage from '../../pages/ingredient/Ingredient';
 import OrderPage from '../../pages/order/order';
 import OrderFeedPage from '../../pages/order-feed/orderFeed';
+import OrderFeedItemDetails from '../order-feed-item-details/OrderFeedItemDetails';
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const from = location.state?.from?.pathname;
   const isAuth = useSelector((state) => state.user.isAuth);
 
   useEffect(() => {
 
     dispatch(loadIngredients());
-    if (isAuth || getCookie('refreshToken') !== 'undefined') { 
+
+    if (isAuth || !!localStorage.getItem('refreshToken')) { 
       dispatch(getUser());
     }
     
@@ -74,7 +75,7 @@ function App() {
           </Route>
           <Route
             path='login'
-            element={!isAuth ? <LoginPage /> : <Navigate to={'/'} />}
+            element={!isAuth ? <LoginPage /> : <Navigate to={from} />}
           />
           <Route
             path='register'
@@ -120,7 +121,7 @@ function App() {
             path='feed/:id'
             element={
               <ModalBg onClose={() => navigate(-1)}>
-                <OrderItemDetails />
+                <OrderFeedItemDetails />
               </ModalBg>
             }
           />

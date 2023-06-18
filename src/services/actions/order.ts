@@ -69,7 +69,7 @@ export type TGetOrderActions =
 // });
 
 
-const optionRequestPost = (orderData: Array<TIngredient>, token: string | undefined) => {
+const optionRequestPost = (orderData: Array<TIngredient>, token: string | null) => {
   return {
     method: 'POST',
     headers: {
@@ -82,7 +82,7 @@ const optionRequestPost = (orderData: Array<TIngredient>, token: string | undefi
   };
 };
 
-export const loadOrder = (orderData: Array<TIngredient>, token: string | undefined) => (dispatch: AppDispatch) => {
+export const loadOrder = (orderData: Array<TIngredient>, token: string | null) => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_ORDER_REQUEST,
   });

@@ -15,8 +15,16 @@ export type TIngredient = {
   productId: string;
 };
 
+export type TIngredientOrder = TIngredient & {
+  numId?: number;
+};
+
 export type TIngredientId = Omit<TIngredient, '_id'> & {
   _id: number;
+};
+
+export type TIngredientCount = TIngredient & {
+  count?: number;
 };
 
 export type TUser = {

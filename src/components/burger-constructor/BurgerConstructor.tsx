@@ -18,7 +18,6 @@ import { useNavigate } from 'react-router-dom';
 
 import stylesConstructor from './BurgerConstructor.module.css';
 import { TIngredient } from '../../utils/types';
-import { getCookie } from '../../services/utils';
 
 const BurgerConstructor = () => {
   const navigate = useNavigate();
@@ -56,7 +55,7 @@ const BurgerConstructor = () => {
     if (!isAuth) {
       navigate('/login', { replace: true });
     } else {
-      dispatch(loadOrder(allOrderArr, getCookie("token")));
+      dispatch(loadOrder(allOrderArr, localStorage.getItem('token')));
       ordersId(allOrderArr);
       openModal();
     }

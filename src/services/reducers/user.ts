@@ -13,22 +13,22 @@ import {
   GET_USER_FAILED,
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
-  REFRESH_TOKEN_FAILED
+  REFRESH_TOKEN_FAILED,
 } from '../constants';
 
 import { TUserActions } from '../actions/user';
 import { TUser } from '../../utils/types';
 
 export type TUserItemsState = {
-  user: TUser | null,
-  token: string | null,
-  refreshToken: string | null,
-  isAuth: Boolean,
-  userRequest: Boolean,
-  userFailed: Boolean,
-  refreshTokenRequest: Boolean,
-  userUpdateRequest: boolean,
-  userUpdateFailed: boolean,
+  user: TUser | null;
+  token: string | null;
+  refreshToken: string | null;
+  isAuth: Boolean;
+  userRequest: Boolean;
+  userFailed: Boolean;
+  refreshTokenRequest: Boolean;
+  userUpdateRequest: boolean;
+  userUpdateFailed: boolean;
 };
 
 const initialState: TUserItemsState = {
@@ -134,8 +134,8 @@ export const userReducer = (state = initialState, action: TUserActions) => {
         ...state,
         isAuth: true,
         refreshTokenRequest: false,
-        accessToken: action.payload.accessToken.split("Bearer ")[1],
-        refreshToken: action.payload.refreshToken
+        token: action.payload.accessToken.split('Bearer ')[1],
+        refreshToken: action.payload.refreshToken,
       };
     }
     case REFRESH_TOKEN_FAILED: {

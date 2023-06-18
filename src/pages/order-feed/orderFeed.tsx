@@ -11,6 +11,7 @@ import {
 } from '../../services/actions/wsActions';
 import OrderItemDetails from '../../components/order-item-details/OrderItemDetails';
 import styles from './orderFeed.module.css';
+import OrderFeedItemDetails from '../../components/order-feed-item-details/OrderFeedItemDetails';
 
 
 const OrderFeedPage: FC = () => {
@@ -31,7 +32,7 @@ const OrderFeedPage: FC = () => {
     <>
       {order && (
         <div className={styles.wrapper}>
-          <OrderItemDetails />
+          <OrderFeedItemDetails />
         </div>
       )}
     </>

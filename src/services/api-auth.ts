@@ -3,7 +3,6 @@ import { generalRequest } from './api';
 import { TUser, TResetPassword } from '../utils/types';
 import { getUser } from './actions/user';
 import { AppDispatch } from './types';
-import { getCookie } from './utils';
 
 export const loginRequest = async ({ email, password }: TUser) => {
   return await generalRequest(`auth/login`, {
@@ -14,7 +13,8 @@ export const loginRequest = async ({ email, password }: TUser) => {
     body: JSON.stringify({ email: email, password }),
   });
 };
-// localStorage.getItem('refreshToken')
+
+// getCookie('refreshToken')
 export const logoutRequest = () => {
   return generalRequest(`auth/logout`, {
     method: 'POST',
@@ -22,7 +22,7 @@ export const logoutRequest = () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: getCookie('refreshToken'),
+      token: localStorage.getItem('refreshToken'),
     }),
   });
 };
@@ -42,7 +42,7 @@ export const getUserRequest = () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + getCookie('token'),
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
     },
   });
 };
@@ -52,7 +52,7 @@ export const updateUserData = (data: { email: string; name: string }) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + getCookie('token'),
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
     },
     body: JSON.stringify(data),
   });
@@ -78,7 +78,7 @@ export const refreshTokenRequest = () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: getCookie('token'),
+      token: localStorage.getItem('refreshToken'),
     }),
   });
 };

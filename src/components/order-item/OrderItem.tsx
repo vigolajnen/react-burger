@@ -6,7 +6,6 @@ import { FeedOrder } from '../../services/types/live-orders';
 import { useSelector } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 import { useLocation } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 
 interface IOrderItem {
   order: FeedOrder;
@@ -35,9 +34,12 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   const orderIngredients = () => {
     const items: Array<TIngredient> = [];
     order?.ingredients.forEach((itemId) => {
-      ingredients.forEach((item: TIngredient) => {
+      ingredients.find((item: TIngredient) => {
         if (item._id === itemId) {
           items.push(item);
+          if (item.type === 'bun') {
+            items.push(item);
+           }
         }
       });
     });
@@ -46,6 +48,7 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   };
 
   const orderIngredientsArr = orderIngredients();
+ 
 
   const countProduct = () => {
     let count = 0;
@@ -69,12 +72,6 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
     return 'Готовится';
   };
 
-//   <Link
-//   to={isAuth ? `/profile/orders/${order._id}` : `/feed/${order._id}`}
-//   className={styles.wrapper}
-//   state={isAuth ? { bgProfileFeed: location } : { bgFeedList: location }}
-// >
-
   return (
     <Link
       to={`/profile/orders/${order._id}`}
@@ -94,8 +91,8 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
       <div className={styles.body}>
         <div className={styles.infoList}>
           <ul className={styles.list}>
-            {orderIngredientsArr.map((item: TIngredient) => (
-              <li key={uuid()}>
+            {orderIngredientsArr.map((item: TIngredient, index) => (
+              <li key={index}>
                 <div className={styles.liInner}>
                   <img src={item.image_mobile} alt='pic' />
                 </div>
