@@ -46,7 +46,6 @@ export interface IGetLogoutRequestAction {
 }
 export interface IGetLogoutSuccessAction {
   readonly type: typeof GET_LOGOUT_SUCCESS;
-  readonly payload: string;
 }
 export interface IGetLogoutFailedAction {
   readonly type: typeof GET_LOGOUT_FAILED;
@@ -117,9 +116,8 @@ export const userLoginFailed = (): IGetLoginFailedAction => ({
 export const userLogoutRequest = (): IGetLogoutRequestAction => ({
   type: GET_LOGOUT_REQUEST,
 });
-export const userLogoutSuccess = (token: string): IGetLogoutSuccessAction => ({
+export const userLogoutSuccess = (): IGetLogoutSuccessAction => ({
   type: GET_LOGOUT_SUCCESS,
-  payload: token,
 });
 
 export const userLogoutFailed = (): IGetLogoutFailedAction => ({
@@ -193,24 +191,13 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
 };
 
 export const userLogout =
-  (token: string | undefined) => (dispatch: AppDispatch) => {
+  () => (dispatch: AppDispatch) => {
     dispatch(userLogoutRequest);
-    // signOutRequest(token);
-    // return logoutRequest()
-    //   .then(() => {
-    //     dispatch(userLogoutSuccess());
-    //     deleteCookie('token');
-    //     deleteCookie('refreshToken');
-//   })
-    signOutRequest(token)
     return logoutRequest()
-      .then((res) => {
-        if (res) {
-          dispatch(userLogoutSuccess(res));
-          deleteCookie("token");
-          deleteCookie("refreshToken");
-          
-        }
+      .then(() => {
+        dispatch(userLogoutSuccess());
+        deleteCookie("token");
+        deleteCookie("refreshToken");
       })
       .catch((err) => {
         alert(err);

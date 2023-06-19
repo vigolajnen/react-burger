@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from '../../hooks';
 import { userLogout } from '../../services/actions/user';
 
 import styles from './profile.module.css';
-import { deleteCookie, getCookie } from '../../services/utils';
+
 
 type PropsActiveLink = {
   isActive: boolean;
@@ -26,12 +26,10 @@ export function ProfilePage() {
   const user = useSelector((state) => state.user.user);
 
   const logout = useCallback(async () => {
-    dispatch(userLogout(getCookie('refreshToken'))).then(() => {
-      deleteCookie('token');
-      deleteCookie('refreshToken');
+    dispatch(userLogout()).then(() => {
       navigate('/', { replace: true });
     });
-  }, [dispatch, navigate, deleteCookie]);
+  }, [dispatch]);
 
   const [value, setValue] = useState<string>('user');
   const [valueEmail, setValueEmail] = useState<string>('user@email.rr');
@@ -42,16 +40,6 @@ export function ProfilePage() {
       setValueEmail(user.user?.email || user.email);
     }, 500);
   }
-
-  // useEffect(() => {
-  //   // if (user !== null) {
-
-  //   // }
-  //   setTimeout(() => {
-  //     setValue(user.user?.name || user.name);
-  //     setValueEmail(user.user?.email || user.email);
-  //   }, 500);
-  // }, [value, valueEmail]);
 
   const [valuePassword, setValuePassword] = useState<string>('1234567');
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

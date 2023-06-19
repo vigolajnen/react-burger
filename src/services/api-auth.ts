@@ -15,7 +15,7 @@ export const loginRequest = async ({ email, password }: TUser) => {
   });
 };
 
-// getCookie('refreshToken')
+
 export const logoutRequest = () => {
   return generalRequest(`auth/logout`, {
     method: 'POST',
