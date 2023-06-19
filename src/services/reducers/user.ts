@@ -29,6 +29,7 @@ export type TUserItemsState = {
   refreshTokenRequest: Boolean;
   userUpdateRequest: boolean;
   userUpdateFailed: boolean;
+  isLoggedIn: boolean | undefined;
 };
 
 const initialState: TUserItemsState = {
@@ -41,6 +42,7 @@ const initialState: TUserItemsState = {
   refreshTokenRequest: false,
   userUpdateRequest: false,
   userUpdateFailed: false,
+  isLoggedIn: undefined,
 };
 
 export const userReducer = (state = initialState, action: TUserActions) => {
@@ -80,6 +82,7 @@ export const userReducer = (state = initialState, action: TUserActions) => {
         refreshToken: action.payload.refreshToken,
         isAuth: !state.isAuth,
         userRequest: false,
+        isLoggedIn: true,
       };
     }
     case GET_LOGIN_FAILED: {
@@ -100,6 +103,7 @@ export const userReducer = (state = initialState, action: TUserActions) => {
         token: null,
         refreshToken: null,
         isAuth: false,
+        isLoggedIn: false,
       };
     }
     case GET_LOGOUT_FAILED: {
@@ -109,6 +113,7 @@ export const userReducer = (state = initialState, action: TUserActions) => {
       return {
         ...state,
         userRequest: true,
+        isLoggedIn: true,
       };
     }
     case GET_USER_SUCCESS: {
@@ -118,10 +123,11 @@ export const userReducer = (state = initialState, action: TUserActions) => {
         isAuth: true,
         userFailed: false,
         userRequest: false,
+        isLoggedIn: true,
       };
     }
     case GET_USER_FAILED: {
-      return { ...state, isAuth: false, userFailed: true, userRequest: false };
+      return { ...state, isAuth: false, userFailed: true, userRequest: false, isLoggedIn: false, };
     }
     case REFRESH_TOKEN_REQUEST: {
       return {

@@ -34,22 +34,22 @@ import IngredientPage from '../../pages/ingredient/Ingredient';
 import OrderPage from '../../pages/order/order';
 import OrderFeedPage from '../../pages/order-feed/orderFeed';
 import OrderFeedItemDetails from '../order-feed-item-details/OrderFeedItemDetails';
+import { getCookie } from '../../services/utils';
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname;
+
   const isAuth = useSelector((state) => state.user.isAuth);
+  const { isLoggedIn } = useSelector((store) => store.user);
 
   useEffect(() => {
-
     dispatch(loadIngredients());
 
-    if (isAuth || !!localStorage.getItem('refreshToken')) { 
+    if (isLoggedIn || getCookie('token') !== undefined) {
       dispatch(getUser());
     }
-    
   }, [dispatch, isAuth]);
 
   const background =
@@ -57,6 +57,7 @@ function App() {
     location.state?.bgFeedList ||
     location.state?.bgProfileFeed ||
     location;
+
 
   return (
     <div className={appStyles.app}>
@@ -66,7 +67,7 @@ function App() {
           <Route
             path='profile'
             element={
-              <ProtectedRoute authUser={isAuth}>
+              <ProtectedRoute>
                 <ProfilePage />
               </ProtectedRoute>
             }
@@ -75,7 +76,11 @@ function App() {
           </Route>
           <Route
             path='login'
-            element={!isAuth ? <LoginPage /> : <Navigate to={from} />}
+            element={
+              <ProtectedRoute anonymous>
+                <LoginPage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path='register'
@@ -86,10 +91,21 @@ function App() {
 
           <Route
             path='forgot-password'
-            element={!isAuth ? <ForgotPasswordPage /> : <Navigate to={'/'} />}
+            element={
+              <ProtectedRoute anonymous>
+                <ForgotPasswordPage />
+              </ProtectedRoute>
+            }
           />
 
-          <Route path='reset-password' element={<ResetPasswordPage />} />
+          <Route
+            path='reset-password'
+            element={
+              <ProtectedRoute anonymous>
+                <ResetPasswordPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path='*' element={<NotFoundPage />} />
 
           <Route path='ingredients/:id' element={<IngredientPage />} />

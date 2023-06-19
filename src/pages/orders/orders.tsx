@@ -14,24 +14,19 @@ import { getCookie } from '../../services/utils';
 export function OrdersPage() {
   const dispatch = useDispatch();
   const orders = useSelector((store) => store.feedList.orders);
-  // const accessToken = getCookie('token');
-  const accessToken = localStorage.getItem('token');
-
+  const accessToken = getCookie('token');
 
   useEffect(() => {
     dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
 
     return () => {
       dispatch(wsConnectionClosed());
-
     };
-  }, [dispatch]);
-
+  }, [dispatch, wsConnectionClosed]);
 
   return (
     <div className={styles.contentOrder}>
       <div className={classNames('custom-scroll', `${styles.items}`)}>
-      
         {orders ? (
           orders.length === 0 ? (
             'Заказов нет'

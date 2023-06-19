@@ -3,6 +3,7 @@ import { generalRequest } from './api';
 import { TUser, TResetPassword } from '../utils/types';
 import { getUser } from './actions/user';
 import { AppDispatch } from './types';
+import { getCookie } from './utils';
 
 export const loginRequest = async ({ email, password }: TUser) => {
   return await generalRequest(`auth/login`, {
@@ -22,7 +23,7 @@ export const logoutRequest = () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: localStorage.getItem('refreshToken'),
+      token: getCookie('refreshToken'),
     }),
   });
 };
@@ -42,7 +43,7 @@ export const getUserRequest = () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
+      Authorization: 'Bearer ' + getCookie('token'),
     },
   });
 };
@@ -52,7 +53,7 @@ export const updateUserData = (data: { email: string; name: string }) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
+      Authorization: 'Bearer ' + getCookie('token'),
     },
     body: JSON.stringify(data),
   });
@@ -70,7 +71,7 @@ export const updateUserRequest = (token: string) => {
     });
   };
 };
-// localStorage.getItem('refreshToken')
+
 export const refreshTokenRequest = () => {
   return generalRequest(`auth/token`, {
     method: 'POST',
@@ -78,7 +79,7 @@ export const refreshTokenRequest = () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: localStorage.getItem('refreshToken'),
+      token: getCookie('refreshToken'),
     }),
   });
 };
@@ -106,5 +107,17 @@ export const resetPasswordRequest = ({ password, token }: TResetPassword) => {
     body: JSON.stringify({ password: password, token: token }),
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
+  });
+};
+
+export const signOutRequest = (refreshToken: string | undefined) => {
+  return generalRequest(`auth/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({
+      token: refreshToken,
+    }),
   });
 };

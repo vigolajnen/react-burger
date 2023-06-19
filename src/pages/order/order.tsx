@@ -20,14 +20,14 @@ const OrderPage: FC<Props> = ({ isAuth }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // const accessToken = getCookie('token');
-    const accessToken = localStorage.getItem('token');
+    const accessToken = getCookie('token');
+
     isAuth && dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
 
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, [dispatch, isAuth]);
+  }, [dispatch, isAuth, getCookie]);
 
   const orders = useSelector((store) => store.feedList.orders);
   const { id } = useParams();

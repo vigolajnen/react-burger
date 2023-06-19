@@ -3,8 +3,8 @@ import {
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Navigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from '../../hooks';
+import { Link } from 'react-router-dom';
+import { useDispatch } from '../../hooks';
 
 import { userLogin } from '../../services/actions/user';
 
@@ -13,10 +13,7 @@ import styles from './login.module.css';
 // страница авторизации.
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const isAuth = useSelector((state) => state.user.isAuth);
   const [form, setValue] = useState({ email: '', password: '' });
-  const from = location.state?.from?.pathname; 
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -26,10 +23,6 @@ export const LoginPage = () => {
     e.preventDefault();
     dispatch(userLogin(form)).then(() => {});
   };
-
-  if (isAuth) {
-    return <Navigate to={from} />;
-  }
 
   return (
     <main className={styles.main}>

@@ -11,6 +11,7 @@ import {
 
 import { TIngredient, TOrder } from '../../utils/types';
 import { AppDispatch } from '../types';
+import { getCookie } from '../utils';
 
 // Типизация экшенов
 export interface IGetOrderRequestAction {
@@ -69,7 +70,7 @@ export type TGetOrderActions =
 // });
 
 
-const optionRequestPost = (orderData: Array<TIngredient>, token: string | null) => {
+const optionRequestPost = (orderData: Array<TIngredient>, token: string | null| undefined) => {
   return {
     method: 'POST',
     headers: {
@@ -82,11 +83,11 @@ const optionRequestPost = (orderData: Array<TIngredient>, token: string | null) 
   };
 };
 
-export const loadOrder = (orderData: Array<TIngredient>, token: string | null) => (dispatch: AppDispatch) => {
+export const loadOrder = (orderData: Array<TIngredient>) => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_ORDER_REQUEST,
   });
-  generalRequest('orders', optionRequestPost(orderData, token))
+  generalRequest('orders', optionRequestPost(orderData, getCookie('token')))
     .then((res) => {
       dispatch({
         type: GET_ORDER_SUCCESS,

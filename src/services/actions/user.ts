@@ -4,6 +4,7 @@ import {
   refreshTokenRequest,
   logoutRequest,
   getUserRequest,
+  signOutRequest,
 } from '../api-auth';
 
 import { TUserRequest, TUser, TUserData } from '../../utils/types';
@@ -25,6 +26,7 @@ import {
   REFRESH_TOKEN_FAILED,
 } from '../constants';
 import { AppDispatch } from '../types';
+import { deleteCookie, getCookie, setCookie } from '../utils';
 
 // Типизация экшенов
 export interface IGetRegistrRequestAction {
@@ -44,6 +46,7 @@ export interface IGetLogoutRequestAction {
 }
 export interface IGetLogoutSuccessAction {
   readonly type: typeof GET_LOGOUT_SUCCESS;
+  readonly payload: string;
 }
 export interface IGetLogoutFailedAction {
   readonly type: typeof GET_LOGOUT_FAILED;
@@ -114,8 +117,9 @@ export const userLoginFailed = (): IGetLoginFailedAction => ({
 export const userLogoutRequest = (): IGetLogoutRequestAction => ({
   type: GET_LOGOUT_REQUEST,
 });
-export const userLogoutSuccess = (): IGetLogoutSuccessAction => ({
+export const userLogoutSuccess = (token: string): IGetLogoutSuccessAction => ({
   type: GET_LOGOUT_SUCCESS,
+  payload: token,
 });
 
 export const userLogoutFailed = (): IGetLogoutFailedAction => ({
@@ -153,9 +157,9 @@ export const userLogin = (state: TUser) => (dispatch: AppDispatch) => {
   dispatch(userLoginRequest());
   return loginRequest(state)
     .then((res) => {
-      localStorage.setItem('refreshToken', res.refreshToken);
-      localStorage.setItem('token', res.accessToken.split('Bearer ')[1]);
-      
+      setCookie('refreshToken', res.refreshToken);
+      setCookie('token', res.accessToken.split('Bearer ')[1]);
+
       dispatch(userLoginSuccess(res));
     })
     .catch((err) => {
@@ -177,9 +181,8 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
         refreshToken: res.refreshToken,
       });
 
-      localStorage.setItem('refreshToken', res.refreshToken);
-      localStorage.setItem('token', res.accessToken.split('Bearer ')[1]);
-      
+      setCookie('refreshToken', res.refreshToken);
+      setCookie('token', res.accessToken.split('Bearer ')[1]);
     })
     .catch((err) => {
       console.log(err);
@@ -189,23 +192,36 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
     });
 };
 
-export const userLogout = () => (dispatch: AppDispatch) => {
-  dispatch(userLogoutRequest);
-  return logoutRequest()
-    .then(() => {
-      localStorage.clear();
-
-      dispatch(userLogoutSuccess());
-    })
-    .catch((err) => {
-      alert(err);
-      // console.log(err);
-      dispatch(userLogoutFailed);
-    });
-};
+export const userLogout =
+  (token: string | undefined) => (dispatch: AppDispatch) => {
+    dispatch(userLogoutRequest);
+    // signOutRequest(token);
+    // return logoutRequest()
+    //   .then(() => {
+    //     dispatch(userLogoutSuccess());
+    //     deleteCookie('token');
+    //     deleteCookie('refreshToken');
+//   })
+    signOutRequest(token)
+    return logoutRequest()
+      .then((res) => {
+        if (res) {
+          dispatch(userLogoutSuccess(res));
+          deleteCookie("token");
+          deleteCookie("refreshToken");
+          
+        }
+      })
+      .catch((err) => {
+        alert(err);
+        // console.log(err);
+        dispatch(userLogoutFailed);
+      });
+  };
 
 export const getUser = () => (dispatch: AppDispatch) => {
   dispatch(getUserDataRequest());
+
   return getUserRequest()
     .then((res) => {
       dispatch(getUserDataSuccess(res));
@@ -221,16 +237,12 @@ export const getUser = () => (dispatch: AppDispatch) => {
 
 export const refreshToken = () => (dispatch: AppDispatch) => {
   dispatch(refreshAccessTokenRequest());
-  refreshTokenRequest()
+  return refreshTokenRequest()
     .then((res) => {
-
-      localStorage.setItem('refreshToken', res.refreshToken);
-      localStorage.setItem('token', res.accessToken.split('Bearer ')[1]);
-      
-
       dispatch(refreshAccessTokenSuccess(res));
-
-      getUser();
+      setCookie('refreshToken', res.refreshToken);
+      setCookie('token', res.accessToken.split('Bearer ')[1]);
+      dispatch(getUser());
     })
     .catch((err) => {
       dispatch(refreshAccessTokenFailed());

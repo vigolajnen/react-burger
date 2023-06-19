@@ -3,26 +3,29 @@ import { useSelector } from '../../hooks';
 import { getCookie } from '../../services/utils';
 
 type Props = {
-  authUser: boolean | any;
+  authUser?: boolean | any;
   children: JSX.Element | any;
+  anonymous?: boolean;
 };
 
-const ProtectedRoute = ({ authUser, children }: Props) => {
-  const localToken = !localStorage.getItem('token');
+const ProtectedRoute = ({ anonymous = false, children }: Props) => {
   const location = useLocation();
-  const from = location.state?.from.pathname;
+  const localToken = !getCookie('token');
+  const from = location.state?.from || '/';
+  const { isLoggedIn } = useSelector((store) => store.user);
+  console.log(anonymous && isLoggedIn);
+  console.log(!anonymous && !isLoggedIn);
 
-  const user = useSelector((state) => state.user.user);
 
-  if (!authUser && !user && localToken) {
+  if (!anonymous && localToken) {
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
-  if (!!localToken) {
-
+  if (anonymous && !localToken) {
     return <Navigate to={from} />;
   }
 
+  // Если все ок, то рендерим внутреннее содержимое
   return children;
 };
 
