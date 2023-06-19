@@ -4,7 +4,6 @@ import {
   refreshTokenRequest,
   logoutRequest,
   getUserRequest,
-  signOutRequest,
 } from '../api-auth';
 
 import { TUserRequest, TUser, TUserData } from '../../utils/types';
@@ -155,10 +154,9 @@ export const userLogin = (state: TUser) => (dispatch: AppDispatch) => {
   dispatch(userLoginRequest());
   return loginRequest(state)
     .then((res) => {
+      dispatch(userLoginSuccess(res));
       setCookie('refreshToken', res.refreshToken);
       setCookie('token', res.accessToken.split('Bearer ')[1]);
-
-      dispatch(userLoginSuccess(res));
     })
     .catch((err) => {
       console.log(err);
@@ -175,7 +173,7 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
       dispatch({
         type: GET_REGISTR_SUCCESS,
         user: res.user,
-        token: res.accessToken,
+        token: res.accessToken.split('Bearer ')[1],
         refreshToken: res.refreshToken,
       });
 
@@ -190,28 +188,29 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
     });
 };
 
-export const userLogout =
-  () => (dispatch: AppDispatch) => {
-    dispatch(userLogoutRequest);
-    return logoutRequest()
-      .then(() => {
+export const userLogout = () => (dispatch: AppDispatch) => {
+  dispatch(userLogoutRequest);
+  return logoutRequest(getCookie('refreshToken'))
+    .then((res) => {
+      if (res) {
         dispatch(userLogoutSuccess());
-        deleteCookie("token");
-        deleteCookie("refreshToken");
-      })
-      .catch((err) => {
-        alert(err);
-        // console.log(err);
-        dispatch(userLogoutFailed);
-      });
-  };
+        deleteCookie('token');
+        deleteCookie('refreshToken');
+      }
+    })
+    .catch((err) => {
+      alert(err);
+      // console.log(err);
+      dispatch(userLogoutFailed);
+    });
+};
 
 export const getUser = () => (dispatch: AppDispatch) => {
   dispatch(getUserDataRequest());
 
   return getUserRequest()
     .then((res) => {
-      dispatch(getUserDataSuccess(res));
+      dispatch(getUserDataSuccess(res.user));
     })
     .catch((err) => {
       alert(err);

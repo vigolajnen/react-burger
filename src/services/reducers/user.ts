@@ -139,6 +139,7 @@ export const userReducer = (state = initialState, action: TUserActions) => {
       return {
         ...state,
         isAuth: true,
+        isLoggedIn: true,
         refreshTokenRequest: false,
         token: action.payload.accessToken.split('Bearer ')[1],
         refreshToken: action.payload.refreshToken,

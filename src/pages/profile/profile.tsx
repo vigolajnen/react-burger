@@ -35,8 +35,8 @@ export function ProfilePage() {
 
   const userDate = setTimeout(() => {
     if (user !== null) {
-      setValue(user.user?.name || user.name);
-      setValueEmail(user.user?.email || user.email);
+      setValue(user.name);
+      setValueEmail(user.email);
     }
   }, 300);
 

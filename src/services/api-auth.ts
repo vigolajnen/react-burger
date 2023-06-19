@@ -16,14 +16,14 @@ export const loginRequest = async ({ email, password }: TUser) => {
 };
 
 
-export const logoutRequest = () => {
+export const logoutRequest = (token: string | undefined) => {
   return generalRequest(`auth/logout`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: getCookie('refreshToken'),
+      token: token,
     }),
   });
 };

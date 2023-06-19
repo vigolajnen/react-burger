@@ -40,24 +40,18 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-
   const isAuth = useSelector((state) => state.user.isAuth);
-  const { isLoggedIn } = useSelector((store) => store.user);
 
   useEffect(() => {
     dispatch(loadIngredients());
-
-    if (isLoggedIn || getCookie('token') !== undefined) {
-      dispatch(getUser());
-    }
-  }, [dispatch, isAuth]);
+    !!getCookie('token') && dispatch(getUser());
+  }, [dispatch]);
 
   const background =
     location.state?.bgIngredient ||
     location.state?.bgFeedList ||
     location.state?.bgProfileFeed ||
     location;
-
 
   return (
     <div className={appStyles.app}>

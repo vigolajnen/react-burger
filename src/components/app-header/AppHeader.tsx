@@ -9,8 +9,7 @@ type PropsActiveLink = {
 }
 
 const AppHeader = () => {
-  const user = useSelector((state) => state.user.user);
-
+  const {user} = useSelector((state) => state.user);
   const setActiveLink = ({ isActive, isPending }: PropsActiveLink) =>
     isPending ? 'pending' : isActive ? styles.active : styles.link;
   
@@ -33,8 +32,8 @@ const AppHeader = () => {
 
         <NavLink to='/profile' className={setActiveLink}>
           <ProfileIcon type='primary' />
-          {user !== null ? (
-            <span className={styles.linkText}>{user?.user?.name}</span>
+          {user ? (
+            <span className={styles.linkText}>{user?.name}</span>
           ) : (
             <span className={styles.linkText}>Личный кабинет</span>
           )}

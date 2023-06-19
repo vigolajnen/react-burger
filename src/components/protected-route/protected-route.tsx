@@ -1,5 +1,4 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from '../../hooks';
 import { getCookie } from '../../services/utils';
 
 type Props = {
@@ -12,6 +11,7 @@ const ProtectedRoute = ({ anonymous = false, children }: Props) => {
   const location = useLocation();
   const localToken = !getCookie('token');
   const from = location.state?.from || '/';
+
 
   if (!anonymous && localToken) {
     return <Navigate to='/login' state={{ from: location }} replace />;

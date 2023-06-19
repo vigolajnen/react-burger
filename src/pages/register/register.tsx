@@ -12,7 +12,6 @@ import styles from './register.module.css';
 // страница регистрации.
 export function RegisterPage() {
   const isAuth = useSelector((state) => state.user.isAuth);
-  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const [form, setValue] = useState({
