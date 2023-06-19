@@ -33,7 +33,7 @@ const AppHeader = () => {
 
         <NavLink to='/profile' className={setActiveLink}>
           <ProfileIcon type='primary' />
-          {user ? (
+          {user !== null ? (
             <span className={styles.linkText}>{user?.user?.name}</span>
           ) : (
             <span className={styles.linkText}>Личный кабинет</span>

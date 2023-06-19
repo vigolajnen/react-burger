@@ -12,7 +12,6 @@ import { userLogout } from '../../services/actions/user';
 
 import styles from './profile.module.css';
 
-
 type PropsActiveLink = {
   isActive: boolean;
 };
@@ -29,17 +28,23 @@ export function ProfilePage() {
     dispatch(userLogout()).then(() => {
       navigate('/', { replace: true });
     });
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const [value, setValue] = useState<string>('user');
   const [valueEmail, setValueEmail] = useState<string>('user@email.rr');
 
-  if (user !== null) {
-    setTimeout(() => {
+  const userDate = setTimeout(() => {
+    if (user !== null) {
       setValue(user.user?.name || user.name);
       setValueEmail(user.user?.email || user.email);
-    }, 500);
-  }
+    }
+  }, 300);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(userDate);
+    };
+  }, [setValue, setValueEmail, userDate]);
 
   const [valuePassword, setValuePassword] = useState<string>('1234567');
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
