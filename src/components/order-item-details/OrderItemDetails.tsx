@@ -17,7 +17,7 @@ const OrderItemDetails: FC = () => {
   const orderIngredients = () => {
     const items: Array<TIngredient> = [];
     order?.ingredients.forEach((itemId: any) => {
-      ingredients.find((item: TIngredient) => {
+      ingredients.filter((item: TIngredient) => {
         if (item._id === itemId) {
           items.push(item);
            if (item.type === 'bun') {
@@ -31,16 +31,6 @@ const OrderItemDetails: FC = () => {
   };
 
   const orderIngredientsArr = orderIngredients();
-
-  function counter(ingredient: TIngredient) {
-    let counter = 0;
-    ingredients.forEach((el) => {
-      if (el._id === ingredient._id) {
-        counter += 1;
-      }
-    });
-    return counter;
-  }
   
   const countItems: { [key: string]: number } = {}; // здесь будет храниться промежуточный результат
   for (const el of orderIngredientsArr) {

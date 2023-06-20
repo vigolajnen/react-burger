@@ -33,19 +33,25 @@ const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
   const orderIngredients = () => {
     const items: Array<TIngredient> = [];
     order?.ingredients.forEach((itemId) => {
-      ingredients.find((item: TIngredient) => {
+      ingredients.filter((item: TIngredient) => {
         if (item._id === itemId) {
           items.push(item);
         }
       });
-
-      
     });
 
     return items;
   };
 
-  const orderIngredientsArr = orderIngredients();
+  const items = orderIngredients();
+
+  const allOrderIngredients = () => {
+    const orderBun: TIngredient = items.find((el) => el.type === "bun")!;
+    const orderIngs = items.filter((el) => el.type !== "bun");
+    return [orderBun, orderBun, ...orderIngs];
+  };
+
+  const orderIngredientsArr = allOrderIngredients();
 
 
   const countProduct = () => {

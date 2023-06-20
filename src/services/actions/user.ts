@@ -154,9 +154,10 @@ export const userLogin = (state: TUser) => (dispatch: AppDispatch) => {
   dispatch(userLoginRequest());
   return loginRequest(state)
     .then((res) => {
-      dispatch(userLoginSuccess(res));
+      
       setCookie('refreshToken', res.refreshToken);
       setCookie('token', res.accessToken.split('Bearer ')[1]);
+      dispatch(userLoginSuccess(res));
     })
     .catch((err) => {
       console.log(err);

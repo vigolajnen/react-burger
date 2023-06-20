@@ -33,13 +33,10 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const orderIngredients = () => {
     const items: Array<TIngredient> = [];
-    order?.ingredients.forEach((itemId) => {
+    order?.ingredients.forEach((itemId: any) => {
       ingredients.find((item: TIngredient) => {
         if (item._id === itemId) {
           items.push(item);
-          if (item.type === 'bun') {
-            items.push(item);
-           }
         }
       });
     });
@@ -47,7 +44,15 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
     return items;
   };
 
-  const orderIngredientsArr = orderIngredients();
+  const items = orderIngredients();
+
+  const allOrderIngredients = () => {
+    const orderBun: TIngredient = items.find((el) => el.type === "bun")!;
+    const orderIngs = items.filter((el) => el.type !== "bun");
+    return [orderBun, orderBun, ...orderIngs];
+  };
+
+  const orderIngredientsArr = allOrderIngredients();
  
 
   const countProduct = () => {

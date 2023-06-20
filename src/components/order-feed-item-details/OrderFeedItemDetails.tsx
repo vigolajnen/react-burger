@@ -17,7 +17,7 @@ const OrderFeedItemDetails: FC = () => {
   const orderIngredients = () => {
     const items: Array<TIngredient> = [];
     order?.ingredients.forEach((itemId: any) => {
-      ingredients.find((item: TIngredient) => {
+      ingredients.filter((item: TIngredient) => {
         if (item._id === itemId) {
           items.push(item);
         }
@@ -29,16 +29,6 @@ const OrderFeedItemDetails: FC = () => {
 
   const orderIngredientsArr = orderIngredients();
 
-  function counter(ingredient: TIngredient) {
-    let counter = 0;
-    ingredients.forEach((el) => {
-      if (el._id === ingredient._id) {
-        counter += 1;
-      }
-    });
-    return counter;
-  }
-  
   const countItems: { [key: string]: number } = {}; // здесь будет храниться промежуточный результат
   for (const el of orderIngredientsArr) {
     countItems[el._id] = countItems[el._id] ? countItems[el._id] + 1 : 1;
@@ -96,7 +86,7 @@ const OrderFeedItemDetails: FC = () => {
               <h3 className={stylesContent.liTitle}>{item.name}</h3>
               <div className={stylesContent.liPrice}>
                 <span>
-                {/* {counter(item)} x {item.price} */}
+                  {/* {counter(item)} x {item.price} */}
                   {item.count} x {item.price}
                 </span>
                 <CurrencyIcon type='primary' />
