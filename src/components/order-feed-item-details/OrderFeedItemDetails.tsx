@@ -25,13 +25,22 @@ const OrderFeedItemDetails: FC = () => {
     });
 
     return items;
+    
   };
 
-  const orderIngredientsArr = orderIngredients();
+  const items = orderIngredients();
+  let orderIngredientsArr: Array<TIngredient> = [];
+  const orderBun = items.filter((el) => el.type === "bun");
+  const orderIngs = items.filter((el) => el.type !== "bun");
+  if (orderBun.length > 0) {
+   orderIngredientsArr = [...orderIngs, orderBun[0], orderBun[0]];
+  }
+   
+
 
   const countItems: { [key: string]: number } = {}; // здесь будет храниться промежуточный результат
   for (const el of orderIngredientsArr) {
-    countItems[el._id] = countItems[el._id] ? countItems[el._id] + 1 : 1;
+    countItems[el?._id] = countItems[el._id] ? countItems[el._id] + 1 : 1;
   }
 
   const countItemsArr = Object.entries(countItems).map((entry) => ({
