@@ -107,7 +107,11 @@ function App() {
 
           <Route
             path='profile/orders/:id'
-            element={<OrderPage isAuth={isAuth} />}
+            element={
+              <ProtectedRoute>
+                <OrderPage isAuth={isAuth} />
+              </ProtectedRoute>
+            }
           />
         </Route>
       </Routes>
@@ -143,9 +147,11 @@ function App() {
           <Route
             path='profile/orders/:id'
             element={
-              <ModalBg onClose={() => navigate(-1)}>
-                <OrderItemDetails />
-              </ModalBg>
+              <ProtectedRoute>
+                <ModalBg onClose={() => navigate(-1)}>
+                  <OrderItemDetails />
+                </ModalBg>
+              </ProtectedRoute>
             }
           />
         </Routes>
