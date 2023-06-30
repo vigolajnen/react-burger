@@ -1,5 +1,6 @@
 import { Middleware } from "redux";
 import { IWebSocket } from "../actions/wsActions";
+import { getCookie } from "../utils";
 
 export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
   return store => {
@@ -10,12 +11,18 @@ export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
       const { dispatch } = store;
       const { type, payload } = action;
       const { wsStart, onOpen, onError, onClose, onMessage, wsSend } = wsActions;
-
+      const accessToken = !getCookie('token');
       if (type === wsStart) {
         url = payload;
         socket = new WebSocket(url);
       } else if (type === onClose) {
         // socket && socket.close(1000, 'CLOSE_NORMAL');
+      }
+      else if (type === wsStart && accessToken) {
+        url = payload;
+        socket = new WebSocket(
+          `${url}?token=${accessToken}`
+        );
       }
       if (socket) {
         socket.onopen = event => {

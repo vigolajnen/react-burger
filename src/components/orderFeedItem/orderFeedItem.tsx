@@ -27,6 +27,8 @@ export const dayFormat = (orderDay: string) => {
 };
 
 const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
+  const { wsConnected } = useSelector((store) => store.feedList);
+
   const orderIngredientsMax = 6;
   const location = useLocation();
   const ingredients = useSelector((state) => state.ingredients.ingredients);
@@ -46,13 +48,12 @@ const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
   const items = orderIngredients();
 
   const allOrderIngredients = () => {
-    const orderBun: TIngredient = items.find((el) => el.type === "bun")!;
-    const orderIngs = items.filter((el) => el.type !== "bun");
+    const orderBun: TIngredient = items.find((el) => el.type === 'bun')!;
+    const orderIngs = items.filter((el) => el.type !== 'bun');
     return [orderBun, orderBun, ...orderIngs];
   };
 
   const orderIngredientsArr = allOrderIngredients();
-
 
   const countProduct = () => {
     let count = 0;
@@ -61,13 +62,14 @@ const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
     }
     return count;
   };
-
+  
   const resPrice: number = orderIngredientsArr.reduce(
-    (a: number, b: TIngredient) => a + b.price,
+    (a: number, b: TIngredient) => a + (Number(b?.price) || 0),
     0,
   );
 
   return (
+    order &&
     <Link
       to={`/feed/${order._id}`}
       className={styles.wrapper}
@@ -83,12 +85,14 @@ const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
       <div className={styles.body}>
         <div className={styles.infoList}>
           <ul className={styles.list}>
-            {orderIngredientsArr.map((item: TIngredientOrder, index) => (
-              <li key={index}>
+            {wsConnected && orderIngredientsArr.length > 0 && orderIngredientsArr.map((item: TIngredientOrder, index) => (
+             item !== undefined ? <li key={index}>
                 <div className={styles.liInner}>
                   <img src={item.image_mobile} alt='pic' />
                 </div>
               </li>
+                : 'Загрузка...'
+              
             ))}
           </ul>
           {orderIngredientsArr.length > orderIngredientsMax && (
@@ -97,7 +101,11 @@ const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
         </div>
 
         <div className={styles.price}>
-          <span>{resPrice}</span>
+          <span>
+            {/* 90 */}
+            {resPrice !== undefined ? resPrice : 80}
+            {/* {!!order && resPrice !== undefined && resPrice} */}
+          </span>
           <CurrencyIcon type='primary' />
         </div>
       </div>

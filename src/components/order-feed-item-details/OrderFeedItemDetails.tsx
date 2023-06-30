@@ -60,7 +60,7 @@ const OrderFeedItemDetails: FC = () => {
     });
   });
 
-  const resPrice: number = orderIngredientsArr.reduce(
+  const resPrice: number = orderIngredientsArr?.reduce(
     (a: number, b: TIngredient) => a + b.price,
     0,
   );
@@ -95,7 +95,6 @@ const OrderFeedItemDetails: FC = () => {
               <h3 className={stylesContent.liTitle}>{item.name}</h3>
               <div className={stylesContent.liPrice}>
                 <span>
-                  {/* {counter(item)} x {item.price} */}
                   {item.count} x {item.price}
                 </span>
                 <CurrencyIcon type='primary' />

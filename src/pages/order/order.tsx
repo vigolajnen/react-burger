@@ -13,21 +13,21 @@ import OrderItemDetails from '../../components/order-item-details/OrderItemDetai
 import styles from './order.module.css';
 
 type Props = {
-  isAuth: Boolean;
+  isAuth?: Boolean;
 };
 
-const OrderPage: FC<Props> = ({ isAuth }) => {
+const OrderPage: FC<Props> = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const accessToken = getCookie('token');
 
-    isAuth && dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
+    dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
 
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, [dispatch, isAuth, getCookie]);
+  }, [dispatch]);
 
   const orders = useSelector((store) => store.feedList.orders);
   const { id } = useParams();

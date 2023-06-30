@@ -9,7 +9,6 @@ import {
   wsConnectionClosed,
   wsConnectionStart,
 } from '../../services/actions/wsActions';
-import OrderItemDetails from '../../components/order-item-details/OrderItemDetails';
 import styles from './orderFeed.module.css';
 import OrderFeedItemDetails from '../../components/order-feed-item-details/OrderFeedItemDetails';
 

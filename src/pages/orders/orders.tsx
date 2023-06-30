@@ -11,32 +11,38 @@ import styles from './orders.module.css';
 import { FeedList } from '../../components/feed-list/FeedList';
 import { getCookie } from '../../services/utils';
 
-export function OrdersPage() {
+const OrdersPage: FC = () => {
   const dispatch = useDispatch();
-  const orders = useSelector((store) => store.feedList.orders);
   const accessToken = getCookie('token');
+  const { wsConnected } = useSelector((store) => store.feedList);
 
   useEffect(() => {
-    dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
+    if (!!accessToken) {
+      dispatch(wsConnectionStart(`${WS_URL}?token=${accessToken}`));
+    }
 
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, [dispatch, wsConnectionClosed]);
+  }, [dispatch, accessToken]);
+
+  const orders = useSelector((store) => store.feedList.orders);
 
   return (
     <div className={styles.contentOrder}>
       <div className={classNames('custom-scroll', `${styles.items}`)}>
-        {orders ? (
-          orders.length === 0 ? (
-            'Заказов нет'
-          ) : (
+        {wsConnected ? (
+          orders && orders.length > 0 ? (
             <FeedList orders={orders} />
+          ) : (
+            'Заказов нет'
           )
         ) : (
-          ' Загрузка ...'
+          'Загрузка ...'
         )}
       </div>
     </div>
   );
-}
+};
+
+export { OrdersPage };

@@ -58,7 +58,7 @@ const OrderItemDetails: FC = () => {
     });
   });
 
-  const resPrice: number = orderIngredientsArr.reduce(
+  const resPrice: number = orderIngredientsArr?.reduce(
     (a: number, b: TIngredient) => a + b.price,
     0,
   );

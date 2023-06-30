@@ -27,9 +27,9 @@ export const dayFormat = (orderDay: string) => {
 };
 
 const OrderItem: FC<IOrderItem> = ({ order }) => {
+  const { wsConnected } = useSelector((store) => store.feedList);
   const orderIngredientsMax = 6;
   const location = useLocation();
-  const isAuth = useSelector((state) => state.user.isAuth);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const orderIngredients = () => {
     const items: Array<TIngredient> = [];
@@ -47,13 +47,12 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   const items = orderIngredients();
 
   const allOrderIngredients = () => {
-    const orderBun: TIngredient = items.find((el) => el.type === "bun")!;
-    const orderIngs = items.filter((el) => el.type !== "bun");
+    const orderBun: TIngredient = items.find((el) => el.type === 'bun')!;
+    const orderIngs = items.filter((el) => el.type !== 'bun');
     return [orderBun, orderBun, ...orderIngs];
   };
 
   const orderIngredientsArr = allOrderIngredients();
- 
 
   const countProduct = () => {
     let count = 0;
@@ -64,7 +63,7 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   };
 
   const resPrice: number = orderIngredientsArr.reduce(
-    (a: number, b: TIngredient) => a + b.price,
+    (a: number, b: TIngredient) => a + (Number(b?.price) || 0),
     0,
   );
 
@@ -78,10 +77,11 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   };
 
   return (
+    order &&
     <Link
       to={`/profile/orders/${order._id}`}
       className={styles.wrapper}
-      state={isAuth ? { bgProfileFeed: location } : { bgFeedList: location }}
+      state={{bgProfileFeed: location}}
     >
       <div className={styles.header}>
         <div className={styles.number}>#{order.number}</div>
@@ -89,28 +89,27 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
       </div>
       <div className={styles.titleAndStatus}>
         <h3 className={styles.title}>{order.name}</h3>
-        {isAuth && (
-          <div className={styles.status}>{orderStatus(order.status)}</div>
-        )}
+
+        <div className={styles.status}>{orderStatus(order.status)}</div>
       </div>
       <div className={styles.body}>
         <div className={styles.infoList}>
           <ul className={styles.list}>
-            {orderIngredientsArr.map((item: TIngredient, index) => (
+            {wsConnected && orderIngredientsArr.map((item: TIngredient, index) => (
               <li key={index}>
                 <div className={styles.liInner}>
-                  <img src={item.image_mobile} alt='pic' />
+                  <img src={item?.image_mobile} alt='pic' />
                 </div>
               </li>
             ))}
           </ul>
-          {orderIngredientsArr.length > orderIngredientsMax && (
+          {wsConnected && orderIngredientsArr.length > orderIngredientsMax && (
             <div className={styles.listCount}>+{countProduct()}</div>
           )}
         </div>
 
         <div className={styles.price}>
-          <span>{resPrice}</span>
+          <span>{resPrice !== undefined ? resPrice : 80}</span>
           <CurrencyIcon type='primary' />
         </div>
       </div>
