@@ -5,6 +5,7 @@ import {
   SORT_CONSTRUCTOR_ITEMS,
   DELETE_CONSTRUCTOR_ITEM,
   ADD_CONSTRUCTOR_ITEM,
+  CLEAR_CONSTRUCTOR_ITEM,
 } from '../constants';
 
 // Типизация экшенов
@@ -22,13 +23,16 @@ export interface IAddConstructorItemAction {
   readonly type: typeof ADD_CONSTRUCTOR_ITEM;
   readonly payload: any;
 }
+export interface IClearConstructorItemAction {
+  readonly type: typeof CLEAR_CONSTRUCTOR_ITEM;
+}
 
 // Объединяем в Union
 export type TConstructorItemsActions =
   | ISortConstructorItemsAction
   | IDeleteConstructorItemAction
-  | IAddConstructorItemAction;
-
+  | IAddConstructorItemAction
+  | IClearConstructorItemAction;
 
 export const AddConstructorItemAction = (
   item: TIngredient,
@@ -40,14 +44,6 @@ export const AddConstructorItemAction = (
   },
 });
 
-// export const addItemConstructor = (
-//   item: TIngredient,
-// ): IAddConstructorItemAction => {
-//   return {
-//     type: ADD_CONSTRUCTOR_ITEM,
-//     payload: {
-//       ...item,
-//       id: uuid(),
-//     },
-//   };
-// };
+export const ClearConstructorItemAction = (): IClearConstructorItemAction => ({
+  type: CLEAR_CONSTRUCTOR_ITEM,
+});

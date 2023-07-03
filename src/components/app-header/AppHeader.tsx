@@ -26,9 +26,9 @@ const AppHeader = () => {
           <span className={styles.linkText}>Лента заказов</span>
         </NavLink>
 
-        <div className={styles.logo}>
+        <NavLink to='/' className={styles.logo}>
           <Logo />
-        </div>
+        </NavLink>
 
         <NavLink to='/profile' className={setActiveLink}>
           <ProfileIcon type='primary' />

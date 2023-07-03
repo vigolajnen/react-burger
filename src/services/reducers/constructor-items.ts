@@ -2,6 +2,7 @@ import {
   DELETE_CONSTRUCTOR_ITEM,
   ADD_CONSTRUCTOR_ITEM,
   SORT_CONSTRUCTOR_ITEMS,
+  CLEAR_CONSTRUCTOR_ITEM,
 } from '../constants';
 import { TIngredient } from '../../utils/types';
 import { TConstructorItemsActions } from '../actions/constructor-items';
@@ -66,6 +67,13 @@ export const constructorItemsReducer = (
           constructorItems: [...state.constructorItems, action.payload],
         };
       }
+    }
+    case CLEAR_CONSTRUCTOR_ITEM: {
+      return {
+        ...state,
+        constructorBun: [],
+        constructorItems: [],
+      };
     }
     default: {
       return state;
