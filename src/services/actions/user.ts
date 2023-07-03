@@ -154,13 +154,16 @@ export const userLogin = (state: TUser) => (dispatch: AppDispatch) => {
   dispatch(userLoginRequest());
   return loginRequest(state)
     .then((res) => {
-      
       setCookie('refreshToken', res.refreshToken);
       setCookie('token', res.accessToken.split('Bearer ')[1]);
       dispatch(userLoginSuccess(res));
     })
     .catch((err) => {
-      console.log(err);
+      if (err !== '') {
+        alert('Неверный логин или пароль');
+      } else {
+        console.log(err);
+      }
       dispatch(userLoginFailed());
     });
 };
@@ -211,7 +214,7 @@ export const getUser = () => (dispatch: AppDispatch) => {
 
   return getUserRequest()
     .then((res) => {
-      dispatch(getUserDataSuccess(res.user));
+      !!getCookie('token') && dispatch(getUserDataSuccess(res.user));
     })
     .catch((err) => {
       alert(err);

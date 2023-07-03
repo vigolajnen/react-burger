@@ -21,7 +21,10 @@ export const LoginPage = () => {
 
   const login = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    dispatch(userLogin(form)).then(() => {});
+
+    dispatch(userLogin(form)).then(() => {
+
+    });
   };
 
   return (
@@ -37,6 +40,9 @@ export const LoginPage = () => {
             value={form.email}
             name={'email'}
             isIcon={false}
+            autoComplete='username'
+            id='email'
+            required
           />
         </div>
         <div
@@ -48,7 +54,9 @@ export const LoginPage = () => {
             value={form.password}
             name={'password'}
             extraClass='mb-2'
-            autoComplete='off'
+            autoComplete='new-password'
+            id='new-password'
+            required
           />
         </div>
         <button type='submit' className={styles.button_type_primary}>

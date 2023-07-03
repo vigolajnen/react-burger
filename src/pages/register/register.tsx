@@ -55,6 +55,7 @@ export function RegisterPage() {
             errorText={'Ошибка'}
             size={'default'}
             extraClass='ml-1'
+            required
           />
         </div>
         <div
@@ -66,6 +67,7 @@ export function RegisterPage() {
             value={form.email}
             name={'email'}
             isIcon={false}
+            required
           />
         </div>
         <div
@@ -78,6 +80,7 @@ export function RegisterPage() {
             name={'password'}
             extraClass='mb-2'
             autoComplete='off'
+            required
           />
         </div>
         <button type='submit' className={styles.button_type_primary}>

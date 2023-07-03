@@ -41,3 +41,8 @@
 .button_type_primary:active {
   opacity: 0.9;
 }
+
+input[type=email]:not(:placeholder-shown):invalid {
+  color: red;
+  outline-color: red;
+}

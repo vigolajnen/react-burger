@@ -46,6 +46,7 @@ export function ResetPasswordPage() {
             name={'password'}
             extraClass='mb-2'
             placeholder={'Введите новый пароль'}
+            required
           />
         </div>
         <div
@@ -63,6 +64,7 @@ export function ResetPasswordPage() {
             errorText={'Ошибка'}
             size={'default'}
             extraClass='ml-1'
+            required
           />
         </div>
         <button type='submit' className={styles.button_type_primary}>

@@ -5,8 +5,9 @@ import stylesContent from './OrderFeedItemDetails.module.css';
 import { useSelector } from '../../hooks';
 import { TIngredient, TIngredientCount } from '../../utils/types';
 import classNames from 'classnames';
-import { dayFormat } from '../order-item/OrderItem';
+
 import { useParams } from 'react-router-dom';
+import { dayFormat } from '../../utils/orders';
 
 const OrderFeedItemDetails: FC = () => {
   const orders = useSelector((store) => store.feedList.orders);
