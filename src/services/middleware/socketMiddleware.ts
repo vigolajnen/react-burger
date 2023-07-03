@@ -11,17 +11,17 @@ export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
       const { dispatch } = store;
       const { type, payload } = action;
       const { wsStart, onOpen, onError, onClose, onMessage, wsSend } = wsActions;
-      const accessToken = !getCookie('token');
+      const accessToken = !!getCookie('token');
       if (type === wsStart) {
         url = payload;
         socket = new WebSocket(url);
-      } else if (type === onClose) {
-        // socket && socket.close(1000, 'CLOSE_NORMAL');
+      } else if (type === onClose && !accessToken) {
+        socket && socket.close(1000, 'CLOSE_NORMAL');
       }
       else if (type === wsStart && accessToken) {
         url = payload;
         socket = new WebSocket(
-          `${url}?token=${accessToken}`
+          `${url}?token=${getCookie('token')}`
         );
       }
       if (socket) {

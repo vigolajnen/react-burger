@@ -221,7 +221,9 @@ export const getUser = () => (dispatch: AppDispatch) => {
       // console.log(err);
       dispatch(getUserDataFailed());
 
-      dispatch(refreshToken());
+      if (err.message === 'jwt expired') {
+        dispatch(refreshToken());
+      }
     });
 };
 
