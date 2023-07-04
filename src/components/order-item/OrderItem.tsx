@@ -14,6 +14,7 @@ import {
   orderStatus,
   resPrice,
 } from '../../utils/orders';
+import { motion } from 'framer-motion';
 
 interface IOrderItem {
   order: FeedOrder;
@@ -21,7 +22,7 @@ interface IOrderItem {
 
 const OrderItem: FC<IOrderItem> = ({ order }) => {
   const { wsConnected } = useSelector((store) => store.feedList);
-  
+
   const orderIngredientsMax = 6;
   const location = useLocation();
   const ingredients = useSelector((state) => state.ingredients.ingredients);
@@ -31,46 +32,52 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
 
   return (
     order && (
-      <Link
-        to={`/profile/orders/${order._id}`}
-        className={styles.wrapper}
-        state={{ bgProfileFeed: location }}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
-        <div className={styles.header}>
-          <div className={styles.number}>#{order.number}</div>
-          <div className={styles.time}>{dayFormat(order.createdAt)}</div>
-        </div>
-        <div className={styles.titleAndStatus}>
-          <h3 className={styles.title}>{order.name}</h3>
+        <Link
+          to={`/profile/orders/${order._id}`}
+          className={styles.wrapper}
+          state={{ bgProfileFeed: location }}
+        >
+          <div className={styles.header}>
+            <div className={styles.number}>#{order.number}</div>
+            <div className={styles.time}>{dayFormat(order.createdAt)}</div>
+          </div>
+          <div className={styles.titleAndStatus}>
+            <h3 className={styles.title}>{order.name}</h3>
 
-          <div className={styles.status}>{orderStatus(order.status)}</div>
-        </div>
-        <div className={styles.body}>
-          <div className={styles.infoList}>
-            <ul className={styles.list}>
+            <div className={styles.status}>{orderStatus(order.status)}</div>
+          </div>
+          <div className={styles.body}>
+            <div className={styles.infoList}>
+              <ul className={styles.list}>
+                {wsConnected &&
+                  orderIngredientsArr.map((item: TIngredient, index) => (
+                    <li key={index}>
+                      <div className={styles.liInner}>
+                        <img src={item?.image_mobile} alt='pic' />
+                      </div>
+                    </li>
+                  ))}
+              </ul>
               {wsConnected &&
-                orderIngredientsArr.map((item: TIngredient, index) => (
-                  <li key={index}>
-                    <div className={styles.liInner}>
-                      <img src={item?.image_mobile} alt='pic' />
-                    </div>
-                  </li>
-                ))}
-            </ul>
-            {wsConnected &&
-              orderIngredientsArr.length > orderIngredientsMax && (
-                <div className={styles.listCount}>
-                  +{countProduct(orderIngredientsArr, orderIngredientsMax)}
-                </div>
-              )}
-          </div>
+                orderIngredientsArr.length > orderIngredientsMax && (
+                  <div className={styles.listCount}>
+                    +{countProduct(orderIngredientsArr, orderIngredientsMax)}
+                  </div>
+                )}
+            </div>
 
-          <div className={styles.price}>
-            <span>{resPrice(orderIngredientsArr)}</span>
-            <CurrencyIcon type='primary' />
+            <div className={styles.price}>
+              <span>{resPrice(orderIngredientsArr)}</span>
+              <CurrencyIcon type='primary' />
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </motion.div>
     )
   );
 };

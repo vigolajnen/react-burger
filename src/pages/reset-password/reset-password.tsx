@@ -10,6 +10,7 @@ import { resetPasswordRequest } from '../../services/api-auth';
 import styles from './reset-password.module.css';
 import { useDispatch, useSelector } from '../../hooks';
 import { setForgotPassword } from '../../services/actions/user';
+import { motion } from 'framer-motion';
 
 // страница восстановления пароля.
 export function ResetPasswordPage() {
@@ -42,52 +43,58 @@ export function ResetPasswordPage() {
   };
 
   return (
-    <main className={styles.main}>
-      <form onSubmit={reset} className={styles.center}>
-        <h1>Восстановление пароля</h1>
-        <div
-          className='mb-4'
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <PasswordInput
-            onChange={onChange}
-            value={form.password}
-            autoComplete='off'
-            name={'password'}
-            extraClass='mb-2'
-            placeholder={'Введите новый пароль'}
-            required
-          />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <main className={styles.main}>
+        <form onSubmit={reset} className={styles.center}>
+          <h1>Восстановление пароля</h1>
+          <div
+            className='mb-4'
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+            <PasswordInput
+              onChange={onChange}
+              value={form.password}
+              autoComplete='off'
+              name={'password'}
+              extraClass='mb-2'
+              placeholder={'Введите новый пароль'}
+              required
+            />
+          </div>
+          <div
+            className='mb-4'
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+            <Input
+              type={'text'}
+              placeholder={'Введите код из письма'}
+              onChange={onChange}
+              // icon={false}
+              value={form.token}
+              name={'token'}
+              error={false}
+              errorText={'Ошибка'}
+              size={'default'}
+              extraClass='ml-1'
+              required
+            />
+          </div>
+          <button type='submit' className={styles.button_type_primary}>
+            Восстановить
+          </button>
+        </form>
+        <div>
+          Вспомнили пароль?
+          <Link to='/login' className={styles.link}>
+            {' '}
+            Войти
+          </Link>
         </div>
-        <div
-          className='mb-4'
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <Input
-            type={'text'}
-            placeholder={'Введите код из письма'}
-            onChange={onChange}
-            // icon={false}
-            value={form.token}
-            name={'token'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass='ml-1'
-            required
-          />
-        </div>
-        <button type='submit' className={styles.button_type_primary}>
-          Восстановить
-        </button>
-      </form>
-      <div>
-        Вспомнили пароль?
-        <Link to='/login' className={styles.link}>
-          {' '}
-          Войти
-        </Link>
-      </div>
-    </main>
+      </main>
+    </motion.div>
   );
 }

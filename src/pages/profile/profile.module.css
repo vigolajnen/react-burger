@@ -49,12 +49,17 @@
   width: 100%;
   margin: auto;
   display: flex;
+  transition: 0.3s;
 }
 
 .form {
   margin: auto 0;
   width: 100%;
   max-width: 480px;
+}
+
+.inner {
+  margin-bottom: 1rem;
 }
 
 .inner,

@@ -10,6 +10,7 @@ import {
 import styles from './orders.module.css';
 import { FeedList } from '../../components/feed-list/FeedList';
 import { getCookie } from '../../services/utils';
+import { Loader } from '../../components/loader/Loader';
 
 const OrdersPage: FC = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,8 @@ const OrdersPage: FC = () => {
             'Заказов нет'
           )
         ) : (
-          'Загрузка ...'
+            // 'Загрузка ...'
+            <Loader/>
         )}
       </div>
     </div>

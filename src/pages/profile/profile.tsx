@@ -9,7 +9,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from '../../hooks';
 
 import { userLogout } from '../../services/actions/user';
-
+import { motion } from 'framer-motion';
 import styles from './profile.module.css';
 
 type PropsActiveLink = {
@@ -61,73 +61,79 @@ export function ProfilePage() {
     isActive ? styles.itemActive : styles.item;
 
   return (
-    <main className={styles.grid}>
-      <aside className={styles.sidebar}>
-        <NavLink to='' className={setActiveLink}>
-          Профиль
-        </NavLink>
-        <NavLink to='orders' className={setActiveLink}>
-          История заказов
-        </NavLink>
-        <button type='button' onClick={logout} className={styles.item}>
-          Выход
-        </button>
-        <div className={styles.text}>
-          В этом разделе вы можете изменить свои персональные данные
-        </div>
-      </aside>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <main className={styles.grid}>
+        <aside className={styles.sidebar}>
+          <NavLink to='' className={setActiveLink}>
+            Профиль
+          </NavLink>
+          <NavLink to='orders' className={setActiveLink}>
+            История заказов
+          </NavLink>
+          <button type='button' onClick={logout} className={styles.item}>
+            Выход
+          </button>
+          <div className={styles.text}>
+            В этом разделе вы можете изменить свои персональные данные
+          </div>
+        </aside>
 
-      <div className={styles.content}>
-        {activeLink === 'profile' ? (
-          <form className={styles.form}>
-            <div
-              className={`${styles.inner}`+ ' mb-4'}
-              style={{ display: 'flex', flexDirection: 'column' }}
-            >
-              <Input
-                onChange={onChange}
-                type={'text'}
-                placeholder={'Имя'}
-                icon='EditIcon'
-                value={value}
-                name={'name'}
-                error={false}
-                errorText={'Ошибка'}
-                size={'default'}
-                extraClass='ml-1'
-              />
-            </div>
-            <div
-              className={`${styles.inner}`+ ' mb-4'}
-              style={{ display: 'flex', flexDirection: 'column' }}
-            >
-              <EmailInput
-                onChange={onChangeEmail}
-                value={valueEmail}
-                name={'email'}
-                placeholder='Логин'
-                isIcon={true}
-                extraClass='mb-2'
-              />
-            </div>
-            <div
-              className={`${styles.inner}`+ ' mb-4'}
-              style={{ display: 'flex', flexDirection: 'column' }}
-            >
-              <PasswordInput
-                onChange={onChangePassword}
-                value={valuePassword}
-                name={'password'}
-                icon='EditIcon'
-                extraClass='mb-2'
-                autoComplete='off'
-              />
-            </div>
-          </form>
-        ) : (
-          <Outlet />
-        )}
-      </div>
-    </main>
+        <div className={styles.content}>
+          {activeLink === 'profile' ? (
+            <form className={styles.form}>
+              <div
+                className={`${styles.inner}`}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                <Input
+                  onChange={onChange}
+                  type={'text'}
+                  placeholder={'Имя'}
+                  icon='EditIcon'
+                  value={value}
+                  name={'name'}
+                  error={false}
+                  errorText={'Ошибка'}
+                  size={'default'}
+                  extraClass='ml-1'
+                />
+              </div>
+              <div
+                className={`${styles.inner}`}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                <EmailInput
+                  onChange={onChangeEmail}
+                  value={valueEmail}
+                  name={'email'}
+                  placeholder='Логин'
+                  isIcon={true}
+                  extraClass='mb-2'
+                />
+              </div>
+              <div
+                className={`${styles.inner}`}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                <PasswordInput
+                  onChange={onChangePassword}
+                  value={valuePassword}
+                  name={'password'}
+                  icon='EditIcon'
+                  extraClass='mb-2'
+                  autoComplete='off'
+                />
+              </div>
+            </form>
+          ) : (
+            <Outlet />
+          )}
+        </div>
+      </main>
+    </motion.div>
   );
 }

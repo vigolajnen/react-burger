@@ -6,6 +6,7 @@ import { forgotPasswordRequest } from '../../services/api-auth';
 import styles from './forgot-password.module.css';
 import { useDispatch, useSelector } from '../../hooks';
 import { setForgotPassword } from '../../services/actions/user';
+import { motion } from 'framer-motion';
 
 // страница восстановления пароля.
 export function ForgotPasswordPage() {
@@ -35,33 +36,39 @@ export function ForgotPasswordPage() {
   }
 
   return (
-    <main className={styles.main}>
-      <form onSubmit={reset} className={styles.center}>
-        <h1>Восстановление пароля</h1>
-        <div
-          className='mb-4'
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <EmailInput
-            onChange={onChange}
-            value={form.email}
-            name={'email'}
-            isIcon={false}
-            placeholder={'Укажите e-mail'}
-            required
-          />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <main className={styles.main}>
+        <form onSubmit={reset} className={styles.center}>
+          <h1>Восстановление пароля</h1>
+          <div
+            className='mb-4'
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+            <EmailInput
+              onChange={onChange}
+              value={form.email}
+              name={'email'}
+              isIcon={false}
+              placeholder={'Укажите e-mail'}
+              required
+            />
+          </div>
+          <button type='submit' className={styles.button_type_primary}>
+            Восстановить
+          </button>
+        </form>
+        <div>
+          Вспомнили пароль?
+          <Link to='/login' className={styles.link}>
+            {' '}
+            Войти
+          </Link>
         </div>
-        <button type='submit' className={styles.button_type_primary}>
-          Восстановить
-        </button>
-      </form>
-      <div>
-        Вспомнили пароль?
-        <Link to='/login' className={styles.link}>
-          {' '}
-          Войти
-        </Link>
-      </div>
-    </main>
+      </main>
+    </motion.div>
   );
 }

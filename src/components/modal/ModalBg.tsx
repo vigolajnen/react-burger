@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import ModalHeader from '../modal-header/ModalHeader';
 import ModalBody from '../modal-body/ModalBody';
 import ModalOverlay from '../modal-overlay/ModalOverlay';
-
+import { motion } from 'framer-motion';
 import stylesModal from './Modal.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   onClose: () => void;
@@ -34,14 +34,22 @@ const ModalBg = ({ onClose, children, title }: Props) => {
     return () => {
       window.removeEventListener('keydown', handleClickEscape);
     };
-  }, [onClose]);
+  }, [onClose, navigate]);
 
   return ReactDOM.createPortal(
     <>
-      <div className={stylesModal.modal}>
+      <motion.div
+        className={stylesModal.modal}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: 0.3,
+        }}
+        exit={{ opacity: 0 }}
+      >
         <ModalHeader onClose={onClose} title={title}>{children}</ModalHeader>
         <ModalBody>{children}</ModalBody>
-      </div>
+      </motion.div>
       <ModalOverlay handleClick={onClose} />
     </>,
     modalRoot!

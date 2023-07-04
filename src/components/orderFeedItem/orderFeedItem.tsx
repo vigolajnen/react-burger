@@ -6,6 +6,7 @@ import { FeedOrder } from '../../services/types/live-orders';
 import { useSelector } from '../../hooks';
 import { TIngredientOrder } from '../../utils/types';
 import { useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   allOrderIngredients,
   countProduct,
@@ -13,6 +14,7 @@ import {
   orderIngredients,
   resPrice,
 } from '../../utils/orders';
+
 
 interface IOrderItem {
   order: FeedOrder;
@@ -30,48 +32,54 @@ const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
 
   return (
     order && (
-      <Link
-        to={`/feed/${order._id}`}
-        className={styles.wrapper}
-        state={{ bgFeedList: location }}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
-        <div className={styles.header}>
-          <div className={styles.number}>#{order.number}</div>
-          <div className={styles.time}>{dayFormat(order.createdAt)}</div>
-        </div>
-        <div className={styles.titleAndStatus}>
-          <h3 className={styles.title}>{order.name}</h3>
-        </div>
-        <div className={styles.body}>
-          <div className={styles.infoList}>
-            <ul className={styles.list}>
-              {wsConnected &&
-                orderIngredientsArr.length > 0 &&
-                orderIngredientsArr.map((item: TIngredientOrder, index) =>
-                  item !== undefined ? (
-                    <li key={index}>
-                      <div className={styles.liInner}>
-                        <img src={item.image_mobile} alt='pic' />
-                      </div>
-                    </li>
-                  ) : (
-                    'Загрузка...'
-                  ),
-                )}
-            </ul>
-            {orderIngredientsArr.length > orderIngredientsMax && (
-              <div className={styles.listCount}>
-                +{countProduct(orderIngredientsArr, orderIngredientsMax)}
-              </div>
-            )}
+        <Link
+          to={`/feed/${order._id}`}
+          className={styles.wrapper}
+          state={{ bgFeedList: location }}
+        >
+          <div className={styles.header}>
+            <div className={styles.number}>#{order.number}</div>
+            <div className={styles.time}>{dayFormat(order.createdAt)}</div>
           </div>
+          <div className={styles.titleAndStatus}>
+            <h3 className={styles.title}>{order.name}</h3>
+          </div>
+          <div className={styles.body}>
+            <div className={styles.infoList}>
+              <ul className={styles.list}>
+                {wsConnected &&
+                  orderIngredientsArr.length > 0 &&
+                  orderIngredientsArr.map((item: TIngredientOrder, index) =>
+                    item !== undefined ? (
+                      <li key={index}>
+                        <div className={styles.liInner}>
+                          <img src={item.image_mobile} alt='pic' />
+                        </div>
+                      </li>
+                    ) : (
+                      'Загрузка...'
+                    ),
+                  )}
+              </ul>
+              {orderIngredientsArr.length > orderIngredientsMax && (
+                <div className={styles.listCount}>
+                  +{countProduct(orderIngredientsArr, orderIngredientsMax)}
+                </div>
+              )}
+            </div>
 
-          <div className={styles.price}>
-            <span>{resPrice(orderIngredientsArr)}</span>
-            <CurrencyIcon type='primary' />
+            <div className={styles.price}>
+              <span>{resPrice(orderIngredientsArr)}</span>
+              <CurrencyIcon type='primary' />
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </motion.div>
     )
   );
 };

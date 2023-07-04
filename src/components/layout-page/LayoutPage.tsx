@@ -6,6 +6,7 @@ const LayoutPage: FC = () => {
   return (
     <>
       <AppHeader />
+
       <Outlet />
     </>
   );
