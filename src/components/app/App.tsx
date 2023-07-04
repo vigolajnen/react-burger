@@ -44,7 +44,7 @@ function App() {
 
   useEffect(() => {
     dispatch(loadIngredients());
-    !!getCookie('token') && dispatch(getUser());
+    getCookie('token') !== undefined && dispatch(getUser());
   }, [dispatch]);
 
   const background =

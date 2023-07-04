@@ -9,15 +9,14 @@ type Props = {
 
 const ProtectedRoute = ({ anonymous = false, children }: Props) => {
   const location = useLocation();
-  const localToken = !getCookie('token');
+  const isToken = getCookie('token') !== undefined;
   const from = location.state?.from || '/';
 
-
-  if (!anonymous && localToken) {
+  if (!anonymous && !isToken) {
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
-  if (anonymous && !localToken) {
+  if (anonymous && isToken) {
     return <Navigate to={from} />;
   }
 

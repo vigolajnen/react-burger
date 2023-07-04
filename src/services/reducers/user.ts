@@ -14,6 +14,7 @@ import {
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILED,
+  SET_FORGOT_PASSWORD,
 } from '../constants';
 
 import { TUserActions } from '../actions/user';
@@ -30,6 +31,7 @@ export type TUserItemsState = {
   userUpdateRequest: boolean;
   userUpdateFailed: boolean;
   isLoggedIn: boolean | undefined;
+  isPageForgotPass: boolean;
 };
 
 const initialState: TUserItemsState = {
@@ -43,6 +45,7 @@ const initialState: TUserItemsState = {
   userUpdateRequest: false,
   userUpdateFailed: false,
   isLoggedIn: undefined,
+  isPageForgotPass: false,
 };
 
 export const userReducer = (state = initialState, action: TUserActions) => {
@@ -151,6 +154,12 @@ export const userReducer = (state = initialState, action: TUserActions) => {
         isAuth: false,
         refreshTokenRequest: false,
       };
+    }
+    case SET_FORGOT_PASSWORD: {
+      return {
+        ...state,
+        isPageForgotPass: action.payload,
+      }
     }
     default: {
       return state;

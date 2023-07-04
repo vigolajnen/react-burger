@@ -4,12 +4,13 @@ import { Link, useNavigate, Navigate } from 'react-router-dom';
 
 import { forgotPasswordRequest } from '../../services/api-auth';
 import styles from './forgot-password.module.css';
-import { useSelector } from '../../hooks';
+import { useDispatch, useSelector } from '../../hooks';
+import { setForgotPassword } from '../../services/actions/user';
 
 // страница восстановления пароля.
 export function ForgotPasswordPage() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.user.isAuth);
   const [form, setValue] = useState({ email: '' });
 
@@ -21,10 +22,11 @@ export function ForgotPasswordPage() {
     e.preventDefault();
     (forgotPasswordRequest(form.email) as unknown as Promise<unknown>)
       .then(() => {
+        dispatch(setForgotPassword(true));
         navigate('/reset-password', { replace: true });
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 
@@ -46,6 +48,7 @@ export function ForgotPasswordPage() {
             name={'email'}
             isIcon={false}
             placeholder={'Укажите e-mail'}
+            required
           />
         </div>
         <button type='submit' className={styles.button_type_primary}>

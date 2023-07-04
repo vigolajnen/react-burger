@@ -1,4 +1,3 @@
-
 .header {
   background-color: #fff;
 }
@@ -22,7 +21,6 @@
 
   composes: grid;
 }
-
 
 @media (min-width: 992px) {
   .grid {
@@ -76,7 +74,6 @@
   fill: #ffffff;
 }
 
-
 .linkText {
   margin-left: 9px;
 }
@@ -90,4 +87,20 @@
   composes: linkSecondary;
   margin-right: 0;
   margin-left: auto;
+}
+
+@media (max-width: 767px) {
+  .grid {
+    gap: 10px;
+  }
+  .link {
+    order: 1;
+  }
+  .logo {
+    order: 0;
+  }
+
+  .grid a:not(.logo) {
+    order: 1;
+  }
 }

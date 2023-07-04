@@ -100,7 +100,7 @@ const BurgerIngredients = () => {
     return <p>Загрузка...</p>;
   } else {
     return (
-      <section>
+      <section className={stylesIngredients.menu}>
         <div className={stylesIngredients.header}>
           {tabLabels.map((item) => (
             <Tab

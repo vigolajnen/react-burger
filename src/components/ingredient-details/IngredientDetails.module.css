@@ -21,8 +21,16 @@
   display: block;
   margin: 0 auto;
   max-width: 480px;
-  min-height: 240px;
+  min-height: 175px;
+  width: 100%;
   height: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .pic {
+    min-height: 240px;
+  }
 }
 
 .list {
@@ -32,8 +40,9 @@
 
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
-  gap: 40px;
+  gap:15px;
 
   font-weight: 400;
   font-size: 16px;
@@ -42,11 +51,24 @@
   color: #8585ad;
 }
 
+@media (min-width: 768px) {
+  .list {
+    flex-direction: row;
+    gap: 40px;
+  }
+}
+
 .list li {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   gap: 8px;
   text-align: center;
+}
+
+@media (min-width: 768px) {
+  .list li {
+    flex-direction: column;
+  }
 }
 
 .list li span:last-child {

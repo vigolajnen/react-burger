@@ -1,4 +1,3 @@
-// import { getCookie, deleteCookie, setCookie } from './utils';
 import { generalRequest } from './api';
 import { TUser, TResetPassword } from '../utils/types';
 import { getUser } from './actions/user';
@@ -14,7 +13,6 @@ export const loginRequest = async ({ email, password }: TUser) => {
     body: JSON.stringify({ email: email, password }),
   });
 };
-
 
 export const logoutRequest = (token: string | undefined) => {
   return generalRequest(`auth/logout`, {
@@ -79,7 +77,7 @@ export const refreshTokenRequest = () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: getCookie('refreshToken'),
+      token: localStorage.getItem('refreshToken'),
     }),
   });
 };
@@ -117,7 +115,7 @@ export const signOutRequest = (refreshToken: string | undefined) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: refreshToken,
+      refreshToken: refreshToken,
     }),
   });
 };

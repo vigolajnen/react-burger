@@ -11,7 +11,7 @@ export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
       const { dispatch } = store;
       const { type, payload } = action;
       const { wsStart, onOpen, onError, onClose, onMessage, wsSend } = wsActions;
-      const accessToken = !!getCookie('token');
+      const accessToken = getCookie('token') !== undefined;
       if (type === wsStart) {
         url = payload;
         socket = new WebSocket(url);

@@ -14,7 +14,7 @@ export const FeedList: FC<IFeedList> = ({ orders }) => {
   const location = useLocation();
   const orderUrl = '/profile/orders';
   const feedUrl = '/feed';
-  const accessToken = !!getCookie('token');
+  const accessToken = getCookie('token') !== undefined;
   const { user } = useSelector((store) => store.user);
 
   if (accessToken && !!user) {

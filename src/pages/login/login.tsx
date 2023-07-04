@@ -32,7 +32,7 @@ export const LoginPage = () => {
       <form onSubmit={login} className={styles.center}>
         <h1>Вход</h1>
         <div
-          className='mb-4'
+          className={`${styles.inner}`+ ' mb-4'}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           <EmailInput
@@ -46,7 +46,7 @@ export const LoginPage = () => {
           />
         </div>
         <div
-          className='mb-4'
+          className={`${styles.inner}`+ ' mb-4'}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           <PasswordInput

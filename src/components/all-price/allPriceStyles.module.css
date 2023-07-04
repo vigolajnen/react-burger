@@ -9,3 +9,9 @@
 .price span {
   margin-right: 10px;
 }
+
+@media (max-width: 520px) {
+  .price {
+    font-size: 2rem;
+  }
+}

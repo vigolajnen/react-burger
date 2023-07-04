@@ -8,7 +8,8 @@ export const checkResponse = (res: Response) => {
     return res.json();
   }
   // не забываем выкидывать ошибку, чтобы она попала в `catch`
-  return Promise.reject(`Ошибка ${res.status}`);
+  // return Promise.reject(`Ошибка ${res.status}`);
+  return Promise.reject(`${res.status}`);
 };
 
 // создаем функцию проверки на `success`

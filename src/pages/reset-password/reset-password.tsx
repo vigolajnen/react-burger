@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Input,
   PasswordInput,
@@ -8,16 +8,25 @@ import { Link, useNavigate } from 'react-router-dom';
 import { resetPasswordRequest } from '../../services/api-auth';
 
 import styles from './reset-password.module.css';
+import { useDispatch, useSelector } from '../../hooks';
+import { setForgotPassword } from '../../services/actions/user';
 
 // страница восстановления пароля.
 export function ResetPasswordPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [form, setValue] = useState({ password: '', token: '' });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
+  const { isPageForgotPass } = useSelector((store) => store.user);
+
+  useEffect(() => {
+    if (!isPageForgotPass) {
+      navigate('/forgot-password');
+    }
+  }, [isPageForgotPass, navigate]);
 
   let reset = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -29,6 +38,7 @@ export function ResetPasswordPage() {
     ).then(() => {
       navigate('/', { replace: true });
     });
+    dispatch(setForgotPassword(false));
   };
 
   return (

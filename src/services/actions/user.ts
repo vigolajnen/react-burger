@@ -23,9 +23,10 @@ import {
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILED,
+  SET_FORGOT_PASSWORD,
 } from '../constants';
 import { AppDispatch } from '../types';
-import { deleteCookie, getCookie, setCookie } from '../utils';
+import { deleteCookie, setCookie } from '../utils';
 
 // Типизация экшенов
 export interface IGetRegistrRequestAction {
@@ -79,6 +80,10 @@ export interface IRefreshTokenSuccessAction {
 export interface IRefreshTokenFailedAction {
   readonly type: typeof REFRESH_TOKEN_FAILED;
 }
+export interface ISetForgotPasswordAction {
+  readonly type: typeof SET_FORGOT_PASSWORD;
+  readonly payload: boolean;
+}
 
 // Объединяем в Union
 export type TUserActions =
@@ -96,7 +101,8 @@ export type TUserActions =
   | IGetUserFailedAction
   | IRefreshTokenRequestAction
   | IRefreshTokenSuccessAction
-  | IRefreshTokenFailedAction;
+  | IRefreshTokenFailedAction
+  | ISetForgotPasswordAction;
 
 export const userLoginRequest = (): IGetLoginRequestAction => ({
   type: GET_LOGIN_REQUEST,
@@ -150,12 +156,23 @@ export const refreshAccessTokenFailed = (): IRefreshTokenFailedAction => ({
   type: REFRESH_TOKEN_FAILED,
 });
 
+export const setForgotPassword = (status: boolean) => ({ type: SET_FORGOT_PASSWORD, payload: status });
+
+
+const saveTokens = (refreshToken: string, token: string | undefined) => {
+  setCookie('token', token);
+  localStorage.setItem('refreshToken', refreshToken);
+};
+const removeTokens = () => {
+  deleteCookie('token');
+  localStorage.clear();
+};
+
 export const userLogin = (state: TUser) => (dispatch: AppDispatch) => {
   dispatch(userLoginRequest());
   return loginRequest(state)
     .then((res) => {
-      setCookie('refreshToken', res.refreshToken);
-      setCookie('token', res.accessToken.split('Bearer ')[1]);
+      saveTokens(res.refreshToken, res.accessToken.split('Bearer ')[1]);
       dispatch(userLoginSuccess(res));
     })
     .catch((err) => {
@@ -181,8 +198,7 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
         refreshToken: res.refreshToken,
       });
 
-      setCookie('refreshToken', res.refreshToken);
-      setCookie('token', res.accessToken.split('Bearer ')[1]);
+      saveTokens(res.refreshToken, res.accessToken.split('Bearer ')[1]);
     })
     .catch((err) => {
       console.log(err);
@@ -194,17 +210,16 @@ export const userRegister = (state: TUser) => (dispatch: AppDispatch) => {
 
 export const userLogout = () => (dispatch: AppDispatch) => {
   dispatch(userLogoutRequest);
-  return logoutRequest(getCookie('refreshToken'))
+  return logoutRequest(localStorage.getItem('refreshToken')!)
     .then((res) => {
       if (res) {
         dispatch(userLogoutSuccess());
-        deleteCookie('token');
-        deleteCookie('refreshToken');
+        removeTokens();
       }
     })
     .catch((err) => {
-      alert(err);
-      // console.log(err);
+      // alert(err);
+      console.log(err);
       dispatch(userLogoutFailed);
     });
 };
@@ -214,15 +229,15 @@ export const getUser = () => (dispatch: AppDispatch) => {
 
   return getUserRequest()
     .then((res) => {
-      !!getCookie('token') && dispatch(getUserDataSuccess(res.user));
+      dispatch(getUserDataSuccess(res.user));
     })
     .catch((err) => {
-      alert(err);
-      // console.log(err);
-      dispatch(getUserDataFailed());
-
-      if (err.message === 'jwt expired') {
+      if (err === '403' || err === '401') {
         dispatch(refreshToken());
+      } else {
+        alert(err);
+        // console.log(err);
+        dispatch(getUserDataFailed());
       }
     });
 };
@@ -232,13 +247,12 @@ export const refreshToken = () => (dispatch: AppDispatch) => {
   return refreshTokenRequest()
     .then((res) => {
       dispatch(refreshAccessTokenSuccess(res));
-      setCookie('refreshToken', res.refreshToken);
-      setCookie('token', res.accessToken.split('Bearer ')[1]);
+      saveTokens(res.refreshToken, res.accessToken.split('Bearer ')[1]);
       dispatch(getUser());
     })
     .catch((err) => {
       dispatch(refreshAccessTokenFailed());
-      alert(err);
-      // console.error(err);
+      // alert(err);
+      console.error(err);
     });
 };

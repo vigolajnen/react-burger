@@ -81,7 +81,7 @@ export function ProfilePage() {
         {activeLink === 'profile' ? (
           <form className={styles.form}>
             <div
-              className='mb-4'
+              className={`${styles.inner}`+ ' mb-4'}
               style={{ display: 'flex', flexDirection: 'column' }}
             >
               <Input
@@ -98,7 +98,7 @@ export function ProfilePage() {
               />
             </div>
             <div
-              className='mb-4'
+              className={`${styles.inner}`+ ' mb-4'}
               style={{ display: 'flex', flexDirection: 'column' }}
             >
               <EmailInput
@@ -111,7 +111,7 @@ export function ProfilePage() {
               />
             </div>
             <div
-              className='mb-4'
+              className={`${styles.inner}`+ ' mb-4'}
               style={{ display: 'flex', flexDirection: 'column' }}
             >
               <PasswordInput
