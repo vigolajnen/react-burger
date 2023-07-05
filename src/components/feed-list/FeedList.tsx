@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import OrderItem from '../order-item/OrderItem';
-import { FeedOrder } from '../../services/types/live-orders';
-import OrderFeedItem from '../orderFeedItem/orderFeedItem';
 import { useLocation } from 'react-router-dom';
+
+import { FeedOrder } from '../../services/types/live-orders';
 import { getCookie } from '../../services/utils';
+
+import OrderItem from '../order-item/OrderItem';
+import OrderFeedItem from '../orderFeedItem/orderFeedItem';
 
 interface IFeedList {
   orders: Array<FeedOrder> | any;
@@ -21,7 +23,7 @@ export const FeedList: FC<IFeedList> = ({ orders }) => {
   ) {
     return orders.length > 0
       ? orders.map((order: FeedOrder) => (
-        <OrderFeedItem key={order._id}  order={order} />
+          <OrderFeedItem key={order._id} order={order} />
         ))
       : 'Заказов нет';
   }

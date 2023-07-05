@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './OrderItem.module.css';
-import { FeedOrder } from '../../services/types/live-orders';
+import { motion } from 'framer-motion';
+
 import { useSelector } from '../../hooks';
-import { TIngredient } from '../../utils/types';
-import { useLocation } from 'react-router-dom';
+import { FeedOrder } from '../../services/types/live-orders';
+
 import {
   allOrderIngredients,
   countProduct,
@@ -14,7 +14,10 @@ import {
   orderStatus,
   resPrice,
 } from '../../utils/orders';
-import { motion } from 'framer-motion';
+import { TIngredient } from '../../utils/types';
+
+// css
+import styles from './OrderItem.module.css';
 
 interface IOrderItem {
   order: FeedOrder;

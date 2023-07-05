@@ -1,5 +1,6 @@
 import React from 'react';
 
+// css
 import stylesBody from './ModalBody.module.css';
 
 type Props = {

@@ -1,25 +1,17 @@
 import React, { FC } from 'react';
-import stylesContent from './IngredientDetails.module.css';
-import { useSelector } from '../../hooks';
 import { useParams } from 'react-router-dom';
+
+import { useSelector } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 
-// type Props = {
-//   item: {
-//     name: string;
-//     image_large: string;
-//     calories: number;
-//     proteins: number;
-//     fat: number;
-//     carbohydrates: number;
-//   };
-// };
+// css
+import stylesContent from './IngredientDetails.module.css';
 
 const IngredientDetails: FC = () => {
   const items = useSelector((state) => state.ingredients.ingredients);
   const { id } = useParams();
   const currentItem = items.find((item: TIngredient) => item._id === id);
-  
+
   return (
     <>
       <img

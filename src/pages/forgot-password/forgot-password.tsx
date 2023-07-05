@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-import { forgotPasswordRequest } from '../../services/api-auth';
-import styles from './forgot-password.module.css';
 import { useDispatch, useSelector } from '../../hooks';
 import { setForgotPassword } from '../../services/actions/user';
-import { motion } from 'framer-motion';
+import { forgotPasswordRequest } from '../../services/api-auth';
+
+// css
+import styles from './forgot-password.module.css';
 
 // страница восстановления пароля.
 export function ForgotPasswordPage() {

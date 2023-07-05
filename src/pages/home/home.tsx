@@ -1,10 +1,14 @@
 import React from 'react';
-import BurgerConstructor from '../../components/burger-constructor/BurgerConstructor';
-import BurgerIngredients from '../../components/burger-ingredients/BurgerIngredients';
 // dnd
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { motion } from 'framer-motion';
+
+import BurgerConstructor from '../../components/burger-constructor/BurgerConstructor';
+import BurgerIngredients from '../../components/burger-ingredients/BurgerIngredients';
+
+
+// css
 import appStyles from './home.module.css';
 
 export function HomePage() {

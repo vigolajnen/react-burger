@@ -1,16 +1,19 @@
 import React, { FC, useEffect } from 'react';
-import styles from './feed.module.css';
-
+import { motion } from 'framer-motion';
 import classNames from 'classnames';
-import { useDispatch, useSelector } from '../../hooks';
+
 import { WS_URL_ALL } from '../../utils/constants';
+import { useDispatch, useSelector } from '../../hooks';
 import {
   wsConnectionClosed,
   wsConnectionStart,
 } from '../../services/actions/wsActions';
-import { motion } from 'framer-motion';
+
 import { FeedList } from '../../components/feed-list/FeedList';
 import { Loader } from '../../components/loader/Loader';
+
+// css
+import styles from './feed.module.css';
 
 export const FeedPage: FC = () => {
   const dispatch = useDispatch();
@@ -43,8 +46,8 @@ export const FeedPage: FC = () => {
               {wsConnected && orders.length > 0 ? (
                 <FeedList orders={orders.reverse()} />
               ) : (
-                  // 'Загрузка ...'
-                  <Loader/>
+                // 'Загрузка ...'
+                <Loader />
               )}
             </div>
           </div>

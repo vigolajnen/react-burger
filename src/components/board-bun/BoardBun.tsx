@@ -1,8 +1,9 @@
 import React from 'react';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from '../../hooks';
 import { useDrop } from 'react-dnd';
+import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import { AddConstructorItemAction } from '../../services/actions/constructor-items';
+import { useSelector, useDispatch } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
   type: string;
   classBun: string;
   items?: Array<TIngredient>;
-}
+};
 
 const BoardBun = ({ board, title, type, classBun, items }: Props) => {
   const dispatch = useDispatch();
@@ -66,6 +67,5 @@ const BoardBun = ({ board, title, type, classBun, items }: Props) => {
     </div>
   );
 };
-
 
 export default BoardBun;

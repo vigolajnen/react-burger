@@ -1,12 +1,16 @@
 import React, { FC } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import stylesContent from './OrderItemDetails.module.css';
-
-import { useSelector } from '../../hooks';
-import { TIngredient, TIngredientCount } from '../../utils/types';
 import classNames from 'classnames';
 import { useParams } from 'react-router-dom';
+
+import { useSelector } from '../../hooks';
+
 import { dayFormat } from '../../utils/orders';
+
+import { TIngredient, TIngredientCount } from '../../utils/types';
+
+// css
+import stylesContent from './OrderItemDetails.module.css';
 
 const OrderItemDetails: FC = () => {
   const orders = useSelector((store) => store.feedList.orders);
@@ -25,17 +29,16 @@ const OrderItemDetails: FC = () => {
     });
 
     return items;
-    
   };
 
   const items = orderIngredients();
   let orderIngredientsArr: Array<TIngredient> = [];
-  const orderBun = items.filter((el) => el.type === "bun");
-  const orderIngs = items.filter((el) => el.type !== "bun");
+  const orderBun = items.filter((el) => el.type === 'bun');
+  const orderIngs = items.filter((el) => el.type !== 'bun');
   if (orderBun.length > 0) {
-   orderIngredientsArr = [...orderIngs, orderBun[0], orderBun[0]];
+    orderIngredientsArr = [...orderIngs, orderBun[0], orderBun[0]];
   }
-  
+
   const countItems: { [key: string]: number } = {}; // здесь будет храниться промежуточный результат
   for (const el of orderIngredientsArr) {
     countItems[el._id] = countItems[el._id] ? countItems[el._id] + 1 : 1;
@@ -93,7 +96,6 @@ const OrderItemDetails: FC = () => {
               <h3 className={stylesContent.liTitle}>{item.name}</h3>
               <div className={stylesContent.liPrice}>
                 <span>
-                {/* {counter(item)} x {item.price} */}
                   {item.count} x {item.price}
                 </span>
                 <CurrencyIcon type='primary' />

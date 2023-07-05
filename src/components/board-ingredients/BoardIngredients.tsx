@@ -1,16 +1,16 @@
 import React from 'react';
-
-import { useSelector, useDispatch } from '../../hooks';
 import { useDrop } from 'react-dnd';
-import { AddConstructorItemAction } from '../../services/actions/constructor-items';
+
 import DragIngredient from '../drag-ingredient/DragIngredient';
+import { AddConstructorItemAction } from '../../services/actions/constructor-items';
+import { useSelector, useDispatch } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 
 type Props = {
   board: string;
   classIngredients: string;
   items: Array<TIngredient> | any;
-}
+};
 
 const BoardIngredients = ({ board, classIngredients, items }: Props) => {
   const dispatch = useDispatch();

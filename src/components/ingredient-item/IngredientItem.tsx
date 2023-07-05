@@ -1,14 +1,15 @@
 import React from 'react';
-import { TIngredient } from '../../utils/types';
+import { Link, useLocation } from 'react-router-dom';
+import { useDrag } from 'react-dnd';
 import {
   Counter,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import stylesItem from './IngredientItem.module.css';
+import { TIngredient } from '../../utils/types';
 
-import { Link, useLocation } from 'react-router-dom';
-import { useDrag } from 'react-dnd';
+// css
+import stylesItem from './IngredientItem.module.css';
 
 type Props = {
   item: TIngredient;
@@ -41,7 +42,7 @@ const IngredientItem = ({ item, id, count }: Props) => {
       ref={dragRef}
       style={{ cursor: 'move' }}
     >
-      { count > 0 && <Counter count={count} size='default' extraClass='m-1' />}
+      {count > 0 && <Counter count={count} size='default' extraClass='m-1' />}
 
       <img className={stylesItem.pic} src={item.image} alt={item.name} />
       <div className={stylesItem.price}>

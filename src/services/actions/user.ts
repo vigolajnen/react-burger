@@ -156,8 +156,10 @@ export const refreshAccessTokenFailed = (): IRefreshTokenFailedAction => ({
   type: REFRESH_TOKEN_FAILED,
 });
 
-export const setForgotPassword = (status: boolean) => ({ type: SET_FORGOT_PASSWORD, payload: status });
-
+export const setForgotPassword = (status: boolean) => ({
+  type: SET_FORGOT_PASSWORD,
+  payload: status,
+});
 
 const saveTokens = (refreshToken: string, token: string | undefined) => {
   setCookie('token', token);
@@ -176,7 +178,7 @@ export const userLogin = (state: TUser) => (dispatch: AppDispatch) => {
       dispatch(userLoginSuccess(res));
     })
     .catch((err) => {
-      if (err !== '') {
+      if (err === '403' || err === '401') {
         alert('Неверный логин или пароль');
       } else {
         console.log(err);
@@ -218,8 +220,8 @@ export const userLogout = () => (dispatch: AppDispatch) => {
       }
     })
     .catch((err) => {
-      // alert(err);
-      console.log(err);
+      alert(err);
+      // console.log(err);
       dispatch(userLogoutFailed);
     });
 };
@@ -251,8 +253,9 @@ export const refreshToken = () => (dispatch: AppDispatch) => {
       dispatch(getUser());
     })
     .catch((err) => {
+      alert(err);
+      // console.error(err);
       dispatch(refreshAccessTokenFailed());
       // alert(err);
-      console.error(err);
     });
 };

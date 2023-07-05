@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
-import { useSelector } from '../../hooks';
 import { useLocation, useParams } from 'react-router-dom';
-import { TIngredient } from '../../utils/types';
+
+import { useSelector } from '../../hooks';
+
 import IngredientDetails from '../../components/ingredient-details/IngredientDetails';
 import { HomePage } from '../home/home';
+
+import { TIngredient } from '../../utils/types';
 
 const IngredientPage: FC = () => {
   const location = useLocation();

@@ -1,25 +1,24 @@
 import React, { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import { useSelector, useDispatch } from '../../hooks';
+import { useModal } from '../../hooks/useModal';
 
 import Modal from '../modal/Modal';
-import { useModal } from '../../hooks/useModal';
 import OrderDetails from '../order-details/OrderDetails';
 import AllPrice from '../all-price/AllPrice';
 import BoardBun from '../board-bun/BoardBun';
 import BoardIngredients from '../board-ingredients/BoardIngredients';
-import {
-  loadOrder,
-} from '../../services/actions/order';
-import { UPDATE_ORDERS,  GET_ORDER_PRICE } from '../../services/constants';
 
-import { useNavigate } from 'react-router-dom';
-
-import stylesConstructor from './BurgerConstructor.module.css';
-import { TIngredient } from '../../utils/types';
+import { UPDATE_ORDERS, GET_ORDER_PRICE } from '../../services/constants';
+import { loadOrder } from '../../services/actions/order';
 import { ClearConstructorItemAction } from '../../services/actions/constructor-items';
 
+import { TIngredient } from '../../utils/types';
+
+// css
+import stylesConstructor from './BurgerConstructor.module.css';
 
 const BurgerConstructor = () => {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ const BurgerConstructor = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
   const isAuth = useSelector((store) => store.user.isAuth);
   const orders = useSelector((store) => store.orders.orders);
-  const {number} = useSelector((store) => store.orders.orders);
+  const { number } = useSelector((store) => store.orders.orders);
 
   const ingredientsArr = useSelector(
     (store) => store.constructorItemsList.constructorItems,
@@ -58,8 +57,9 @@ const BurgerConstructor = () => {
       navigate('/login', { replace: true });
     } else {
       dispatch(loadOrder(allOrderArr));
+
       ordersId(allOrderArr);
-      
+
       openModal();
     }
   };

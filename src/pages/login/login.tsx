@@ -4,10 +4,12 @@ import {
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { useDispatch } from '../../hooks';
-
-import { userLogin } from '../../services/actions/user';
 import { motion } from 'framer-motion';
+
+import { useDispatch } from '../../hooks';
+import { userLogin } from '../../services/actions/user';
+
+// css
 import styles from './login.module.css';
 
 // страница авторизации.

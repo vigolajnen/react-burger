@@ -6,7 +6,7 @@ import {
   WS_GET_MESSAGE,
   WS_SEND_MESSAGE,
 } from '../constants';
-import { FeedOrder, FeedOrders } from '../types/live-orders';
+import { FeedOrder } from '../types/live-orders';
 
 export interface IWebSocket {
   wsStart: string;

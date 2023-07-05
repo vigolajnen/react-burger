@@ -1,18 +1,25 @@
 import { NavLink } from 'react-router-dom';
-import styles from './AppHeader.module.css';
-import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+  BurgerIcon,
+  ListIcon,
+  Logo,
+  ProfileIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from '../../hooks';
+
+// css
+import styles from './AppHeader.module.css';
 
 type PropsActiveLink = {
   isActive: boolean;
   isPending: boolean;
-}
+};
 
 const AppHeader = () => {
-  const {user} = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const setActiveLink = ({ isActive, isPending }: PropsActiveLink) =>
     isPending ? 'pending' : isActive ? styles.active : styles.link;
-  
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>

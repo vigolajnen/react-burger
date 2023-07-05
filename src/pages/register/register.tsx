@@ -5,9 +5,12 @@ import {
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Navigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
 import { useDispatch, useSelector } from '../../hooks';
 import { userRegister } from '../../services/actions/user';
-import { motion } from 'framer-motion';
+
+// css
 import styles from './register.module.css';
 
 // страница регистрации.

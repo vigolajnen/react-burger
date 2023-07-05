@@ -1,13 +1,16 @@
 import React, { useRef } from 'react';
-
+import { useDrag, useDrop } from 'react-dnd';
+import { Identifier } from 'dnd-core';
 import {
   ConstructorElement,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { DELETE_CONSTRUCTOR_ITEM, SORT_CONSTRUCTOR_ITEMS } from '../../services/constants';
+import {
+  DELETE_CONSTRUCTOR_ITEM,
+  SORT_CONSTRUCTOR_ITEMS,
+} from '../../services/constants';
 import { useDispatch } from '../../hooks';
-import { useDrag, useDrop } from 'react-dnd';
-import { Identifier } from 'dnd-core';
+
 import { TIngredient } from '../../utils/types';
 
 type Props = {

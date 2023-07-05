@@ -1,16 +1,19 @@
 import React, { FC, useEffect } from 'react';
 import classNames from 'classnames';
+
 import { useDispatch, useSelector } from '../../hooks';
+import { getCookie } from '../../services/utils';
 import { WS_URL } from '../../utils/constants';
 import {
   wsConnectionClosed,
   wsConnectionStart,
 } from '../../services/actions/wsActions';
 
-import styles from './orders.module.css';
 import { FeedList } from '../../components/feed-list/FeedList';
-import { getCookie } from '../../services/utils';
 import { Loader } from '../../components/loader/Loader';
+
+// css
+import styles from './orders.module.css';
 
 const OrdersPage: FC = () => {
   const dispatch = useDispatch();
@@ -39,8 +42,8 @@ const OrdersPage: FC = () => {
             'Заказов нет'
           )
         ) : (
-            // 'Загрузка ...'
-            <Loader/>
+          // 'Загрузка ...'
+          <Loader />
         )}
       </div>
     </div>

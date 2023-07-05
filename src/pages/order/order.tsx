@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from '../../hooks';
 import { useParams } from 'react-router-dom';
-import { TOrder } from '../../utils/types';
+
+import { useDispatch, useSelector } from '../../hooks';
 
 import { getCookie } from '../../services/utils';
 import { WS_URL } from '../../utils/constants';
@@ -10,6 +10,10 @@ import {
   wsConnectionStart,
 } from '../../services/actions/wsActions';
 import OrderItemDetails from '../../components/order-item-details/OrderItemDetails';
+
+import { TOrder } from '../../utils/types';
+
+// css
 import styles from './order.module.css';
 
 type Props = {

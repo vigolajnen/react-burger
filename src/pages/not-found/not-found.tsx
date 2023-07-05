@@ -1,4 +1,5 @@
 import React from 'react';
+// css
 import styles from './not-found.module.css';
 
 export function NotFoundPage() {

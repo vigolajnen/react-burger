@@ -1,12 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import { useSelector } from '../../hooks';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import { useSelector } from '../../hooks';
+
 import IngredientItem from '../ingredient-item/IngredientItem';
-import stylesIngredients from './BurgerIngredients.module.css';
 import { TIngredient, TIngredientId } from '../../utils/types';
 
+// css
+import stylesIngredients from './BurgerIngredients.module.css';
+
 const BurgerIngredients = () => {
-  
   const { ingredients } = useSelector((state) => state.ingredients);
   const ingredientsRequest = useSelector(
     (state) => state.ingredients.ingredientsRequest,

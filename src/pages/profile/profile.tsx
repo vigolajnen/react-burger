@@ -5,11 +5,12 @@ import {
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import { useSelector, useDispatch } from '../../hooks';
-
 import { userLogout } from '../../services/actions/user';
-import { motion } from 'framer-motion';
+
+// css
 import styles from './profile.module.css';
 
 type PropsActiveLink = {

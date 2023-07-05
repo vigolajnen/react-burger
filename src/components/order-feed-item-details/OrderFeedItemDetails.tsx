@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
+import { useParams } from 'react-router-dom';
+import classNames from 'classnames';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import stylesContent from './OrderFeedItemDetails.module.css';
 
 import { useSelector } from '../../hooks';
-import { TIngredient, TIngredientCount } from '../../utils/types';
-import classNames from 'classnames';
 
-import { useParams } from 'react-router-dom';
 import { dayFormat } from '../../utils/orders';
+import { TIngredient, TIngredientCount } from '../../utils/types';
+
+// css
+import stylesContent from './OrderFeedItemDetails.module.css';
 
 const OrderFeedItemDetails: FC = () => {
   const orders = useSelector((store) => store.feedList.orders);
@@ -26,18 +28,15 @@ const OrderFeedItemDetails: FC = () => {
     });
 
     return items;
-    
   };
 
   const items = orderIngredients();
   let orderIngredientsArr: Array<TIngredient> = [];
-  const orderBun = items.filter((el) => el.type === "bun");
-  const orderIngs = items.filter((el) => el.type !== "bun");
+  const orderBun = items.filter((el) => el.type === 'bun');
+  const orderIngs = items.filter((el) => el.type !== 'bun');
   if (orderBun.length > 0) {
-   orderIngredientsArr = [...orderIngs, orderBun[0], orderBun[0]];
+    orderIngredientsArr = [...orderIngs, orderBun[0], orderBun[0]];
   }
-   
-
 
   const countItems: { [key: string]: number } = {}; // здесь будет храниться промежуточный результат
   for (const el of orderIngredientsArr) {

@@ -1,17 +1,20 @@
 import React, { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from '../../hooks';
 import { useParams } from 'react-router-dom';
-import { TOrder } from '../../utils/types';
 
+import { useDispatch, useSelector } from '../../hooks';
 
 import { WS_URL_ALL } from '../../utils/constants';
 import {
   wsConnectionClosed,
   wsConnectionStart,
 } from '../../services/actions/wsActions';
-import styles from './orderFeed.module.css';
+
 import OrderFeedItemDetails from '../../components/order-feed-item-details/OrderFeedItemDetails';
 
+import { TOrder } from '../../utils/types';
+
+// css
+import styles from './orderFeed.module.css';
 
 const OrderFeedPage: FC = () => {
   const dispatch = useDispatch();
