@@ -1,20 +1,20 @@
-import React, { useCallback } from 'react';
-
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
 import { useDrop } from 'react-dnd';
-import { addItemConstructor } from '../../services/actions/constructor-items';
+
 import DragIngredient from '../drag-ingredient/DragIngredient';
+import { AddConstructorItemAction } from '../../services/actions/constructor-items';
+import { useSelector, useDispatch } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 
 type Props = {
   board: string;
   classIngredients: string;
-  items: Array<TIngredient>;
-}
+  items: Array<TIngredient> | any;
+};
 
 const BoardIngredients = ({ board, classIngredients, items }: Props) => {
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state: any) => state.ingredients);
+  const { ingredients } = useSelector((state) => state.ingredients);
 
   const [{ isHover }, drop] = useDrop({
     accept: 'ingredients',
@@ -23,7 +23,7 @@ const BoardIngredients = ({ board, classIngredients, items }: Props) => {
     }),
     drop: (itemId: TIngredient) => {
       dispatch(
-        addItemConstructor(
+        AddConstructorItemAction(
           ingredients.filter((item: TIngredient) => item._id === itemId.id)[0],
         ),
       );
@@ -37,7 +37,7 @@ const BoardIngredients = ({ board, classIngredients, items }: Props) => {
       {items.length === 0 ? (
         <div className={classIngredients}>Выберите ингредиенты</div>
       ) : (
-        items.map((elem, index) => (
+        items.map((elem: TIngredient, index: number) => (
           <DragIngredient
             key={elem.id}
             index={index}

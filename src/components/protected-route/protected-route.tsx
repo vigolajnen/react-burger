@@ -1,19 +1,26 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { getCookie } from '../../services/utils';
 
 type Props = {
-  authUser: boolean;
-  children: JSX.Element;
-}; 
+  authUser?: boolean | any;
+  children: JSX.Element | any;
+  anonymous?: boolean;
+};
 
-const ProtectedRoute = ({ authUser, children }: Props) => {
-  const user = useSelector((state: any) => state.user.user);
+const ProtectedRoute = ({ anonymous = false, children }: Props) => {
   const location = useLocation();
+  const isToken = getCookie('token') !== undefined;
+  const from = location.state?.from || '/';
 
-  if (!authUser && !user) {
+  if (!anonymous && !isToken) {
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
+  if (anonymous && isToken) {
+    return <Navigate to={from} />;
+  }
+
+  // Если все ок, то рендерим внутреннее содержимое
   return children;
 };
 

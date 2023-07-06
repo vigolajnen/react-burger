@@ -1,5 +1,6 @@
 // 1 раз объявляем базовый урл
-export const BASE_URL = 'https://norma.nomoreparties.space/api/';
+import { BASE_URL } from '../utils/constants';
+// export const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
 // создаем функцию проверки ответа на `ok`
 export const checkResponse = (res: Response) => {
@@ -7,7 +8,8 @@ export const checkResponse = (res: Response) => {
     return res.json();
   }
   // не забываем выкидывать ошибку, чтобы она попала в `catch`
-  return Promise.reject(`Ошибка ${res.status}`);
+  // return Promise.reject(`Ошибка ${res.status}`);
+  return Promise.reject(`${res.status}`);
 };
 
 // создаем функцию проверки на `success`

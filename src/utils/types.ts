@@ -15,10 +15,28 @@ export type TIngredient = {
   productId: string;
 };
 
+export type TIngredientOrder = TIngredient & {
+  numId?: number;
+};
+
+export type TIngredientId = Omit<TIngredient, '_id'> & {
+  _id: number;
+};
+
+export type TIngredientCount = TIngredient & {
+  count?: number;
+};
+
 export type TUser = {
   name?: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
+};
+
+export type TUserData = {
+  accessToken: string;
+  refreshToken: string;
+  user: TUser;
 };
 
 export type TUserRequest = {
@@ -30,4 +48,27 @@ export type TUserRequest = {
 export type TResetPassword = {
   password: string;
   token: string;
-}
+};
+
+export type TOrder = {
+  _id: string;
+  ingredients: Array<string>;
+  status: string;
+  name: string;
+  createdAt: string | number | Date;
+  updatedAt: string;
+  number: number;
+};
+
+export type TOrders = {
+  order: {
+    _id: string;
+    ingredients: Array<string>;
+    status: string;
+    name: string;
+    createdAt: string | number | Date;
+    updatedAt: string;
+    number: number;
+  };
+};
+

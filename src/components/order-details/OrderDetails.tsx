@@ -1,6 +1,9 @@
 import React from 'react';
 
+import { Loader } from '../loader/Loader';
 import IconDone from '../../images/done.svg';
+
+// css
 import stylesDetails from './OrderDetails.module.css';
 
 type Props = {
@@ -12,7 +15,8 @@ function OrderDetails({ orderId }: Props) {
     <div className={stylesDetails.wrapper}>
       <div className={stylesDetails.header}>
         {orderId === undefined ? (
-          'загрузка...'
+          // 'загрузка...'
+          <Loader />
         ) : (
           <div className={stylesDetails.number}>{orderId}</div>
         )}

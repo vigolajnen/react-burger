@@ -3,18 +3,18 @@ import {
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
+import { useDispatch } from '../../hooks';
 import { userLogin } from '../../services/actions/user';
-import { TUser } from '../../utils/types';
 
+// css
 import styles from './login.module.css';
 
 // страница авторизации.
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector((state: any) => state.user.isAuth);
   const [form, setValue] = useState({ email: '', password: '' });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -23,59 +23,66 @@ export const LoginPage = () => {
 
   const login = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const ff: any = userLogin(form);
-    (dispatch(ff) as unknown as Promise<unknown>).then(() => {});
+
+    dispatch(userLogin(form)).then(() => {});
   };
 
-  if (isAuth) {
-    return <Navigate to={'/'} />;
-  }
-
   return (
-    <main className={styles.main}>
-      <form onSubmit={login} className={styles.center}>
-        <h1>Вход</h1>
-        <div
-          className='mb-4'
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <EmailInput
-            onChange={onChange}
-            value={form.email}
-            name={'email'}
-            isIcon={false}
-          />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <main className={styles.main}>
+        <form onSubmit={login} className={styles.center}>
+          <h1>Вход</h1>
+          <div
+            className={`${styles.inner}`}
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+            <EmailInput
+              onChange={onChange}
+              value={form.email}
+              name={'email'}
+              isIcon={false}
+              autoComplete='username'
+              id='email'
+              required
+            />
+          </div>
+          <div
+            className={`${styles.inner}`}
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+            <PasswordInput
+              onChange={onChange}
+              value={form.password}
+              name={'password'}
+              extraClass='mb-2'
+              autoComplete='new-password'
+              id='new-password'
+              required
+            />
+          </div>
+          <button type='submit' className={styles.button_type_primary}>
+            Войти
+          </button>
+        </form>
+        <div className='mb-2'>
+          Вы — новый пользователь?
+          <Link to='/register' className={styles.link}>
+            {' '}
+            Зарегистрироваться
+          </Link>
         </div>
-        <div
-          className='mb-4'
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <PasswordInput
-            onChange={onChange}
-            value={form.password}
-            name={'password'}
-            extraClass='mb-2'
-            autoComplete='off'
-          />
+        <div className='mb-2'>
+          Забыли пароль?
+          <Link to='/forgot-password' className={styles.link}>
+            {' '}
+            Восстановить пароль
+          </Link>
         </div>
-        <button type='submit' className={styles.button_type_primary}>
-          Войти
-        </button>
-      </form>
-      <div className='mb-2'>
-        Вы — новый пользователь?
-        <Link to='/register' className={styles.link}>
-          {' '}
-          Зарегистрироваться
-        </Link>
-      </div>
-      <div className='mb-2'>
-        Забыли пароль?
-        <Link to='/forgot-password' className={styles.link}>
-          {' '}
-          Восстановить пароль
-        </Link>
-      </div>
-    </main>
+      </main>
+    </motion.div>
   );
 };

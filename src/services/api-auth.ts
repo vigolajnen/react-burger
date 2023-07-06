@@ -1,25 +1,27 @@
-// import { getCookie, deleteCookie, setCookie } from './utils';
 import { generalRequest } from './api';
-import {TUser, TUserRequest, TResetPassword} from '../utils/types';
+import { TUser, TResetPassword } from '../utils/types';
+import { getUser } from './actions/user';
+import { AppDispatch } from './types';
+import { getCookie } from './utils';
 
 export const loginRequest = async ({ email, password }: TUser) => {
   return await generalRequest(`auth/login`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({ email: email, password }),
   });
 };
 
-export const logoutRequest = () => {
+export const logoutRequest = (token: string | undefined) => {
   return generalRequest(`auth/logout`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: localStorage.getItem('refreshToken')
+      token: token,
     }),
   });
 };
@@ -28,41 +30,54 @@ export const registerRequest = async ({ email, password, name }: TUser) => {
   return await generalRequest(`auth/register`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({ email, password, name })
+    body: JSON.stringify({ email, password, name }),
   });
 };
 
-export const getUserRequest = (token: string) => {
+export const getUserRequest = () => {
   return generalRequest(`auth/user`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token
-    }
+      Authorization: 'Bearer ' + getCookie('token'),
+    },
   });
 };
 
-export const updateUserRequest = ({email, name, token}: TUserRequest) => {
+export const updateUserData = (data: { email: string; name: string }) => {
   return generalRequest(`auth/user`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token
+      Authorization: 'Bearer ' + getCookie('token'),
     },
-    body: JSON.stringify({ email, name })
+    body: JSON.stringify(data),
   });
+};
+
+export const updateUserRequest = (token: string) => {
+  return (dispatch: AppDispatch) => {
+    generalRequest(`auth/user`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify(dispatch(getUser())),
+    });
+  };
 };
 
 export const refreshTokenRequest = () => {
   return generalRequest(`auth/token`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      token: localStorage.getItem('refreshToken')
+      token: localStorage.getItem('refreshToken'),
     }),
   });
 };
@@ -73,24 +88,34 @@ export const forgotPasswordRequest = (email: string) => {
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
-    headers: {'Content-Type': 'application/json;charset=utf-8'},
-    body: JSON.stringify({ 'email': email }),
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    body: JSON.stringify({ email: email }),
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
-  })
+  });
 };
 
-
-
-export const resetPasswordRequest = ({password, token}: TResetPassword) => {
+export const resetPasswordRequest = ({ password, token }: TResetPassword) => {
   return generalRequest(`password-reset/reset`, {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
-    headers: {'Content-Type': 'application/json;charset=utf-8'},
-    body: JSON.stringify({ 'password': password, 'token': token }),
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    body: JSON.stringify({ password: password, token: token }),
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
+  });
+};
+
+export const signOutRequest = (refreshToken: string | undefined) => {
+  return generalRequest(`auth/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({
+      refreshToken: refreshToken,
+    }),
   });
 };

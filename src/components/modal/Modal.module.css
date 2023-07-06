@@ -9,10 +9,12 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 720px;
+  max-width: 420px;
+  max-height: 95vh;
   margin: auto;
-  padding: 40px;
-  padding-bottom: 60px;
+  padding: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 
   transition: transform 0.3s ease-out;
 
@@ -24,4 +26,12 @@
     0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
     0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: 40px;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    max-width: 720px;
+    padding: 40px;
+    padding-bottom: 60px;
+  }
 }

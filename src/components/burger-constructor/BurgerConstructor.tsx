@@ -1,40 +1,40 @@
 import React, { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
+
+import { useSelector, useDispatch } from '../../hooks';
+import { useModal } from '../../hooks/useModal';
 
 import Modal from '../modal/Modal';
-import { useModal } from '../../hooks/useModal';
 import OrderDetails from '../order-details/OrderDetails';
 import AllPrice from '../all-price/AllPrice';
 import BoardBun from '../board-bun/BoardBun';
 import BoardIngredients from '../board-ingredients/BoardIngredients';
-import {
-  GET_ORDER_PRICE,
-  UPDATE_ORDERS,
-  loadOrder,
-} from '../../services/actions/order.js';
 
-import { useNavigate } from 'react-router-dom';
+import { UPDATE_ORDERS, GET_ORDER_PRICE } from '../../services/constants';
+import { loadOrder } from '../../services/actions/order';
+import { ClearConstructorItemAction } from '../../services/actions/constructor-items';
 
-import stylesConstructor from './BurgerConstructor.module.css';
 import { TIngredient } from '../../utils/types';
+
+// css
+import stylesConstructor from './BurgerConstructor.module.css';
 
 const BurgerConstructor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isModalOpen, openModal, closeModal } = useModal();
-  const isAuth = useSelector((state: any) => state.user.isAuth);
-
-  const orders = useSelector((state: any) => state.orders.orders);
+  const isAuth = useSelector((store) => store.user.isAuth);
+  const orders = useSelector((store) => store.orders.orders);
+  const { number } = useSelector((store) => store.orders.orders);
 
   const ingredientsArr = useSelector(
-    (state: any) => state.constructorItemsList.constructorItems,
+    (store) => store.constructorItemsList.constructorItems,
   );
   const bunArr = useSelector(
-    (state: any) => state.constructorItemsList.constructorBun,
+    (store) => store.constructorItemsList.constructorBun,
   );
-  const boards = useSelector((state: any) => state.boardList.boards);
+  const boards = useSelector((store) => store.boardList.boards);
 
   const allOrderArr: Array<TIngredient> = [...bunArr, ...ingredientsArr];
 
@@ -56,9 +56,17 @@ const BurgerConstructor = () => {
     if (!isAuth) {
       navigate('/login', { replace: true });
     } else {
-      const orderLoad: any = loadOrder(ordersId(allOrderArr));
-      dispatch(orderLoad);
+      dispatch(loadOrder(allOrderArr));
+
+      ordersId(allOrderArr);
+
       openModal();
+    }
+  };
+  const handleCloseModal = () => {
+    if (number !== undefined) {
+      closeModal();
+      dispatch(ClearConstructorItemAction());
     }
   };
 
@@ -104,7 +112,7 @@ const BurgerConstructor = () => {
         </div>
       </section>
       {isModalOpen && (
-        <Modal onClose={closeModal}>
+        <Modal onClose={handleCloseModal}>
           <OrderDetails orderId={orders.number} />
         </Modal>
       )}

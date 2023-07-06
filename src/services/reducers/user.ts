@@ -14,9 +14,27 @@ import {
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILED,
-} from '../actions/user';
+  SET_FORGOT_PASSWORD,
+} from '../constants';
 
-const initialState = {
+import { TUserActions } from '../actions/user';
+import { TUser } from '../../utils/types';
+
+export type TUserItemsState = {
+  user: TUser | null;
+  token: string | null;
+  refreshToken: string | null;
+  isAuth: Boolean;
+  userRequest: Boolean;
+  userFailed: Boolean;
+  refreshTokenRequest: Boolean;
+  userUpdateRequest: boolean;
+  userUpdateFailed: boolean;
+  isLoggedIn: boolean | undefined;
+  isPageForgotPass: boolean;
+};
+
+const initialState: TUserItemsState = {
   user: null,
   token: null,
   refreshToken: null,
@@ -24,9 +42,13 @@ const initialState = {
   userRequest: false,
   userFailed: false,
   refreshTokenRequest: false,
+  userUpdateRequest: false,
+  userUpdateFailed: false,
+  isLoggedIn: undefined,
+  isPageForgotPass: false,
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions) => {
   switch (action.type) {
     case GET_REGISTR_REQUEST: {
       return {
@@ -58,11 +80,12 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         userFailed: false,
-        user: action.user,
-        token: action.token,
-        refreshToken: action.refreshToken,
+        user: action.payload.user,
+        token: action.payload.accessToken.split('Bearer ')[1],
+        refreshToken: action.payload.refreshToken,
         isAuth: !state.isAuth,
         userRequest: false,
+        isLoggedIn: true,
       };
     }
     case GET_LOGIN_FAILED: {
@@ -83,6 +106,7 @@ export const userReducer = (state = initialState, action) => {
         token: null,
         refreshToken: null,
         isAuth: false,
+        isLoggedIn: false,
       };
     }
     case GET_LOGOUT_FAILED: {
@@ -92,6 +116,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         userRequest: true,
+        isLoggedIn: true,
       };
     }
     case GET_USER_SUCCESS: {
@@ -101,10 +126,11 @@ export const userReducer = (state = initialState, action) => {
         isAuth: true,
         userFailed: false,
         userRequest: false,
+        isLoggedIn: true,
       };
     }
     case GET_USER_FAILED: {
-      return { ...state, isAuth: false, userFailed: true, userRequest: false };
+      return { ...state, isAuth: false, userFailed: true, userRequest: false, isLoggedIn: false, };
     }
     case REFRESH_TOKEN_REQUEST: {
       return {
@@ -116,7 +142,10 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuth: true,
+        isLoggedIn: true,
         refreshTokenRequest: false,
+        token: action.payload.accessToken.split('Bearer ')[1],
+        refreshToken: action.payload.refreshToken,
       };
     }
     case REFRESH_TOKEN_FAILED: {
@@ -125,6 +154,12 @@ export const userReducer = (state = initialState, action) => {
         isAuth: false,
         refreshTokenRequest: false,
       };
+    }
+    case SET_FORGOT_PASSWORD: {
+      return {
+        ...state,
+        isPageForgotPass: action.payload,
+      }
     }
     default: {
       return state;

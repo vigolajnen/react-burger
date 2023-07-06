@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-
+import { useDrag, useDrop } from 'react-dnd';
+import { Identifier } from 'dnd-core';
 import {
   ConstructorElement,
   DragIcon,
@@ -7,10 +8,9 @@ import {
 import {
   DELETE_CONSTRUCTOR_ITEM,
   SORT_CONSTRUCTOR_ITEMS,
-} from '../../services/actions/constructor-items';
-import { useDispatch } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd';
-import { Identifier } from 'dnd-core';
+} from '../../services/constants';
+import { useDispatch } from '../../hooks';
+
 import { TIngredient } from '../../utils/types';
 
 type Props = {
@@ -64,7 +64,7 @@ const DragIngredient = ({ item, id, index, count }: Props) => {
     },
   });
 
-  const [{ isDrag }, dragRef] = useDrag({
+  const [, dragRef] = useDrag({
     type: 'sortItems',
     item: () => {
       return { item, index };

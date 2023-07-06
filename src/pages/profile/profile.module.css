@@ -22,6 +22,8 @@
 }
 
 .grid {
+  padding-top: 30px;
+  flex-direction: column;
   max-width: 1280px;
   margin: 0 auto;
   padding-left: 16px;
@@ -33,18 +35,40 @@
   align-items: center;
   min-height: 88vh;
   flex-wrap: wrap;
-  gap: 60px;
 }
 
 .sidebar {
-  width: 30%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
 .content {
-  width: 60%;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  transition: 0.3s;
+}
+
+.form {
+  margin: auto 0;
+  width: 100%;
+  max-width: 480px;
+}
+
+.inner {
+  margin-bottom: 1rem;
+}
+
+.inner,
+.inner > div {
+  width: 100%;
+}
+
+.inner [class*='input_size_default'] {
+  width: 100%;
 }
 
 .title {
@@ -54,7 +78,7 @@
 }
 
 .item {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-weight: 700;
   font-size: 24px;
   line-height: 30px;
@@ -63,11 +87,11 @@
   background-color: transparent;
   border: none;
   text-align: left;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .itemActive {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-weight: 700;
   font-size: 24px;
   line-height: 30px;
@@ -103,4 +127,25 @@
 
 .button_type_primary:active {
   opacity: 0.9;
+}
+
+@media (min-width: 620px) {
+  .grid {
+    padding-top: 0;
+    flex-direction: row;
+    gap: 60px;
+  }
+
+  .sidebar {
+    width: 30%;
+    flex-direction: column;
+  }
+  .content {
+    width: 60%;
+    min-height: 80vh;
+  }
+  .item,
+  .itemActive {
+    margin-bottom: 2rem;
+  }
 }

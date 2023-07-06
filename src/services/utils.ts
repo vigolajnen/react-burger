@@ -1,35 +1,30 @@
 export function getCookie(name: string) {
   const matches = document.cookie.match(
-    new RegExp(
-      '(?:^|; )' +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') +
-        '=([^;]*)',
-    ),
+    new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name: string, value: string, options: any) {
-  // props = {
-  //   path: '/',
-  //   ...props
-  // };
-  options = options || {};
-
-  let exp = options.expires;
+export function setCookie(name: string, value: any, props?: any) {
+  // props = props || {};
+  props = {
+    ...props,
+    path: '/',
+  }
+  let exp = props.expires;
   if (typeof exp == 'number' && exp) {
     const d = new Date();
     d.setTime(d.getTime() + exp * 1000);
-    exp = options.expires = d;
+    exp = props.expires = d;
   }
   if (exp && exp.toUTCString) {
-    options.expires = exp.toUTCString();
+    props.expires = exp.toUTCString();
   }
   value = encodeURIComponent(value);
   let updatedCookie = name + '=' + value;
-  for (const propName in options) {
+  for (const propName in props) {
     updatedCookie += '; ' + propName;
-    const propValue = options[propName];
+    const propValue = props[propName];
     if (propValue !== true) {
       updatedCookie += '=' + propValue;
     }
@@ -38,5 +33,5 @@ export function setCookie(name: string, value: string, options: any) {
 }
 
 export function deleteCookie(name: string) {
-  setCookie(name, '', { expires: -1 });
-}
+  setCookie(name, null, { expires: -1 });
+} 

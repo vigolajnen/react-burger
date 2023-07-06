@@ -4,16 +4,27 @@ import {
   GET_INGREDIENTS_SUCCESS,
   MODAL_ADD_INGREDIENT,
   MODAL_DELETE_INGREDIENT,
-} from '../actions/menu';
+} from '../constants';
 
-const initialState = {
+import { TIngredient } from '../../utils/types';
+import { TGetIngredientsActions } from '../actions/menu';
+import { TModalIngredientActions } from '../actions/modal';
+
+export type TGetIngredientsState = {
+  ingredients: Array<TIngredient>;
+  ingredientsRequest: Boolean;
+  ingredientsFailed: Boolean;
+  ingredient: TIngredient | null;
+};
+
+const initialState: TGetIngredientsState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
   ingredient: null,
 };
 
-export const menuReducer = (state = initialState, action) => {
+export const menuReducer = (state = initialState, action: TGetIngredientsActions | TModalIngredientActions) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {

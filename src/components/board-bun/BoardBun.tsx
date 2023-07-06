@@ -1,8 +1,9 @@
 import React from 'react';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { addItemConstructor } from '../../services/actions/constructor-items';
+import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import { AddConstructorItemAction } from '../../services/actions/constructor-items';
+import { useSelector, useDispatch } from '../../hooks';
 import { TIngredient } from '../../utils/types';
 
 type Props = {
@@ -10,13 +11,13 @@ type Props = {
   title: string;
   type: string;
   classBun: string;
-  items: Array<TIngredient>;
-}
+  items?: Array<TIngredient>;
+};
 
 const BoardBun = ({ board, title, type, classBun, items }: Props) => {
   const dispatch = useDispatch();
 
-  const { ingredients } = useSelector((state: any) => state.ingredients);
+  const { ingredients } = useSelector((state) => state.ingredients);
 
   const [{ isHover, canDrop }, drop] = useDrop({
     accept: 'ingredients',
@@ -26,7 +27,7 @@ const BoardBun = ({ board, title, type, classBun, items }: Props) => {
     }),
     drop: (itemId: TIngredient) => {
       dispatch(
-        addItemConstructor(
+        AddConstructorItemAction(
           ingredients.filter((item: TIngredient) => item._id === itemId.id)[0],
         ),
       );
@@ -47,10 +48,10 @@ const BoardBun = ({ board, title, type, classBun, items }: Props) => {
 
   return (
     <div ref={drop} data-board={board} style={{ border: getBackgroundColor() }}>
-      {items.length === 0 ? (
+      {items?.length === 0 ? (
         <div className={classBun}>Выберите булку</div>
       ) : (
-        items.map((elem: TIngredient) => (
+        items?.map((elem: TIngredient) => (
           <ConstructorElement
             key={elem.id}
             data-elem={elem}
@@ -66,6 +67,5 @@ const BoardBun = ({ board, title, type, classBun, items }: Props) => {
     </div>
   );
 };
-
 
 export default BoardBun;
