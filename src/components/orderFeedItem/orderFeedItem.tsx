@@ -17,6 +17,7 @@ import { TIngredientOrder } from '../../utils/types';
 
 // css
 import styles from './OrderFeedItem.module.css';
+import { URL_FEED } from '../../utils/constants';
 
 interface IOrderItem {
   order: FeedOrder;
@@ -35,12 +36,13 @@ const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
   return (
     order && (
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, marginBottom: '16px', border: '2px solid transparent', borderRadius: '40px', maskComposite: 'exclude' }}
+        animate={{ opacity: 1, marginBottom: '16px' }}
         exit={{ opacity: 0 }}
+        whileHover={{ scale: 0.97, background: 'linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%) border-box' }}
       >
         <Link
-          to={`/feed/${order._id}`}
+          to={`${URL_FEED}/${order._id}`}
           className={styles.wrapper}
           state={{ bgFeedList: location }}
         >
@@ -64,7 +66,9 @@ const OrderFeedItem: FC<IOrderItem> = ({ order }) => {
                         </div>
                       </li>
                     ) : (
-                      'Загрузка...'
+                      <li key={index}>
+                        <div className={styles.liInner}>?</div>
+                      </li>
                     ),
                   )}
               </ul>

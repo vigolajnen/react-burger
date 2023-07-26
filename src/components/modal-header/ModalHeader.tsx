@@ -10,11 +10,11 @@ type Props = {
   title?: string;
 };
 
-const ModalHeader = ({ onClose, children, title }: Props) => {
+const ModalHeader = ({ onClose, title }: Props) => {
   return (
     <div className={stylesHeader.header}>
       <div className={stylesHeader.title}>{title}</div>
-      <button className={stylesHeader.btnClose} type='button' onClick={onClose}>
+      <button className={stylesHeader.btnClose} type='button' onClick={onClose} data-cy="close-modal">
         <CloseIcon type='primary' />
       </button>
     </div>

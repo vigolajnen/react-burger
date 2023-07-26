@@ -80,6 +80,7 @@ const BurgerConstructor = () => {
             type='top'
             title=' (верх)'
             classBun={stylesConstructor.emptyBunTop}
+            data-cy="constructor-item"
           />
           <div className={stylesConstructor.inner}>
             <div className='custom-scroll'>
@@ -87,6 +88,7 @@ const BurgerConstructor = () => {
                 items={ingredientsArr}
                 board={boards[1]}
                 classIngredients={stylesConstructor.empty}
+                data-cy="constructor-item"
               />
             </div>
           </div>
