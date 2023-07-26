@@ -19,10 +19,10 @@ const IngredientDetails: FC = () => {
         src={currentItem?.image_large}
         alt={currentItem?.name}
       />
-      <h3 className={stylesContent.title}>{currentItem?.name}</h3>
+      <h3 className={stylesContent.title} data-cy="ingredient-modal-title">{currentItem?.name}</h3>
       <ul className={stylesContent.list}>
         <li>
-          <span>Калории,ккал</span>
+          <span data-cy="ingredient-modal-item">Калории,ккал</span>
           <span>{currentItem?.calories}</span>
         </li>
         <li>

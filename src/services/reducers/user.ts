@@ -34,7 +34,7 @@ export type TUserItemsState = {
   isPageForgotPass: boolean;
 };
 
-const initialState: TUserItemsState = {
+export const initialState: TUserItemsState = {
   user: null,
   token: null,
   refreshToken: null,
@@ -61,9 +61,9 @@ export const userReducer = (state = initialState, action: TUserActions) => {
         ...state,
         userFailed: false,
         user: action.user,
-        token: action.token,
-        refreshToken: action.refreshToken,
-        isAuth: !state.isAuth,
+        // token: action.token,
+        // refreshToken: action.refreshToken,
+        isAuth: true,
         userRequest: false,
       };
     }
@@ -81,9 +81,9 @@ export const userReducer = (state = initialState, action: TUserActions) => {
         ...state,
         userFailed: false,
         user: action.payload.user,
-        token: action.payload.accessToken.split('Bearer ')[1],
-        refreshToken: action.payload.refreshToken,
-        isAuth: !state.isAuth,
+        // token: action.payload.accessToken.split('Bearer ')[1],
+        // refreshToken: action.payload.refreshToken,
+        isAuth: true,
         userRequest: false,
         isLoggedIn: true,
       };
@@ -144,8 +144,8 @@ export const userReducer = (state = initialState, action: TUserActions) => {
         isAuth: true,
         isLoggedIn: true,
         refreshTokenRequest: false,
-        token: action.payload.accessToken.split('Bearer ')[1],
-        refreshToken: action.payload.refreshToken,
+        // token: action.payload.accessToken.split('Bearer ')[1],
+        // refreshToken: action.payload.refreshToken,
       };
     }
     case REFRESH_TOKEN_FAILED: {

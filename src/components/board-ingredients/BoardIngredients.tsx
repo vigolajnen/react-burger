@@ -33,7 +33,7 @@ const BoardIngredients = ({ board, classIngredients, items }: Props) => {
   const border = isHover ? '2px solid lightgreen' : '2px solid transparent';
 
   return (
-    <div ref={drop} data-board={board} style={{ border }}>
+    <div ref={drop} data-board={board} style={{ border }} data-cy="constructor-ingredient">
       {items.length === 0 ? (
         <div className={classIngredients}>Выберите ингредиенты</div>
       ) : (

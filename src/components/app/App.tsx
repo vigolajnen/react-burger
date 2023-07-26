@@ -6,7 +6,6 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
 
 // actions
 import { getUser } from '../../services/actions/user';
@@ -38,6 +37,17 @@ import OrderFeedItemDetails from '../order-feed-item-details/OrderFeedItemDetail
 
 // css
 import appStyles from './App.module.css';
+import {
+  URL_ANY,
+  URL_FEED,
+  URL_FORGOT_PASSWORD,
+  URL_INGREDIENTS,
+  URL_LOGIN,
+  URL_PROFILE,
+  URL_PROFILE_ORDERS,
+  URL_RESET_PASSWORD,
+  URL_ROOT,
+} from '../../utils/constants';
 
 function App() {
   const dispatch = useDispatch();
@@ -58,73 +68,70 @@ function App() {
 
   return (
     <div className={appStyles.app}>
-      <AnimatePresence>
-        <Routes location={background}>
-          <Route path='/' element={<LayoutPage />}>
-            <Route index element={<HomePage />} />
-            <Route
-              path='profile'
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            >
-              <Route path='orders' element={<OrdersPage />} />
-            </Route>
-            <Route
-              path='login'
-              element={
-                <ProtectedRoute anonymous>
-                  <LoginPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='register'
-              element={!isAuth ? <RegisterPage /> : <Navigate to={'/'} />}
-            />
-
-            <Route path='feed' element={<FeedPage />} />
-
-            <Route
-              path='forgot-password'
-              element={
-                <ProtectedRoute anonymous>
-                  <ForgotPasswordPage />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path='reset-password'
-              element={
-                <ProtectedRoute anonymous>
-                  <ResetPasswordPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path='*' element={<NotFoundPage />} />
-
-            <Route path='ingredients/:id' element={<IngredientPage />} />
-            <Route path='feed/:id' element={<OrderFeedPage />} />
-
-            <Route
-              path='profile/orders/:id'
-              element={
-                <ProtectedRoute>
-                  <OrderPage isAuth={isAuth} />
-                </ProtectedRoute>
-              }
-            />
+      <Routes location={background}>
+        <Route path={URL_ROOT} element={<LayoutPage />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path={URL_PROFILE}
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          >
+            <Route path={URL_PROFILE_ORDERS} element={<OrdersPage />} />
           </Route>
-        </Routes>
-      </AnimatePresence>
+          <Route
+            path={URL_LOGIN}
+            element={
+              <ProtectedRoute anonymous>
+                <LoginPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='register'
+            element={!isAuth ? <RegisterPage /> : <Navigate to={URL_ROOT} />}
+          />
+
+          <Route
+            path={URL_FORGOT_PASSWORD}
+            element={
+              <ProtectedRoute anonymous>
+                <ForgotPasswordPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={URL_RESET_PASSWORD}
+            element={
+              <ProtectedRoute anonymous>
+                <ResetPasswordPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path={URL_FEED} element={<FeedPage />} />
+          <Route path={URL_ANY} element={<NotFoundPage />} />
+          <Route path={`${URL_INGREDIENTS}/:id`} element={<IngredientPage />} />
+          <Route path={`${URL_FEED}/:id`} element={<OrderFeedPage />} />
+
+          <Route
+            path={`${URL_PROFILE}/${URL_PROFILE_ORDERS}/:id`}
+            element={
+              <ProtectedRoute>
+                <OrderPage isAuth={isAuth} />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+      </Routes>
 
       {location.state?.bgIngredient && (
         <Routes>
           <Route
-            path='ingredients/:id'
+            path={`${URL_INGREDIENTS}/:id`}
             element={
               <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
                 <IngredientDetails />
@@ -137,7 +144,7 @@ function App() {
       {location.state?.bgFeedList && (
         <Routes>
           <Route
-            path='feed/:id'
+            path={`${URL_FEED}/:id`}
             element={
               <Modal onClose={() => navigate(-1)}>
                 <OrderFeedItemDetails />
@@ -150,7 +157,7 @@ function App() {
       {location.state?.bgProfileFeed && (
         <Routes>
           <Route
-            path='profile/orders/:id'
+            path={`${URL_PROFILE}/${URL_PROFILE_ORDERS}/:id`}
             element={
               <ProtectedRoute>
                 <Modal onClose={() => navigate(-1)}>

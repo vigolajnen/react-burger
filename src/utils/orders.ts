@@ -66,6 +66,10 @@ export const orderIngredients = (
 export const allOrderIngredients = (items: TIngredient[]) => {
   const orderBun: TIngredient = items.find((el) => el.type === 'bun')!;
   const orderIngs = items.filter((el) => el.type !== 'bun');
+
+  if (orderBun === undefined) {
+    return [...orderIngs];
+  }
   return [orderBun, orderBun, ...orderIngs];
 };
 

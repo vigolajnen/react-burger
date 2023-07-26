@@ -6,6 +6,11 @@ import { getCookie } from '../../services/utils';
 
 import OrderItem from '../order-item/OrderItem';
 import OrderFeedItem from '../orderFeedItem/orderFeedItem';
+import {
+  URL_FEED,
+  URL_PROFILE,
+  URL_PROFILE_ORDERS,
+} from '../../utils/constants';
 
 interface IFeedList {
   orders: Array<FeedOrder> | any;
@@ -13,8 +18,8 @@ interface IFeedList {
 
 export const FeedList: FC<IFeedList> = ({ orders }) => {
   const location = useLocation();
-  const orderUrl = '/profile/orders';
-  const feedUrl = '/feed';
+  const orderUrl = `${URL_PROFILE}/${URL_PROFILE_ORDERS}`;
+  const feedUrl = `${URL_FEED}`;
   const accessToken = getCookie('token') !== undefined;
 
   if (
@@ -24,7 +29,7 @@ export const FeedList: FC<IFeedList> = ({ orders }) => {
     return orders.length > 0
       ? orders.map((order: FeedOrder) => (
           <OrderFeedItem key={order._id} order={order} />
-        ))
+        )).reverse()
       : 'Заказов нет';
   }
 
@@ -33,8 +38,7 @@ export const FeedList: FC<IFeedList> = ({ orders }) => {
       ? orders
           .map((order: FeedOrder) => (
             <OrderItem key={order._id} order={order} />
-          ))
-          .reverse()
+          )).reverse()
       : 'Заказов нет';
   }
 };

@@ -27,9 +27,10 @@ export const FeedPage: FC = () => {
   }, [dispatch]);
 
   const { orders, total, totalToday } = useSelector((store) => store.feedList);
+  const reversOrders = orders.reverse();
   const ordersDone = orders?.filter((item) => item.status === 'done');
   const ordersNotDone = orders?.filter((item) => item.status !== 'done');
-  const ordersDoneMax = ordersDone?.slice(0, 20);
+  const ordersDoneMax = ordersDone?.slice(0, -20);
   const ordersNotDoneMax = ordersNotDone?.slice(0, 20);
 
   return (

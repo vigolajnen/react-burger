@@ -36,6 +36,8 @@ const OrderFeedItemDetails: FC = () => {
   const orderIngs = items.filter((el) => el.type !== 'bun');
   if (orderBun.length > 0) {
     orderIngredientsArr = [...orderIngs, orderBun[0], orderBun[0]];
+  } else {
+    orderIngredientsArr = [...orderIngs];
   }
 
   const countItems: { [key: string]: number } = {}; // здесь будет храниться промежуточный результат

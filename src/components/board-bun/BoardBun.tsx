@@ -47,7 +47,7 @@ const BoardBun = ({ board, title, type, classBun, items }: Props) => {
   };
 
   return (
-    <div ref={drop} data-board={board} style={{ border: getBackgroundColor() }}>
+    <div ref={drop} data-board={board} style={{ border: getBackgroundColor() }} data-cy="constructor-bun">
       {items?.length === 0 ? (
         <div className={classBun}>Выберите булку</div>
       ) : (

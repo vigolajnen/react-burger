@@ -36,9 +36,10 @@ const OrderItem: FC<IOrderItem> = ({ order }) => {
   return (
     order && (
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+      initial={{ opacity: 0, marginBottom: '16px', border: '2px solid transparent', borderRadius: '40px', maskComposite: 'exclude' }}
+      animate={{ opacity: 1, marginBottom: '16px' }}
+      exit={{ opacity: 0 }}
+      whileHover={{ scale: 0.97, background: 'linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%) border-box' }}
       >
         <Link
           to={`/profile/orders/${order._id}`}
